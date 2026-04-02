@@ -60,14 +60,14 @@ export function ApproveApiKey(t0) {
   }
   let t3;
   if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
-    t3 = <Text bold={true}>ANTHROPIC_API_KEY</Text>;
+    t3 = <Text bold={true}>API Key</Text>;
     $[5] = t3;
   } else {
     t3 = $[5];
   }
   let t4;
   if ($[6] !== customApiKeyTruncated) {
-    t4 = <Text>{t3}<Text>: sk-ant-...{customApiKeyTruncated}</Text></Text>;
+    t4 = <Text>{t3}<Text>: ...{customApiKeyTruncated}</Text></Text>;
     $[6] = customApiKeyTruncated;
     $[7] = t4;
   } else {
@@ -83,7 +83,7 @@ export function ApproveApiKey(t0) {
   let t6;
   if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
-      label: "Yes",
+      label: <Text>Yes (<Text bold={true}>recommended</Text>)</Text>,
       value: "yes"
     };
     $[9] = t6;
@@ -93,7 +93,7 @@ export function ApproveApiKey(t0) {
   let t7;
   if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = [t6, {
-      label: <Text>No (<Text bold={true}>recommended</Text>)</Text>,
+      label: "No",
       value: "no"
     }];
     $[10] = t7;
@@ -102,7 +102,7 @@ export function ApproveApiKey(t0) {
   }
   let t8;
   if ($[11] !== onChange) {
-    t8 = <Select defaultValue="no" defaultFocusValue="no" options={t7} onChange={value_0 => onChange(value_0 as 'yes' | 'no')} onCancel={() => onChange("no")} />;
+    t8 = <Select defaultValue="yes" defaultFocusValue="yes" options={t7} onChange={value_0 => onChange(value_0 as 'yes' | 'no')} onCancel={() => onChange("no")} />;
     $[11] = onChange;
     $[12] = t8;
   } else {

@@ -114,8 +114,9 @@ export function Onboarding({
     }
     goToNextStep();
   }
-  // OpenClaude: check if API key needs to be set up
-  const needsApiKey = !process.env.ANTHROPIC_API_KEY && !oauthEnabled;
+  // OpenClaude: check if API key needs to be set up.
+  // useState so the steps array stays stable after the key is set mid-onboarding.
+  const [needsApiKey] = useState(() => !process.env.ANTHROPIC_API_KEY && !oauthEnabled);
 
   const steps: OnboardingStep[] = [];
   if (oauthEnabled) {

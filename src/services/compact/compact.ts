@@ -1326,6 +1326,10 @@ async function streamCompactSummary({
       })
       const streamIter = streamingGen[Symbol.asyncIterator]()
       let next = await streamIter.next()
+      // Collect all content blocks from assistant events.
+      // The generator yields one assistant event per content_block_stop,
+      // each containing only that single block. We merge them.
+      const allContentBlocks: any[] = []
 
       while (!next.done) {
         const event = next.value
@@ -1351,12 +1355,24 @@ async function streamCompactSummary({
 
         if (event.type === 'assistant') {
           response = event
+          // Accumulate content blocks from each assistant event
+          if (Array.isArray(event.message?.content)) {
+            allContentBlocks.push(...event.message.content)
+          }
         }
 
         next = await streamIter.next()
       }
 
-      if (response) {
+      // Merge all collected content blocks into the final response
+      if (response && allContentBlocks.length > 0) {
+        response = {
+          ...response,
+          message: {
+            ...response.message,
+            content: allContentBlocks,
+          },
+        }
         return response
       }
 

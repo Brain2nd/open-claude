@@ -10,7 +10,10 @@ import { Box, Link, Newline, Text } from '../ink.js'
 import TextInput from './TextInput.js'
 import { Select } from './CustomSelect/select.js'
 import { Dialog } from './design-system/Dialog.js'
+import { readFileSync, writeFileSync } from 'fs'
+import { join } from 'path'
 import { saveGlobalConfig } from '../utils/config.js'
+import { getClaudeConfigHomeDir } from '../utils/envUtils.js'
 
 type Props = {
   onDone(apiKey?: string): void
@@ -31,7 +34,6 @@ export function OpenRouterSetup({ onDone }: Props): React.ReactNode {
       setError('API key cannot be empty')
       return
     }
-    // Set the API key in process.env so auth.ts picks it up
     process.env.ANTHROPIC_API_KEY = key
 
     if (mode === 'other' && step === 'key') {
@@ -43,7 +45,21 @@ export function OpenRouterSetup({ onDone }: Props): React.ReactNode {
       process.env.ANTHROPIC_BASE_URL = baseUrl.trim()
     }
 
-    // Save to config for persistence across sessions
+    // Persist API key to user settings.json so it survives across sessions.
+    try {
+      const settingsPath = join(getClaudeConfigHomeDir(), 'settings.json')
+      let settings: Record<string, any> = {}
+      try { settings = JSON.parse(readFileSync(settingsPath, 'utf-8')) } catch {}
+      const env: Record<string, string> = { ...(settings.env || {}), ANTHROPIC_API_KEY: key }
+      if (mode === 'anthropic') {
+        env.ANTHROPIC_BASE_URL = 'https://api.anthropic.com'
+      } else if (mode === 'other' && baseUrl.trim()) {
+        env.ANTHROPIC_BASE_URL = baseUrl.trim()
+      }
+      settings.env = env
+      writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n')
+    } catch {}
+
     saveGlobalConfig(current => ({
       ...current,
       apiProvider: mode,
@@ -162,6 +178,7 @@ export function OpenRouterSetup({ onDone }: Props): React.ReactNode {
               value={baseUrl}
               onChange={setBaseUrl}
               onSubmit={handleSubmitKey}
+              onPaste={(text: string) => setBaseUrl(text.trim())}
               placeholder="https://api.example.com/v1"
             />
           </Box>
@@ -175,6 +192,10 @@ export function OpenRouterSetup({ onDone }: Props): React.ReactNode {
                 setError(null)
               }}
               onSubmit={handleSubmitKey}
+              onPaste={(text: string) => {
+                setApiKey(text.trim())
+                setError(null)
+              }}
               placeholder={`${info.prefix}...`}
               mask="*"
             />
