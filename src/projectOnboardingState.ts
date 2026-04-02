@@ -18,7 +18,7 @@ export type Step = {
 
 export function getSteps(): Step[] {
   const hasClaudeMd = getFsImplementation().existsSync(
-    join(getCwd(), 'CLAUDE.md'),
+    join(getCwd(), 'OPENCLAUDE.md'),
   )
   const isWorkspaceDirEmpty = isDirEmpty(getCwd())
 
@@ -32,7 +32,7 @@ export function getSteps(): Step[] {
     },
     {
       key: 'claudemd',
-      text: 'Run /init to create a CLAUDE.md file with instructions for OpenClaude',
+      text: 'Run /init to create an OPENCLAUDE.md file with instructions for OpenClaude',
       isComplete: hasClaudeMd,
       isCompletable: true,
       isEnabled: !isWorkspaceDirEmpty,

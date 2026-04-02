@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to OpenClaude when working with code in this repository.
 
 ## Project Overview
 
@@ -18,7 +18,7 @@ bun run install-bin        # Build + install to ~/.local/bin/openclaude
 bun run typecheck          # TypeScript type checking (tsc --noEmit)
 ```
 
-There is no test suite in this repository.
+There is no test suite in this repository. Validate changes with `bun run typecheck` and manual testing via `bun run dev`.
 
 ## Architecture
 
@@ -45,9 +45,13 @@ There is no test suite in this repository.
 
 Each tool is a directory under `src/tools/` with an `index.ts` export. The tool registry lives in `src/tools.ts` (`getTools()`). Tool permission checks go through the `useCanUseTool` hook.
 
-### Commands (`src/commands/`, 94 command directories)
+### Commands (`src/commands/`, 112 command directories)
 
-Slash-commands (e.g., `/commit`, `/compact`). Each is a directory with `index.ts`. The registry is `src/commands.ts`. Many commands are feature-gated and lazily imported.
+Slash-commands (e.g., `/commit`, `/compact`, `/buddy`). Each is a directory with `index.ts`. The registry is `src/commands.ts`. Many commands are feature-gated and lazily imported.
+
+### Skills (`src/skills/`)
+
+Skills are bundled prompt templates loaded at runtime. `src/skills/bundled/` contains the built-in skills; `src/skills/bundledSkills.ts` is the registry. MCP-based skills are handled by `mcpSkills.ts` / `mcpSkillBuilders.ts`.
 
 ### State Management
 
@@ -57,9 +61,12 @@ React 19 + Ink 6 for terminal UI. `src/state/AppState.tsx` provides a central Re
 
 Cross-cutting concerns: `api/` (Claude API client), `mcp/` (Model Context Protocol), `oauth/` (auth flows), `compact/` (message compaction/summarization), `analytics/` (GrowthBook), `plugins/`, `tokenEstimation.ts`.
 
-### Shims (`shims/`)
+### Shims & Internal Package Replacement
 
-Stub modules that replace internal/Anthropic-only packages during bundling. These enable the open-source build to compile without proprietary dependencies.
+- `shims/` — stub modules replacing internal/Anthropic-only packages (e.g., `ant-computer-use-*`, `ant-claude-for-chrome-mcp`). These enable the build to compile without proprietary dependencies.
+- `shims/bun-bundle.ts` — runtime shim for `bun:bundle`'s `feature()` function, used when running via `bun run dev` instead of the compiled binary. Feature flags can be toggled at runtime via `CLAUDE_CODE_FEATURES="FLAG1,FLAG2,..."`.
+- `node_modules/@ant/` — packages like `computer-use-mcp`, `computer-use-input` that shim Anthropic internal-only modules.
+- `vendor/` — native module source code (`audio-capture-src`, `image-processor-src`, `modifiers-napi-src`, `url-handler-src`).
 
 ## Key Environment Variables
 
@@ -70,16 +77,10 @@ Stub modules that replace internal/Anthropic-only packages during bundling. Thes
 | `ANTHROPIC_API_KEY` | *(set via onboarding)* | OpenRouter API key |
 | `CLAUDE_CONFIG_DIR` | `~/.openclaude` | Config/state directory |
 
-## Shims & Internal Package Replacement
-
-- `shims/` — stub modules replacing internal/Anthropic-only packages (e.g., `ant-computer-use-*`, `ant-claude-for-chrome-mcp`). These enable the build to compile without proprietary dependencies.
-- `shims/bun-bundle.ts` — runtime shim for `bun:bundle`'s `feature()` function, used when running via `bun run dev` instead of the compiled binary. Feature flags can be toggled at runtime via `CLAUDE_CODE_FEATURES="FLAG1,FLAG2,..."`.
-- `node_modules/@ant/` — packages like `computer-use-mcp`, `computer-use-input` that shim Anthropic internal-only modules.
-
 ## Important Patterns
 
 - **Feature gating**: Use `import { feature } from 'bun:bundle'` and wrap code in `if (feature('FLAG_NAME'))` blocks. Dead code is eliminated at compile time. In dev mode (`bun run dev`), the runtime shim in `shims/bun-bundle.ts` handles this — edit its `FEATURE_FLAGS` object or set `CLAUDE_CODE_FEATURES` env var.
 - **Path aliases**: `src/*` maps to `src/` (configured in `tsconfig.json`).
 - **TypeScript**: strict mode is off; JSX uses `react-jsx` transform; module resolution is `bundler`.
 - **Circular dependency breaking**: Lazy `require()` calls are used throughout (e.g., `const getModule = () => require('./module.js')`).
-- **No tests**: There is no test framework or test files in this repo. Validate changes with `bun run typecheck` and manual testing via `bun run dev`.
+- **Build-time defines**: `MACRO.*` globals are injected at compile time. For `bun run dev`, defaults are set at the top of `cli.tsx`.
