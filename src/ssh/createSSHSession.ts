@@ -99,7 +99,7 @@ export async function createSSHSession(
   await new Promise<void>((resolve) => checkProc.on('exit', () => resolve()))
 
   if (checkOutput.includes('NOT_FOUND')) {
-    onProgress('Deploying Claude Code to remote host...')
+    onProgress('Deploying OpenClaude to remote host...')
     // Deploy via npm (simplified)
     const deployProc = spawn('ssh', [host, 'npm install -g @anthropic-ai/claude-code'], {
       stdio: ['pipe', 'pipe', 'pipe'],

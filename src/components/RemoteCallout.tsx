@@ -45,9 +45,8 @@ export function RemoteCallout({
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Box marginBottom={1} flexDirection="column">
           <Text>
-            Remote Control lets you access this CLI session from the web
-            (claude.ai/code) or the Claude app, so you can pick up where you
-            left off on any device.
+            Remote Control lets you access this CLI session from a remote
+            client, so you can pick up where you left off on any device.
           </Text>
           <Text> </Text>
           <Text>

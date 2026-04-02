@@ -1,4 +1,4 @@
-import { getGlobalConfig } from '../utils/config.js'
+import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js'
 import {
   type Companion,
   type CompanionBones,
@@ -81,8 +81,6 @@ function rollStats(
   return stats
 }
 
-const SALT = 'friend-2026-401'
-
 export type Roll = {
   bones: CompanionBones
   inspirationSeed: number
@@ -101,15 +99,12 @@ function rollFrom(rng: () => number): Roll {
   return { bones, inspirationSeed: Math.floor(rng() * 1e9) }
 }
 
-// Called from three hot paths (500ms sprite tick, per-keystroke PromptInput,
-// per-turn observer) with the same userId → cache the deterministic result.
-let rollCache: { key: string; value: Roll } | undefined
-export function roll(userId: string): Roll {
-  const key = userId + SALT
-  if (rollCache?.key === key) return rollCache.value
-  const value = rollFrom(mulberry32(hashString(key)))
-  rollCache = { key, value }
-  return value
+// OpenClaude: every hatch is a fresh random roll (not deterministic per userId).
+// Bones are persisted in config alongside soul so the companion stays stable
+// between sessions but each /buddy reset gives a brand new random companion.
+export function roll(_userId?: string): Roll {
+  const seed = Date.now() ^ Math.floor(Math.random() * 0xffffffff)
+  return rollFrom(mulberry32(seed))
 }
 
 export function rollWithSeed(seed: string): Roll {
@@ -121,13 +116,18 @@ export function companionUserId(): string {
   return config.oauthAccount?.accountUuid ?? config.userID ?? 'anon'
 }
 
-// Regenerate bones from userId, merge with stored soul. Bones never persist
-// so species renames and SPECIES-array edits can't break stored companions,
-// and editing config.companion can't fake a rarity.
+// Read companion from config. Bones are stored alongside soul so every field
+// is persisted — no re-derivation from userId hash.
+// Migration: old configs only have name/personality/hatchedAt (no bones).
+// If species is missing, re-roll bones and persist them.
 export function getCompanion(): Companion | undefined {
   const stored = getGlobalConfig().companion
   if (!stored) return undefined
-  const { bones } = roll(companionUserId())
-  // bones last so stale bones fields in old-format configs get overridden
-  return { ...stored, ...bones }
+  if (!('species' in stored) || !stored.species) {
+    const { bones } = roll()
+    const migrated = { ...stored, ...bones }
+    saveGlobalConfig(prev => ({ ...prev, companion: migrated }))
+    return migrated as Companion
+  }
+  return stored as Companion
 }

@@ -66,6 +66,7 @@ const enabledFeatures = [
   'POWERSHELL_AUTO_MODE',
   'TREE_SITTER_BASH',
   'TREE_SITTER_BASH_SHADOW',
+  'BUDDY',
 ]
 
 // Additional dev features
