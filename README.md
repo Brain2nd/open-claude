@@ -41,28 +41,28 @@ Make sure `~/.local/bin` is in your `PATH`.
 ## Usage
 
 ```bash
-# Start interactive session
+# First run — the onboarding wizard will guide you to enter your OpenRouter API key
 openclaude
 
 # One-shot prompt
 openclaude -p "your prompt here"
-
-# Set API key (first time)
-export ANTHROPIC_API_KEY="sk-or-v1-..."
-
-# Or save it to config
-echo '{"apiKey":"sk-or-v1-..."}' > ~/.openclaude/settings.json
 ```
 
-## Configuration
+First time launch will walk you through:
+1. Theme selection
+2. Paste your OpenRouter API key (get one at [openrouter.ai/keys](https://openrouter.ai/keys))
+3. Security & trust settings
+4. Ready to use
 
-All config is stored in `~/.openclaude/`. Environment variables (all optional, have defaults):
+## Advanced Configuration
+
+All config is stored in `~/.openclaude/`. Environment variables (all optional, defaults are built-in):
 
 | Variable | Default | Description |
 |---|---|---|
 | `ANTHROPIC_BASE_URL` | `https://openrouter.ai/api` | API base URL |
 | `ANTHROPIC_MODEL` | `z-ai/glm-5-turbo` | Model to use |
-| `ANTHROPIC_API_KEY` | — | Your OpenRouter API key |
+| `ANTHROPIC_API_KEY` | (set via onboarding) | Your OpenRouter API key |
 | `CLAUDE_CONFIG_DIR` | `~/.openclaude` | Config directory |
 
 ## Build Options
@@ -119,18 +119,18 @@ bun run install-bin
 ## 使用方法
 
 ```bash
-# 启动交互式会话
+# 首次启动 — 引导向导会指引你输入 OpenRouter API key
 openclaude
 
 # 单次提问
 openclaude -p "你的问题"
-
-# 设置 API key（首次使用）
-export ANTHROPIC_API_KEY="sk-or-v1-..."
-
-# 或保存到配置文件
-echo '{"apiKey":"sk-or-v1-..."}' > ~/.openclaude/settings.json
 ```
+
+首次启动会引导你完成：
+1. 主题选择
+2. 粘贴你的 OpenRouter API key（在 [openrouter.ai/keys](https://openrouter.ai/keys) 获取）
+3. 安全与信任设置
+4. 开始使用
 
 ## License
 
