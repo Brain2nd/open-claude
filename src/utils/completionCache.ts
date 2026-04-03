@@ -1,5 +1,6 @@
 import chalk from 'chalk'
-import { mkdir, readFile, writeFile } from 'fs/promises'
+import { mkdir as localMkdir, readFile as localReadFile, writeFile as localWriteFile } from 'fs/promises'
+import { getFsImplementation } from './fsOperations.js'
 import { homedir } from 'os'
 import { dirname, join } from 'path'
 import { pathToFileURL } from 'url'
@@ -23,16 +24,16 @@ type ShellInfo = {
 }
 
 function detectShell(): ShellInfo | null {
-  // When SSH proxy is active, shell completions are irrelevant — the CLI runs
-  // locally and commands are proxied to the remote. The remote shell's rc files
-  // can't be read/written via local fs, and installing completions there would
-  // not help the user who types in the local terminal.
-  if (getSSHProxyManager()) {
-    return null
-  }
+  const proxyManager = getSSHProxyManager()
 
-  const shell = process.env.SHELL || ''
-  const home = homedir()
+  // In SSH proxy mode, detect the REMOTE shell and use REMOTE home paths.
+  // Completions are cached locally but reference remote shell type for consistency.
+  const shell = proxyManager
+    ? proxyManager.execSync('echo $SHELL').trim()
+    : (process.env.SHELL || '')
+  const home = proxyManager
+    ? proxyManager.execSync('echo $HOME').trim()
+    : homedir()
   const claudeDir = join(home, '.claude')
 
   if (shell.endsWith('/zsh') || shell.endsWith('/zsh.exe')) {
@@ -87,9 +88,12 @@ export async function setupShellCompletion(theme: ThemeName): Promise<string> {
     return ''
   }
 
+  // Use proxy-aware fs for all file operations (reads/writes remote files in SSH proxy mode)
+  const fs = getFsImplementation()
+
   // Ensure the cache directory exists
   try {
-    await mkdir(dirname(shell.cacheFile), { recursive: true })
+    await fs.mkdir(dirname(shell.cacheFile))
   } catch (e: unknown) {
     logError(e)
     return `${EOL}${color('warning', theme)(`Could not write ${shell.name} completion cache`)}${EOL}${chalk.dim(`Run manually: claude completion ${shell.shellFlag} > ${shell.cacheFile}`)}${EOL}`
@@ -112,7 +116,7 @@ export async function setupShellCompletion(theme: ThemeName): Promise<string> {
   // Check if rc file already sources completions
   let existing = ''
   try {
-    existing = await readFile(shell.rcFile, { encoding: 'utf-8' })
+    existing = await fs.readFile(shell.rcFile, { encoding: 'utf-8' })
     if (
       existing.includes('claude completion') ||
       existing.includes(shell.cacheFile)
@@ -129,11 +133,11 @@ export async function setupShellCompletion(theme: ThemeName): Promise<string> {
   // Append source line to rc file
   try {
     const configDir = dirname(shell.rcFile)
-    await mkdir(configDir, { recursive: true })
+    await fs.mkdir(configDir)
 
     const separator = existing && !existing.endsWith('\n') ? '\n' : ''
     const content = `${existing}${separator}\n# Claude Code shell completions\n${shell.completionLine}\n`
-    await writeFile(shell.rcFile, content, { encoding: 'utf-8' })
+    fs.writeFileSync(shell.rcFile, content, { encoding: 'utf-8' })
 
     return `${EOL}${color('success', theme)(`Installed ${shell.name} shell completions`)}${EOL}${chalk.dim(`Added to ${formatPathLink(shell.rcFile)}`)}${EOL}${chalk.dim(`Run: source ${shell.rcFile}`)}${EOL}`
   } catch (error) {
