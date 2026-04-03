@@ -63,7 +63,7 @@ cat > "$NM/computer-use-swift/package.json" << 'EOF'
 {"name":"@ant/computer-use-swift","version":"0.0.1","main":"./index.ts"}
 EOF
 cat > "$NM/computer-use-swift/index.ts" << 'EOF'
-export type { ComputerUseAPI } from '../../../shims/ant-computer-use-mcp.js'
+export const ComputerUseAPI: any = {}
 EOF
 
 echo "@ant/* shim packages created successfully."
