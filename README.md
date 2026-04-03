@@ -63,15 +63,27 @@ openclaude ssh user@host --port 2222 --identity ~/.ssh/id_ed25519
 openclaude ssh user@host /path/to/project --port 22
 ```
 
-### Advantages Over Traditional Remote Development
+### Advantages Over Other Approaches
 
-| | OpenClaude SSH Proxy | VS Code Remote SSH | SSH + run remotely |
-|---|---|---|---|
-| Remote installation | **None** | VS Code Server (~200MB) | Full tool install |
-| Works on tiny devices | **Yes** (RPi, containers, IoT) | No (needs Node.js) | Depends |
-| API key on remote | **Not needed** | N/A | Required |
-| Network requirements | SSH only | SSH + reverse tunnel | SSH + outbound HTTPS |
-| Setup time | **Instant** | Minutes | Minutes to hours |
+| | OpenClaude SSH Proxy | Claude Code SSH (built-in, beta) | VS Code Remote SSH | SSH + run remotely |
+|---|---|---|---|---|
+| Architecture | **Local AI, remote I/O** | Remote AI + remote I/O | Remote extension host | Everything remote |
+| Remote installation | **None** | Claude Code binary (~200MB) | VS Code Server (~200MB) | Full tool install |
+| API key on remote | **Not needed** (stays local) | Synced via auth proxy tunnel | N/A | Required |
+| Works on tiny devices | **Yes** (RPi, containers, IoT) | No (needs Bun/Node runtime) | No (needs Node.js) | Depends |
+| Password auth | **Yes** (type once, ControlMaster reuses) | Key only (BatchMode=yes) | Key or password | Key or password |
+| Headless (`-p`) mode | **Yes** | No (v1 limitation) | N/A | Yes |
+| Network requirements | SSH only | SSH + reverse unix socket tunnel | SSH + reverse tunnel | SSH + outbound HTTPS |
+| Remote disk usage | **0 MB** | ~200MB binary + npm deploy | ~200MB server | Full tool stack |
+| Setup time | **Instant** | Minutes (binary deploy) | Minutes | Minutes to hours |
+| Offline remote | **Yes** (no outbound network needed on remote) | No (auth proxy needs API access) | No | No (needs API access) |
+
+**Key differentiator:** Claude Code's built-in SSH (currently internal beta, `SSH_REMOTE` feature flag) deploys the full Claude binary to the remote server and runs AI inference requests from there via an auth proxy tunnel. OpenClaude's SSH Proxy takes the opposite approach — **nothing is installed or executed on the remote except standard Unix commands** (`cat`, `stat`, `ls`, `git`, `rg`). The AI stays local, only I/O is proxied. This means:
+
+1. **Containers, embedded devices, and locked-down servers** that can't install software work out of the box
+2. **No API key exposure** — credentials never leave your local machine
+3. **No outbound network needed on remote** — the remote only needs to accept inbound SSH
+4. **Zero cleanup** — disconnect and nothing is left behind on the remote
 
 ## Requirements
 
@@ -236,15 +248,27 @@ openclaude ssh user@host --port 2222 --identity ~/.ssh/id_ed25519
 openclaude ssh user@host /path/to/project --port 22
 ```
 
-### 相比传统远程开发的优势
+### 相比其他方案的优势
 
-| | OpenClaude SSH 代理 | VS Code Remote SSH | SSH + 远程运行 |
-|---|---|---|---|
-| 远程安装 | **无需** | VS Code Server (~200MB) | 需要完整安装 |
-| 小型设备支持 | **支持**（树莓派、容器、IoT）| 不支持（需要 Node.js）| 视情况 |
-| 远程需要 API Key | **不需要** | 不适用 | 需要 |
-| 网络需求 | 仅 SSH | SSH + 反向隧道 | SSH + 出站 HTTPS |
-| 配置时间 | **即时** | 几分钟 | 几分钟到几小时 |
+| | OpenClaude SSH 代理 | Claude Code SSH（内测中） | VS Code Remote SSH | SSH + 远程运行 |
+|---|---|---|---|---|
+| 架构 | **本地 AI，远程 I/O** | 远程 AI + 远程 I/O | 远程扩展主机 | 全部远程 |
+| 远程安装 | **无需** | Claude Code 二进制 (~200MB) | VS Code Server (~200MB) | 需要完整安装 |
+| 远程需要 API Key | **不需要**（留在本地）| 通过 auth proxy 隧道同步 | 不适用 | 需要 |
+| 小型设备支持 | **支持**（树莓派、容器、IoT）| 不支持（需要 Bun/Node）| 不支持（需要 Node.js）| 视情况 |
+| 密码认证 | **支持**（输入一次，ControlMaster 复用）| 仅密钥（BatchMode=yes）| 密钥或密码 | 密钥或密码 |
+| Headless 模式（`-p`） | **支持** | 不支持（v1 限制） | 不适用 | 支持 |
+| 网络需求 | 仅 SSH | SSH + 反向 unix socket 隧道 | SSH + 反向隧道 | SSH + 出站 HTTPS |
+| 远程磁盘占用 | **0 MB** | ~200MB 二进制 + npm 部署 | ~200MB server | 完整工具链 |
+| 配置时间 | **即时** | 几分钟（部署二进制）| 几分钟 | 几分钟到几小时 |
+| 离线远程主机 | **支持**（远程无需出站网络）| 不支持（auth proxy 需要 API 访问）| 不支持 | 不支持 |
+
+**核心差异：** Claude Code 的内置 SSH（目前为内部测试版，`SSH_REMOTE` feature flag）会将完整的 Claude 二进制部署到远程服务器，并通过 auth proxy 隧道在远程发起 AI 推理请求。OpenClaude 的 SSH 代理采用相反的架构——**远程服务器上不安装任何东西，只执行标准 Unix 命令**（`cat`、`stat`、`ls`、`git`、`rg`）。AI 留在本地，只有 I/O 被代理。这意味着：
+
+1. **容器、嵌入式设备、锁定的服务器**无法安装软件的环境也能直接使用
+2. **API Key 零暴露** — 凭证永远不离开你的本地机器
+3. **远程无需出站网络** — 远程主机只需要接受入站 SSH 连接
+4. **零残留** — 断开连接后远程主机上不会留下任何东西
 
 ## 环境要求
 
