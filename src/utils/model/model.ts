@@ -27,6 +27,7 @@ import { getAPIProvider } from './providers.js'
 import { LIGHTNING_BOLT } from '../../constants/figures.js'
 import { isModelAllowed } from './modelAllowlist.js'
 import { type ModelAlias, isModelAlias } from './aliases.js'
+import { resolveAntModel } from './antModels.js'
 import { capitalize } from '../stringUtils.js'
 
 export type ModelShortName = string

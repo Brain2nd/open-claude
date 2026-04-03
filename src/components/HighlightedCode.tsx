@@ -15,7 +15,7 @@ type Props = {
   dim?: boolean;
 };
 const DEFAULT_WIDTH = 80;
-export const HighlightedCode = memo(function HighlightedCode(t0) {
+export const HighlightedCode = memo(function HighlightedCode(t0: any) {
   const $ = _c(21);
   const {
     code,
@@ -134,7 +134,7 @@ export const HighlightedCode = memo(function HighlightedCode(t0) {
   }
   return t7;
 });
-function CodeLine(t0) {
+function CodeLine(t0: any) {
   const $ = _c(13);
   const {
     line,

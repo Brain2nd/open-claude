@@ -80,7 +80,7 @@ export const _sdkOutputSchema = outputSchema;
 export type Question = z.infer<ReturnType<typeof questionSchema>>;
 export type QuestionOption = z.infer<ReturnType<typeof questionOptionSchema>>;
 export type Output = z.infer<OutputSchema>;
-function AskUserQuestionResultMessage(t0) {
+function AskUserQuestionResultMessage(t0: any) {
   const $ = _c(3);
   const {
     answers
@@ -102,7 +102,7 @@ function AskUserQuestionResultMessage(t0) {
   }
   return t2;
 }
-function _temp(t0) {
+function _temp(t0: any) {
   const [questionText, answer] = t0;
   return <Text key={questionText} color="inactive">· {questionText} → {answer}</Text>;
 }

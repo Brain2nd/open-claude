@@ -9,7 +9,7 @@ type Props = {
   messageColor: keyof Theme;
   shimmerColor: keyof Theme;
 };
-export function ShimmerChar(t0) {
+export function ShimmerChar(t0: any) {
   const $ = _c(3);
   const {
     char,

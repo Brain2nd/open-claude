@@ -257,9 +257,7 @@ export default class Ink {
       }
     };
 
-    // @ts-expect-error @types/react-reconciler@0.32.3 declares 11 args with transitionCallbacks,
-    // but react-reconciler 0.33.0 source only accepts 10 args (no transitionCallbacks)
-    this.container = reconciler.createContainer(this.rootNode, ConcurrentRoot, null, false, null, 'id', noop,
+    this.container = (reconciler.createContainer as any)(this.rootNode, ConcurrentRoot, null, false, null, 'id', noop,
     // onUncaughtError
     noop,
     // onCaughtError
@@ -267,7 +265,7 @@ export default class Ink {
     // onRecoverableError
     noop // onDefaultTransitionIndicator
     );
-    if ("production" === 'development') {
+    if (("production" as string) === 'development') {
       reconciler.injectIntoDevTools({
         bundleType: 0,
         // Reporting React DOM's version, not Ink's

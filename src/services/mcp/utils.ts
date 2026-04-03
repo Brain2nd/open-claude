@@ -508,7 +508,7 @@ export function extractAgentMcpServers(
 
   // Convert map to array of AgentMcpServerInfo
   // Only include transport types supported by AgentMcpServerInfo
-  const result: AgentMcpServerInfo[] = []
+  const result: any[] = []
   for (const [name, { config, sourceAgents }] of serverMap) {
     // Use type guards to properly narrow the discriminated union type
     // Only include transport types that are supported by AgentMcpServerInfo

@@ -20,7 +20,7 @@ type Props = {
  * - Terminal doesn't support hyperlinks
  * - Image file is not found in the store
  */
-export function ClickableImageRef(t0) {
+export function ClickableImageRef(t0: any) {
   const $ = _c(13);
   const {
     imageId,

@@ -8,7 +8,7 @@ type Props = {
   customApiKeyTruncated: string;
   onDone(approved: boolean): void;
 };
-export function ApproveApiKey(t0) {
+export function ApproveApiKey(t0: any) {
   const $ = _c(17);
   const {
     customApiKeyTruncated,

@@ -38,7 +38,7 @@ export type SelectOptionProps = {
    */
   readonly declareCursor?: boolean;
 };
-export function SelectOption(t0) {
+export function SelectOption(t0: any) {
   const $ = _c(8);
   const {
     isFocused,

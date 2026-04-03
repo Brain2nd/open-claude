@@ -34,7 +34,7 @@ type DesktopUpsellSelection = 'try' | 'not-now' | 'never';
 type Props = {
   onDone: () => void;
 };
-export function DesktopUpsellStartup(t0) {
+export function DesktopUpsellStartup(t0: any) {
   const $ = _c(14);
   const {
     onDone

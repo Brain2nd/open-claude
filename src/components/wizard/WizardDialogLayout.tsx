@@ -11,7 +11,7 @@ type Props = {
   subtitle?: string;
   footerText?: ReactNode;
 };
-export function WizardDialogLayout(t0) {
+export function WizardDialogLayout(t0: any) {
   const $ = _c(11);
   const {
     title: titleOverride,

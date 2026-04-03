@@ -34,7 +34,7 @@ function renderInputGuide(exitState: ExitState): React.ReactNode {
       <ConfigurableShortcutHint action="confirm:no" context="Confirmation" fallback="Esc" description="cancel" />
     </Byline>;
 }
-export function WorkflowMultiselectDialog(t0) {
+export function WorkflowMultiselectDialog(t0: any) {
   const $ = _c(14);
   const {
     onSubmit,

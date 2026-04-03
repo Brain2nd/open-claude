@@ -21,7 +21,7 @@ type RateLimitOptionsMenuProps = {
   } | undefined) => void;
   context: ToolUseContext & LocalJSXCommandContext;
 };
-function RateLimitOptionsMenu(t0) {
+function RateLimitOptionsMenu(t0: any) {
   const $ = _c(25);
   const {
     onDone,

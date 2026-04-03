@@ -2,7 +2,7 @@ import { c as _c } from "react/compiler-runtime";
 import * as React from 'react';
 import BashToolResultMessage from '../../tools/BashTool/BashToolResultMessage.js';
 import { extractTag } from '../../utils/messages.js';
-export function UserBashOutputMessage(t0) {
+export function UserBashOutputMessage(t0: any) {
   const $ = _c(10);
   const {
     content,

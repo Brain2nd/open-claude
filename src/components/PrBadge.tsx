@@ -8,7 +8,7 @@ type Props = {
   reviewState?: PrReviewState;
   bold?: boolean;
 };
-export function PrBadge(t0) {
+export function PrBadge(t0: any) {
   const $ = _c(21);
   const {
     number,

@@ -26,6 +26,8 @@ export const BROWSER_TOOLS = [
 ]
 
 export type ClaudeForChromeContext = Record<string, unknown>
+export type Logger = any
+export type PermissionMode = any
 
 export function getSocketPaths(): string[] {
   return []

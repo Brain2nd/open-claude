@@ -15,7 +15,7 @@ import { checkOpus1mAccess, checkSonnet1mAccess } from '../../utils/model/check1
 import { getDefaultMainLoopModelSetting, isOpus1mMergeEnabled, renderDefaultModelSetting } from '../../utils/model/model.js';
 import { isModelAllowed } from '../../utils/model/modelAllowlist.js';
 import { validateModel } from '../../utils/model/validateModel.js';
-function ModelPickerWrapper(t0) {
+function ModelPickerWrapper(t0: any) {
   const $ = _c(17);
   const {
     onDone
@@ -243,7 +243,7 @@ function isSonnet1mUnavailable(model: string): boolean {
   // a different access criteria.
   return !checkSonnet1mAccess() && (m.includes('sonnet[1m]') || m.includes('sonnet-4-6[1m]'));
 }
-function ShowModelAndClose(t0) {
+function ShowModelAndClose(t0: any) {
   const {
     onDone
   } = t0;

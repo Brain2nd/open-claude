@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle'
-import type { UUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { findToolByName, type Tools } from '../Tool.js'
 import { extractBashCommentLabel } from '../tools/BashTool/commentLabel.js'
 import { BASH_TOOL_NAME } from '../tools/BashTool/toolName.js'
@@ -556,7 +556,7 @@ function scanBashResultForGitOps(
   msg: CollapsibleMessage,
   group: GroupAccumulator,
 ): void {
-  if (msg.type !== 'user') return
+  if ((msg as any).type !== 'user') return
   const out = msg.toolUseResult as
     | { stdout?: string; stderr?: string }
     | undefined
@@ -716,7 +716,7 @@ function createCollapsedGroup(
     readFilePaths: nonMemReadFilePaths,
     searchArgs: group.nonMemSearchArgs,
     latestDisplayHint: group.latestDisplayHint,
-    messages: group.messages,
+    messages: group.messages as any,
     displayMessage: firstMsg,
     uuid: `collapsed-${firstMsg.uuid}` as UUID,
     timestamp: firstMsg.timestamp,

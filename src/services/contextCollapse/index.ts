@@ -16,7 +16,7 @@
  * to free tokens.
  */
 
-import type { UUID } from 'crypto'
+import type { UUID } from '../../types/message.js'
 import type { Message } from '../../types/message.js'
 import type {
   ContextCollapseCommitEntry,

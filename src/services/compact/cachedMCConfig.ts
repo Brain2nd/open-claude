@@ -17,6 +17,10 @@ export function getCachedMCConfig(): {
   supportedModels?: string[]
   triggerCount?: number
   keepCount?: number
+  enabled?: boolean
+  systemPromptSuggestSummaries?: boolean
+  keepRecent?: number
+  [key: string]: any
 } {
   if (cachedConfig) return cachedConfig as ReturnType<typeof getCachedMCConfig>
 

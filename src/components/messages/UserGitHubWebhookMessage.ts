@@ -1,1 +1,1 @@
-export function UserGitHubWebhookMessage() { return null }
+export function UserGitHubWebhookMessage(_props: any) { return null }

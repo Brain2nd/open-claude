@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { getSessionId } from '../../bootstrap/state.js'
 import type { ToolUseContext } from '../../Tool.js'
 import {

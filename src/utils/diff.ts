@@ -1,4 +1,4 @@
-import { type StructuredPatchHunk, structuredPatch } from 'diff'
+import { type Hunk as Hunk, structuredPatch } from 'diff'
 import { logEvent } from 'src/services/analytics/index.js'
 import { getLocCounter } from '../bootstrap/state.js'
 import { addToTotalLinesChanged } from '../cost-tracker.js'
@@ -15,9 +15,9 @@ export const DIFF_TIMEOUT_MS = 5_000
  * callers pass `ctx.lineOffset - 1` to convert slice-relative to file-relative.
  */
 export function adjustHunkLineNumbers(
-  hunks: StructuredPatchHunk[],
+  hunks: Hunk[],
   offset: number,
-): StructuredPatchHunk[] {
+): Hunk[] {
   if (offset === 0) return hunks
   return hunks.map(h => ({
     ...h,
@@ -47,7 +47,7 @@ function unescapeFromDiff(s: string): string {
  * @param newFileContent Optional content string for new files
  */
 export function countLinesChanged(
-  patch: StructuredPatchHunk[],
+  patch: Hunk[],
   newFileContent?: string,
 ): void {
   let numAdditions = 0
@@ -90,7 +90,7 @@ export function getPatchFromContents({
   newContent: string
   ignoreWhitespace?: boolean
   singleHunk?: boolean
-}): StructuredPatchHunk[] {
+}): Hunk[] {
   const result = structuredPatch(
     filePath,
     filePath,
@@ -102,12 +102,12 @@ export function getPatchFromContents({
       ignoreWhitespace,
       context: singleHunk ? 100_000 : CONTEXT_LINES,
       timeout: DIFF_TIMEOUT_MS,
-    },
+    } as any,
   )
   if (!result) {
     return []
   }
-  return result.hunks.map(_ => ({
+  return (result as any).hunks.map((_ : any) => ({
     ..._,
     lines: _.lines.map(unescapeFromDiff),
   }))
@@ -135,7 +135,7 @@ export function getPatchForDisplay({
   fileContents: string
   edits: FileEdit[]
   ignoreWhitespace?: boolean
-}): StructuredPatchHunk[] {
+}): Hunk[] {
   const preparedFileContents = escapeForDiff(
     convertLeadingTabsToSpaces(fileContents),
   )
@@ -165,12 +165,12 @@ export function getPatchForDisplay({
       context: CONTEXT_LINES,
       ignoreWhitespace,
       timeout: DIFF_TIMEOUT_MS,
-    },
+    } as any,
   )
   if (!result) {
     return []
   }
-  return result.hunks.map(_ => ({
+  return (result as any).hunks.map((_ : any) => ({
     ..._,
     lines: _.lines.map(unescapeFromDiff),
   }))

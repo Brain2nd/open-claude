@@ -37,6 +37,11 @@ import { TeammateSpinnerTree } from './Spinner/TeammateSpinnerTree.js';
 import { useAnimationFrame } from '../ink.js';
 import { getGlobalConfig } from '../utils/config.js';
 export type { SpinnerMode } from './Spinner/index.js';
+
+// Stubs for ant-only references eliminated at build time
+const apiMetricsRef: any = null;
+const computeTtftText = (_metrics: any): string | null => null;
+
 const DEFAULT_CHARACTERS = getDefaultCharacters();
 const SPINNER_FRAMES = [...DEFAULT_CHARACTERS, ...[...DEFAULT_CHARACTERS].reverse()];
 type Props = {
@@ -54,6 +59,8 @@ type Props = {
   hasActiveTools?: boolean;
   /** Leader's turn has completed (no active query). Used to suppress stall-red spinner when only teammates are running. */
   leaderIsIdle?: boolean;
+  /** API metrics ref for TTFT display (ant-only) */
+  apiMetricsRef?: any;
 };
 
 // Thin wrapper: branches on isBriefOnly so the two variants have independent
@@ -219,7 +226,7 @@ function SpinnerWithVerbInner({
   // doesn't trigger re-renders; we pick up updates on the parent's ~25x/turn
   // re-render cadence, same as the old ApiMetricsLine did.
   let ttftText: string | null = null;
-  if ("external" === 'ant' && apiMetricsRef?.current && apiMetricsRef.current.length > 0) {
+  if (("external" as string) === 'ant' && apiMetricsRef?.current && apiMetricsRef.current.length > 0) {
     ttftText = computeTtftText(apiMetricsRef.current);
   }
 
@@ -313,7 +320,7 @@ type BriefSpinnerProps = {
   mode: SpinnerMode;
   overrideMessage?: string | null;
 };
-function BriefSpinner(t0) {
+function BriefSpinner(t0: any) {
   const $ = _c(31);
   const {
     mode,

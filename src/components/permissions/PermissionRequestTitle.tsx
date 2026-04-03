@@ -9,7 +9,7 @@ type Props = {
   color?: keyof Theme;
   workerBadge?: WorkerBadgeProps;
 };
-export function PermissionRequestTitle(t0) {
+export function PermissionRequestTitle(t0: any) {
   const $ = _c(13);
   const {
     title,

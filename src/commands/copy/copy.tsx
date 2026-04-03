@@ -117,7 +117,7 @@ type PickerProps = {
   }) => void;
 };
 type PickerSelection = number | 'full' | 'always';
-function CopyPicker(t0) {
+function CopyPicker(t0: any) {
   const $ = _c(33);
   const {
     fullText,

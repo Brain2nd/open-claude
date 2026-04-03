@@ -12,7 +12,7 @@ type Props = {
   message: SystemAPIErrorMessage;
   verbose: boolean;
 };
-export function SystemAPIErrorMessage(t0) {
+export function SystemAPIErrorMessage(t0: any) {
   const $ = _c(33);
   const {
     message: t1,

@@ -12,7 +12,7 @@ type Props = {
   addMargin: boolean;
   text: string;
 };
-export function UserMemoryInputMessage(t0) {
+export function UserMemoryInputMessage(t0: any) {
   const $ = _c(10);
   const {
     text,

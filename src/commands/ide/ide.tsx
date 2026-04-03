@@ -22,7 +22,7 @@ type IDEScreenProps = {
   onClose: () => void;
   onSelect: (ide?: DetectedIDEInfo) => void;
 };
-function IDEScreen(t0) {
+function IDEScreen(t0: any) {
   const $ = _c(39);
   const {
     availableIDEs,
@@ -224,7 +224,7 @@ type IDEOpenSelectionProps = {
     display?: CommandResultDisplay;
   }) => void;
 };
-function IDEOpenSelection(t0) {
+function IDEOpenSelection(t0: any) {
   const $ = _c(18);
   const {
     availableIDEs,
@@ -313,7 +313,7 @@ function _temp4(ide_0) {
     value: ide_0.port.toString()
   };
 }
-function RunningIDESelector(t0) {
+function RunningIDESelector(t0: any) {
   const $ = _c(15);
   const {
     runningIDEs,
@@ -392,7 +392,7 @@ function _temp5(ide) {
     value: ide
   };
 }
-function InstallOnMount(t0) {
+function InstallOnMount(t0: any) {
   const $ = _c(4);
   const {
     ide,

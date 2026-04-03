@@ -77,7 +77,7 @@ function getScopeHeading(scope: ConfigScope): {
 function groupServersByScope(serverList: ServerInfo[]): Map<ConfigScope, ServerInfo[]> {
   const groups = new Map<ConfigScope, ServerInfo[]>();
   for (const server of serverList) {
-    const scope = server.scope;
+    const scope = server.scope as ConfigScope;
     if (!groups.has(scope)) {
       groups.set(scope, []);
     }
@@ -89,7 +89,7 @@ function groupServersByScope(serverList: ServerInfo[]): Map<ConfigScope, ServerI
   }
   return groups;
 }
-export function MCPListPanel(t0) {
+export function MCPListPanel(t0: any) {
   const $ = _c(78);
   const {
     servers,

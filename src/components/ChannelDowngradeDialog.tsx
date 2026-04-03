@@ -13,7 +13,7 @@ type Props = {
  * Dialog shown when switching from latest to stable channel.
  * Allows user to choose whether to downgrade or stay on current version.
  */
-export function ChannelDowngradeDialog(t0) {
+export function ChannelDowngradeDialog(t0: any) {
   const $ = _c(17);
   const {
     currentVersion,

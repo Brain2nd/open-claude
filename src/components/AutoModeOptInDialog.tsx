@@ -14,7 +14,7 @@ type Props = {
   // Startup gate: decline exits the process, so relabel accordingly.
   declineExits?: boolean;
 };
-export function AutoModeOptInDialog(t0) {
+export function AutoModeOptInDialog(t0: any) {
   const $ = _c(18);
   const {
     onAccept,

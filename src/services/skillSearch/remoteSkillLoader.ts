@@ -1,1 +1,1 @@
-export function loadRemoteSkill(): unknown { return null }
+export function loadRemoteSkill(..._args: any[]): any { return null }

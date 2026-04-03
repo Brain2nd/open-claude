@@ -117,7 +117,7 @@ export type PermissionUpdate =
   | {
       type: 'setMode'
       destination: PermissionUpdateDestination
-      mode: ExternalPermissionMode
+      mode?: ExternalPermissionMode
     }
   | {
       type: 'addDirectories'

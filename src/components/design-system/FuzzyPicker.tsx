@@ -222,7 +222,7 @@ type ListProps<T> = Pick<Props<T>, 'visibleCount' | 'direction' | 'getKey' | 're
   focusedIndex: number;
   emptyText: string;
 };
-function List(t0) {
+function List(t0: any) {
   const $ = _c(27);
   const {
     visible,

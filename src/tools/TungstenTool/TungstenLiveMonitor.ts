@@ -1,1 +1,1 @@
-export function TungstenLiveMonitor() { return null }
+export function TungstenLiveMonitor(_props?: any) { return null }

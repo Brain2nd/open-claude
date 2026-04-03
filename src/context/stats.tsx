@@ -101,7 +101,7 @@ type Props = {
   store?: StatsStore;
   children: React.ReactNode;
 };
-export function StatsProvider(t0) {
+export function StatsProvider(t0: any) {
   const $ = _c(7);
   const {
     store: externalStore,

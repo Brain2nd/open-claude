@@ -549,7 +549,7 @@ function toListItem(task: BackgroundTaskState): ListItem {
       };
   }
 }
-function Item(t0) {
+function Item(t0: any) {
   const $ = _c(14);
   const {
     item,
@@ -609,7 +609,7 @@ function Item(t0) {
   }
   return t8;
 }
-function TeammateTaskGroups(t0) {
+function TeammateTaskGroups(t0: any) {
   const $ = _c(3);
   const {
     teammateTasks,

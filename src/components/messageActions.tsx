@@ -271,7 +271,7 @@ export function useMessageActions(cursor: MessageActionsState | null, setCursor:
 }
 
 // Must mount inside <KeybindingSetup>.
-export function MessageActionsKeybindings(t0) {
+export function MessageActionsKeybindings(t0: any) {
   const $ = _c(2);
   const {
     handlers,
@@ -293,7 +293,7 @@ export function MessageActionsKeybindings(t0) {
 }
 
 // borderTop-only Box matches PromptInput's ─── line for stable footer height.
-export function MessageActionsBar(t0) {
+export function MessageActionsBar(t0: any) {
   const $ = _c(28);
   const {
     cursor
@@ -423,7 +423,7 @@ export function copyTextOf(msg: NavigableMessage): string {
     case 'grouped_tool_use':
       return msg.results.map(toolResultText).filter(Boolean).join('\n\n');
     case 'collapsed_read_search':
-      return msg.messages.flatMap(m => m.type === 'user' ? [toolResultText(m)] : m.type === 'grouped_tool_use' ? m.results.map(toolResultText) : []).filter(Boolean).join('\n\n');
+      return msg.messages.flatMap(m => (m as any).type === 'user' ? [toolResultText(m as any)] : (m as any).type === 'grouped_tool_use' ? (m as any).results.map(toolResultText) : []).filter(Boolean).join('\n\n');
     case 'system':
       if ('content' in msg) return msg.content;
       if ('error' in msg) return String(msg.error);

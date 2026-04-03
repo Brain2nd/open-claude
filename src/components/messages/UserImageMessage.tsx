@@ -17,7 +17,7 @@ type Props = {
  * Uses MessageResponse styling to appear connected to the message above,
  * unless addMargin is true (image starts a new user turn without text).
  */
-export function UserImageMessage(t0) {
+export function UserImageMessage(t0: any) {
   const $ = _c(7);
   const {
     imageId,

@@ -36,7 +36,7 @@ export function VoiceIndicator(props) {
   }
   return t0;
 }
-function VoiceIndicatorImpl(t0) {
+function VoiceIndicatorImpl(t0: any) {
   const $ = _c(2);
   const {
     voiceState

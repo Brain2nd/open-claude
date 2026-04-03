@@ -1,5 +1,6 @@
 import type { BetaContentBlock } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs'
-import { randomUUID, type UUID } from 'crypto'
+import { randomUUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { getSessionId } from 'src/bootstrap/state.js'
 import {
   LOCAL_COMMAND_STDERR_TAG,

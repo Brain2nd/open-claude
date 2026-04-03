@@ -7,17 +7,20 @@ import { getSessionIdFromLog } from './sessionStorage.js'
 export type CrossProjectResumeResult =
   | {
       isCrossProject: false
+      [key: string]: any
     }
   | {
       isCrossProject: true
       isSameRepoWorktree: true
       projectPath: string
+      [key: string]: any
     }
   | {
       isCrossProject: true
       isSameRepoWorktree: false
       command: string
       projectPath: string
+      [key: string]: any
     }
 
 /**

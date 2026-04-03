@@ -123,7 +123,7 @@ export function* normalizeMessage(message: Message): Generator<SDKMessage> {
         message.data.type === 'skill_progress'
       ) {
         for (const _ of normalizeMessages([message.data.message])) {
-          switch (_.type) {
+          switch (_.type as any) {
             case 'assistant':
               // Skip empty messages (e.g., "(no content)") that shouldn't be output to SDK
               if (!isNotEmptyMessage(_)) {

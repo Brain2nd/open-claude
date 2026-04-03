@@ -141,7 +141,7 @@ function PostGracePeriodContentBody() {
   }
   return t6;
 }
-export function GroveDialog(t0) {
+export function GroveDialog(t0: any) {
   const $ = _c(34);
   const {
     showIfAlreadyViewed,
@@ -354,7 +354,7 @@ type PrivacySettingsDialogProps = {
   domainExcluded?: boolean;
   onDone(): void;
 };
-export function PrivacySettingsDialog(t0) {
+export function PrivacySettingsDialog(t0: any) {
   const $ = _c(17);
   const {
     settings,

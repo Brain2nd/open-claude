@@ -3,6 +3,8 @@
 // By using execa, Windows automatically gets shell escaping + BAT / CMD handling
 
 import { type ExecaError, execa } from 'execa'
+import { getSSHProxyManager } from '../ssh-proxy/proxyState.js'
+import { execFileNoThrowRemote, shouldRunRemotely } from '../ssh-proxy/remoteExec.js'
 import { getCwd } from '../utils/cwd.js'
 import { logError } from './log.js'
 
@@ -32,6 +34,13 @@ export function execFileNoThrow(
     useCwd: true,
   },
 ): Promise<{ stdout: string; stderr: string; code: number; error?: string }> {
+  const proxyManager = getSSHProxyManager()
+  if (proxyManager && shouldRunRemotely(file)) {
+    return execFileNoThrowRemote(file, args, {
+      cwd: options.useCwd ? getCwd() : undefined,
+      timeout: options.timeout, input: options.input,
+    }, proxyManager)
+  }
   return execFileNoThrowWithCwd(file, args, {
     abortSignal: options.abortSignal,
     timeout: options.timeout,

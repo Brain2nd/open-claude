@@ -46,7 +46,7 @@ export function UltraplanChoiceDialog({
             'info',
           ),
           createUserMessage({
-            content: prepareUserContent({ inputString: plan }),
+            content: prepareUserContent({ inputString: plan } as any),
           }),
         ])
       }

@@ -183,6 +183,7 @@ type WorktreeCreateResult =
       worktreeBranch: string
       headCommit: string
       existed: true
+      [key: string]: any
     }
   | {
       worktreePath: string
@@ -190,6 +191,7 @@ type WorktreeCreateResult =
       headCommit: string
       baseBranch: string
       existed: false
+      [key: string]: any
     }
 
 // Env vars to prevent git/SSH from prompting for credentials (which hangs the CLI).

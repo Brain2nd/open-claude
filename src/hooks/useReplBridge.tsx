@@ -196,7 +196,7 @@ export function useReplBridge(messages: Message[], setMessages: (action: React.S
                   sanitizeInboundWebhookContent
                 } = require('../bridge/webhookSanitizer.js') as typeof import('../bridge/webhookSanitizer.js');
                 /* eslint-enable @typescript-eslint/no-require-imports */
-                sanitized = sanitizeInboundWebhookContent(fields.content);
+                sanitized = sanitizeInboundWebhookContent(fields.content as any);
               }
               const content = await resolveAndPrepend(msg, sanitized);
               const preview = typeof content === 'string' ? content.slice(0, 80) : `[${content.length} content blocks]`;

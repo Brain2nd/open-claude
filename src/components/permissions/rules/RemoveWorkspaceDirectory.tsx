@@ -13,7 +13,7 @@ type Props = {
   permissionContext: ToolPermissionContext;
   setPermissionContext: (context: ToolPermissionContext) => void;
 };
-export function RemoveWorkspaceDirectory(t0) {
+export function RemoveWorkspaceDirectory(t0: any) {
   const $ = _c(19);
   const {
     directoryPath,

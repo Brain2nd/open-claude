@@ -120,7 +120,7 @@ function MarkdownWithHighlight(props) {
   }
   return t1;
 }
-function MarkdownBody(t0) {
+function MarkdownBody(t0: any) {
   const $ = _c(7);
   const {
     children,

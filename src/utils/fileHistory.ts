@@ -1,4 +1,5 @@
-import { createHash, type UUID } from 'crypto'
+import { createHash } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { diffLines } from 'diff'
 import type { Stats } from 'fs'
 import {

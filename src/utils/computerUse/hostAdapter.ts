@@ -9,7 +9,7 @@ import { createCliExecutor } from './executor.js'
 import { getChicagoEnabled, getChicagoSubGates } from './gates.js'
 import { requireComputerUseSwift } from './swiftLoader.js'
 
-class DebugLogger implements Logger {
+class DebugLogger {
   silly(message: string, ...args: unknown[]): void {
     logForDebugging(format(message, ...args), { level: 'debug' })
   }

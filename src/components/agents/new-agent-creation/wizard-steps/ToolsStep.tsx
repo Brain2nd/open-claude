@@ -11,7 +11,7 @@ import type { AgentWizardData } from '../types.js';
 type Props = {
   tools: Tools;
 };
-export function ToolsStep(t0) {
+export function ToolsStep(t0: any) {
   const $ = _c(9);
   const {
     tools

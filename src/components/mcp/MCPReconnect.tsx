@@ -12,7 +12,7 @@ type Props = {
     display?: CommandResultDisplay;
   }) => void;
 };
-export function MCPReconnect(t0) {
+export function MCPReconnect(t0: any) {
   const $ = _c(25);
   const {
     serverName,

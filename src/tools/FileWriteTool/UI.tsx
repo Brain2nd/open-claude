@@ -1,6 +1,6 @@
 import { c as _c } from "react/compiler-runtime";
 import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type { StructuredPatchHunk } from 'diff';
+import type { Hunk as Hunk } from 'diff';
 import { isAbsolute, relative, resolve } from 'path';
 import * as React from 'react';
 import { Suspense, use, useState } from 'react';
@@ -36,7 +36,7 @@ export function countLines(content: string): number {
   const parts = content.split(EOL);
   return content.endsWith(EOL) ? parts.length - 1 : parts.length;
 }
-function FileWriteToolCreatedMessage(t0) {
+function FileWriteToolCreatedMessage(t0: any) {
   const $ = _c(25);
   const {
     filePath,
@@ -200,12 +200,12 @@ type RejectionDiffData = {
   type: 'create';
 } | {
   type: 'update';
-  patch: StructuredPatchHunk[];
+  patch: Hunk[];
   oldContent: string;
 } | {
   type: 'error';
 };
-function WriteRejectionDiff(t0) {
+function WriteRejectionDiff(t0: any) {
   const $ = _c(20);
   const {
     filePath,
@@ -268,7 +268,7 @@ function WriteRejectionDiff(t0) {
   }
   return t5;
 }
-function WriteRejectionBody(t0) {
+function WriteRejectionBody(t0: any) {
   const $ = _c(8);
   const {
     promise,
@@ -278,7 +278,7 @@ function WriteRejectionBody(t0) {
     style,
     verbose
   } = t0;
-  const data = use(promise);
+  const data = use(promise) as any;
   if (data.type === "create") {
     return createFallback;
   }

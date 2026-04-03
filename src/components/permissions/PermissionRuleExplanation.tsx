@@ -65,7 +65,7 @@ function stringsForDecisionReason(reason: PermissionDecisionReason | undefined, 
       return null;
   }
 }
-export function PermissionRuleExplanation(t0) {
+export function PermissionRuleExplanation(t0: any) {
   const $ = _c(11);
   const {
     permissionResult,

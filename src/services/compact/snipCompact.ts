@@ -50,6 +50,8 @@ export function snipCompactIfNeeded(
 /**
  * Check if we should suggest snipping to the user.
  */
-export function shouldNudgeForSnips(): boolean {
+export function shouldNudgeForSnips(..._args: any[]): boolean {
   return false
 }
+
+export const SNIP_NUDGE_TEXT = ''

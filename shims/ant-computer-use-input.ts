@@ -7,3 +7,5 @@
  */
 export function key(_k: string): void {}
 export function keys(_k: string[]): void {}
+export type ComputerUseInput = any
+export type ComputerUseInputAPI = any

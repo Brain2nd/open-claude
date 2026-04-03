@@ -9,7 +9,7 @@ interface WarningsStepProps {
   warnings: Warning[];
   onContinue: () => void;
 }
-export function WarningsStep(t0) {
+export function WarningsStep(t0: any) {
   const $ = _c(8);
   const {
     warnings,

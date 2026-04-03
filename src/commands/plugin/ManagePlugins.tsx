@@ -1973,33 +1973,33 @@ export function ManagePlugins({
     const scope_5 = client_3.config.scope;
     const configType = client_3.config.type;
     if (configType === 'stdio') {
-      const server: StdioServerInfo = {
+      const server = {
         name: client_3.name,
         client: client_3,
         scope: scope_5,
         transport: 'stdio',
         config: client_3.config as McpStdioServerConfig
-      };
+      } as any as StdioServerInfo;
       return <MCPStdioServerMenu server={server} serverToolsCount={serverToolsCount} onViewTools={handleMcpViewTools} onCancel={handleMcpCancel} onComplete={handleMcpComplete} borderless />;
     } else if (configType === 'sse') {
-      const server_0: SSEServerInfo = {
+      const server_0 = {
         name: client_3.name,
         client: client_3,
         scope: scope_5,
         transport: 'sse',
         isAuthenticated: undefined,
         config: client_3.config as McpSSEServerConfig
-      };
+      } as any as SSEServerInfo;
       return <MCPRemoteServerMenu server={server_0} serverToolsCount={serverToolsCount} onViewTools={handleMcpViewTools} onCancel={handleMcpCancel} onComplete={handleMcpComplete} borderless />;
     } else if (configType === 'http') {
-      const server_1: HTTPServerInfo = {
+      const server_1 = {
         name: client_3.name,
         client: client_3,
         scope: scope_5,
         transport: 'http',
         isAuthenticated: undefined,
         config: client_3.config as McpHTTPServerConfig
-      };
+      } as any as HTTPServerInfo;
       return <MCPRemoteServerMenu server={server_1} serverToolsCount={serverToolsCount} onViewTools={handleMcpViewTools} onCancel={handleMcpCancel} onComplete={handleMcpComplete} borderless />;
     } else if (configType === 'claudeai-proxy') {
       const server_2: ClaudeAIServerInfo = {

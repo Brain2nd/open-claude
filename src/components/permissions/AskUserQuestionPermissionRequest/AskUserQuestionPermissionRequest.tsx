@@ -72,7 +72,7 @@ function AskUserQuestionWithHighlight(props) {
   }
   return t1;
 }
-function AskUserQuestionPermissionRequestBody(t0) {
+function AskUserQuestionPermissionRequestBody(t0: any) {
   const $ = _c(115);
   const {
     toolUseConfirm,
@@ -183,8 +183,8 @@ function AskUserQuestionPermissionRequestBody(t0) {
         filename: filename || "Pasted image",
         dimensions
       };
-      cacheImagePath(newContent);
-      storeImage(newContent);
+      cacheImagePath(newContent as any);
+      storeImage(newContent as any);
       setPastedContentsByQuestion(prev => ({
         ...prev,
         [questionText]: {

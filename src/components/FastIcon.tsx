@@ -9,7 +9,7 @@ import { color } from './design-system/color.js';
 type Props = {
   cooldown?: boolean;
 };
-export function FastIcon(t0) {
+export function FastIcon(t0: any) {
   const $ = _c(2);
   const {
     cooldown

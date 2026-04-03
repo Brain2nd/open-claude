@@ -48,7 +48,7 @@ export function calculateFeedWidth(config: FeedConfig): number {
   }
   return maxWidth;
 }
-export function Feed(t0) {
+export function Feed(t0: any) {
   const $ = _c(15);
   const {
     config,

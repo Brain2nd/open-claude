@@ -621,8 +621,8 @@ export function checkPathSafetyForAutoEdit(
   path: string,
   precomputedPathsToCheck?: readonly string[],
 ):
-  | { safe: true }
-  | { safe: false; message: string; classifierApprovable: boolean } {
+  | { safe: true; [key: string]: any }
+  | { safe: false; message: string; classifierApprovable: boolean; [key: string]: any } {
   // Get all paths to check (original + symlink resolved paths)
   const pathsToCheck =
     precomputedPathsToCheck ?? getPathsForPermissionCheck(path)

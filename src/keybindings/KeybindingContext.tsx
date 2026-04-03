@@ -56,7 +56,7 @@ type ProviderProps = {
   handlerRegistryRef: RefObject<Map<string, Set<HandlerRegistration>>>;
   children: React.ReactNode;
 };
-export function KeybindingProvider(t0) {
+export function KeybindingProvider(t0: any) {
   const $ = _c(24);
   const {
     bindings,
@@ -212,7 +212,7 @@ export function useOptionalKeybindingContext() {
  * }
  * ```
  */
-export function useRegisterKeybindingContext(context, t0) {
+export function useRegisterKeybindingContext(context: any, t0?: any) {
   const $ = _c(5);
   const isActive = t0 === undefined ? true : t0;
   const keybindingContext = useOptionalKeybindingContext();

@@ -20,7 +20,7 @@ interface TeleportResumeWrapperProps {
  * Wrapper component that manages the full teleport resume flow,
  * including session selection, loading state, and error handling
  */
-export function TeleportResumeWrapper(t0) {
+export function TeleportResumeWrapper(t0: any) {
   const $ = _c(25);
   const {
     onComplete,

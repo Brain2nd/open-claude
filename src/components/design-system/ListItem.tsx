@@ -101,7 +101,7 @@ type ListItemProps = {
  *   <Text color="claude">Custom styled content</Text>
  * </ListItem>
  */
-export function ListItem(t0) {
+export function ListItem(t0: any) {
   const $ = _c(32);
   const {
     isFocused,

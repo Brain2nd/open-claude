@@ -6,7 +6,7 @@ import type {
   ElicitRequestURLParams,
   ElicitResult,
 } from '@modelcontextprotocol/sdk/types.js'
-import type { UUID } from 'crypto'
+import type { UUID } from './types/message.js'
 import type { z } from 'zod/v4'
 import type { Command } from './commands.js'
 import type { CanUseToolFn } from './hooks/useCanUseTool.js'
@@ -93,11 +93,12 @@ export type QueryChainTracking = {
 }
 
 export type ValidationResult =
-  | { result: true }
+  | { result: true; [key: string]: any }
   | {
       result: false
       message: string
       errorCode: number
+      [key: string]: any
     }
 
 export type SetToolJSXFn = (

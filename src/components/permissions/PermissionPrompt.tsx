@@ -42,7 +42,7 @@ const DEFAULT_PLACEHOLDERS: Record<FeedbackType, string> = {
  * - Analytics events for feedback interactions
  * - Transforming options to Select-compatible format
  */
-export function PermissionPrompt(t0) {
+export function PermissionPrompt(t0: any) {
   const $ = _c(54);
   const {
     options,

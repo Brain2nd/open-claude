@@ -132,9 +132,9 @@ function Web({
     if (!result.ok) {
       logEvent('tengu_remote_setup_result', {
         result: 'import_failed' as SafeString,
-        error_kind: result.error.kind as SafeString
+        error_kind: (result as any).error.kind as SafeString
       });
-      onDone(errorMessage(result.error, getCodeWebUrl()));
+      onDone(errorMessage((result as any).error, getCodeWebUrl()));
       return;
     }
 

@@ -18,8 +18,8 @@ export class SSHSessionError extends Error {
 }
 
 export type SSHManagerHandlers = {
-  onMessage: (msg: unknown) => void
-  onPermissionRequest: (request: unknown, requestId: string) => void
+  onMessage: (msg: any) => void
+  onPermissionRequest: (request: any, requestId: string) => void
   onConnected: () => void
   onReconnecting: (attempt: number, max: number) => void
   onDisconnected: () => void

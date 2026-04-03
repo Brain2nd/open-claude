@@ -6,7 +6,7 @@ import type { SandboxDependencyCheck } from '../../utils/sandbox/sandbox-adapter
 type Props = {
   depCheck: SandboxDependencyCheck;
 };
-export function SandboxDependenciesTab(t0) {
+export function SandboxDependenciesTab(t0: any) {
   const $ = _c(24);
   const {
     depCheck

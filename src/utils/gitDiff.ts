@@ -1,4 +1,4 @@
-import type { StructuredPatchHunk } from 'diff'
+import type { Hunk as Hunk } from 'diff'
 import { access, readFile } from 'fs/promises'
 import { dirname, join, relative, sep } from 'path'
 import { getCwd } from './cwd.js'
@@ -29,7 +29,7 @@ export type PerFileStats = {
 export type GitDiffResult = {
   stats: GitDiffStats
   perFileStats: Map<string, PerFileStats>
-  hunks: Map<string, StructuredPatchHunk[]>
+  hunks: Map<string, Hunk[]>
 }
 
 const GIT_TIMEOUT_MS = 5000
@@ -112,7 +112,7 @@ export async function fetchGitDiff(): Promise<GitDiffResult | null> {
  * Separated from fetchGitDiff() to avoid expensive calls during polling.
  */
 export async function fetchGitDiffHunks(): Promise<
-  Map<string, StructuredPatchHunk[]>
+  Map<string, Hunk[]>
 > {
   const isGit = await getIsGit()
   if (!isGit) return new Map()
@@ -199,8 +199,8 @@ export function parseGitNumstat(stdout: string): NumstatResult {
  */
 export function parseGitDiff(
   stdout: string,
-): Map<string, StructuredPatchHunk[]> {
-  const result = new Map<string, StructuredPatchHunk[]>()
+): Map<string, Hunk[]> {
+  const result = new Map<string, Hunk[]>()
   if (!stdout.trim()) return result
 
   // Split by file diffs
@@ -223,14 +223,14 @@ export function parseGitDiff(
     const filePath = headerMatch[2] ?? headerMatch[1] ?? ''
 
     // Find and parse hunks
-    const fileHunks: StructuredPatchHunk[] = []
-    let currentHunk: StructuredPatchHunk | null = null
+    const fileHunks: Hunk[] = []
+    let currentHunk: Hunk | null = null
     let lineCount = 0
 
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i] ?? ''
 
-      // StructuredPatchHunk header: @@ -oldStart,oldLines +newStart,newLines @@
+      // Hunk header: @@ -oldStart,oldLines +newStart,newLines @@
       const hunkMatch = line.match(
         /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/,
       )

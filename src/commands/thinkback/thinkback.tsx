@@ -29,10 +29,10 @@ const INTERNAL_MARKETPLACE_NAME = 'claude-code-marketplace';
 const INTERNAL_MARKETPLACE_REPO = 'anthropics/claude-code-marketplace';
 const OFFICIAL_MARKETPLACE_REPO = 'anthropics/claude-plugins-official';
 function getMarketplaceName(): string {
-  return "external" === 'ant' ? INTERNAL_MARKETPLACE_NAME : OFFICIAL_MARKETPLACE_NAME;
+  return ("external" as string) === 'ant' ? INTERNAL_MARKETPLACE_NAME : OFFICIAL_MARKETPLACE_NAME;
 }
 function getMarketplaceRepo(): string {
-  return "external" === 'ant' ? INTERNAL_MARKETPLACE_REPO : OFFICIAL_MARKETPLACE_REPO;
+  return ("external" as string) === 'ant' ? INTERNAL_MARKETPLACE_REPO : OFFICIAL_MARKETPLACE_REPO;
 }
 function getPluginId(): string {
   return `thinkback@${getMarketplaceName()}`;
@@ -268,7 +268,7 @@ function ThinkbackInstaller({
 }
 type MenuAction = 'play' | 'edit' | 'fix' | 'regenerate';
 type GenerativeAction = Exclude<MenuAction, 'play'>;
-function ThinkbackMenu(t0) {
+function ThinkbackMenu(t0: any) {
   const $ = _c(19);
   const {
     onDone,
@@ -384,7 +384,7 @@ function ThinkbackMenu(t0) {
 const EDIT_PROMPT = 'Use the Skill tool to invoke the "thinkback" skill with mode=edit to modify my existing Claude Code year in review animation. Ask me what I want to change. When the animation is ready, tell the user to run /think-back again to play it.';
 const FIX_PROMPT = 'Use the Skill tool to invoke the "thinkback" skill with mode=fix to fix validation or rendering errors in my existing Claude Code year in review animation. Run the validator, identify errors, and fix them. When the animation is ready, tell the user to run /think-back again to play it.';
 const REGENERATE_PROMPT = 'Use the Skill tool to invoke the "thinkback" skill with mode=regenerate to create a completely new Claude Code year in review animation from scratch. Delete the existing animation and start fresh. When the animation is ready, tell the user to run /think-back again to play it.';
-function ThinkbackFlow(t0) {
+function ThinkbackFlow(t0: any) {
   const $ = _c(27);
   const {
     onDone

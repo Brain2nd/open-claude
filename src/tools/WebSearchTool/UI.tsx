@@ -60,7 +60,7 @@ export function renderToolUseProgressMessage(progressMessages: ProgressMessage<W
   if (!lastProgress?.data) {
     return null;
   }
-  const data = lastProgress.data;
+  const data = lastProgress.data as any;
   switch (data.type) {
     case 'query_update':
       return <MessageResponse>

@@ -47,3 +47,14 @@ export type SDKKeepAliveMessage = z.infer<ReturnType<typeof schemas.SDKKeepAlive
 export type SDKUpdateEnvironmentVariablesMessage = z.infer<ReturnType<typeof schemas.SDKUpdateEnvironmentVariablesMessageSchema>>
 export type StdoutMessage = z.infer<ReturnType<typeof schemas.StdoutMessageSchema>>
 export type StdinMessage = z.infer<ReturnType<typeof schemas.StdinMessageSchema>>
+
+// Stub: SDKPartialAssistantMessage was stripped from controlSchemas
+export type SDKPartialAssistantMessage = {
+  type: string
+  message: any
+  uuid: string
+  session_id: string
+  parent_tool_use_id: string
+  error?: string
+  [key: string]: any
+}

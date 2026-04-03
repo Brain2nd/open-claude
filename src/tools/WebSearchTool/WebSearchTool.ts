@@ -347,7 +347,7 @@ export const WebSearchTool = buildTool({
                   onProgress({
                     toolUseID: `search-progress-${progressCounter}`,
                     data: {
-                      type: 'query_update',
+                      type: 'query_update' as any,
                       query,
                     },
                   })
@@ -377,7 +377,7 @@ export const WebSearchTool = buildTool({
             onProgress({
               toolUseID: toolUseId || `search-progress-${progressCounter}`,
               data: {
-                type: 'search_results_received',
+                type: 'search_results_received' as any,
                 resultCount: Array.isArray(content) ? content.length : 0,
                 query: actualQuery,
               },

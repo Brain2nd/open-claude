@@ -1,5 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
-import { diffWordsWithSpace, type StructuredPatchHunk } from 'diff';
+import { diffWordsWithSpace, type Hunk as Hunk } from 'diff';
 import * as React from 'react';
 import { useMemo } from 'react';
 import type { ThemeName } from 'src/utils/theme.js';
@@ -71,14 +71,14 @@ interface DiffPart {
   value: string;
 }
 type Props = {
-  patch: StructuredPatchHunk;
+  patch: Hunk;
   dim: boolean;
   width: number;
 };
 
 // Threshold for when we show a full-line diff instead of word-level diffing
 const CHANGE_THRESHOLD = 0.4;
-export function StructuredDiffFallback(t0) {
+export function StructuredDiffFallback(t0: any) {
   const $ = _c(10);
   const {
     patch,

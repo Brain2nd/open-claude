@@ -223,7 +223,7 @@ type HandlerRegistration = {
   context: KeybindingContextName;
   handler: () => void;
 };
-function ChordInterceptor(t0) {
+function ChordInterceptor(t0: any) {
   const $ = _c(6);
   const {
     bindings,

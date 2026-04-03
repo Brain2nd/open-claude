@@ -392,7 +392,7 @@ export function Config({
     }
   }] : []),
   // Speculation toggle (ant-only)
-  ...("external" === 'ant' ? [{
+  ...(("external" as string) === 'ant' ? [{
     id: 'speculationEnabled',
     label: 'Speculative execution',
     value: globalConfig.speculationEnabled ?? true,
@@ -1751,7 +1751,7 @@ const THEME_LABELS: Record<string, string> = {
   'dark-ansi': 'Dark mode (ANSI colors only)',
   'light-ansi': 'Light mode (ANSI colors only)'
 };
-function NotifChannelLabel(t0) {
+function NotifChannelLabel(t0: any) {
   const $ = _c(4);
   const {
     value

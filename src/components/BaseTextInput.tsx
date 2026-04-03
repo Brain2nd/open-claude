@@ -19,7 +19,7 @@ type BaseTextInputComponentProps = BaseTextInputProps & {
 /**
  * A base component for text inputs that handles rendering and basic input
  */
-export function BaseTextInput(t0) {
+export function BaseTextInput(t0: any) {
   const $ = _c(14);
   const {
     inputState,

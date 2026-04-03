@@ -1,4 +1,5 @@
-import { randomUUID, type UUID } from 'crypto'
+import { randomUUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import { getOriginalCwd, getSessionId } from '../../bootstrap/state.js'
 import type { LocalJSXCommandContext } from '../../commands.js'

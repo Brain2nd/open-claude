@@ -17,7 +17,7 @@ type Props = {
   }) => void;
   commands: Command[];
 };
-export function HelpV2(t0) {
+export function HelpV2(t0: any) {
   const $ = _c(44);
   const {
     onClose,

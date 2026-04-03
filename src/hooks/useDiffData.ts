@@ -1,4 +1,4 @@
-import type { StructuredPatchHunk } from 'diff'
+import type { Hunk as Hunk } from 'diff'
 import { useEffect, useMemo, useState } from 'react'
 import {
   fetchGitDiff,
@@ -23,7 +23,7 @@ export type DiffFile = {
 export type DiffData = {
   stats: GitDiffStats | null
   files: DiffFile[]
-  hunks: Map<string, StructuredPatchHunk[]>
+  hunks: Map<string, Hunk[]>
   loading: boolean
 }
 
@@ -33,7 +33,7 @@ export type DiffData = {
  */
 export function useDiffData(): DiffData {
   const [diffResult, setDiffResult] = useState<GitDiffResult | null>(null)
-  const [hunks, setHunks] = useState<Map<string, StructuredPatchHunk[]>>(
+  const [hunks, setHunks] = useState<Map<string, Hunk[]>>(
     new Map(),
   )
   const [loading, setLoading] = useState(true)

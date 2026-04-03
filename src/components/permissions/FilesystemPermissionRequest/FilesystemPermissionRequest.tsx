@@ -16,7 +16,7 @@ function pathFromToolUse(toolUseConfirm: ToolUseConfirm): string | null {
   }
   return null;
 }
-export function FilesystemPermissionRequest(t0) {
+export function FilesystemPermissionRequest(t0: any) {
   const $ = _c(30);
   const {
     toolUseConfirm,

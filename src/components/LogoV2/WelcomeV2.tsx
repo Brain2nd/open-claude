@@ -200,7 +200,7 @@ type AppleTerminalWelcomeV2Props = {
   theme: string;
   welcomeMessage: string;
 };
-function AppleTerminalWelcomeV2(t0) {
+function AppleTerminalWelcomeV2(t0: any) {
   const $ = _c(44);
   const {
     theme,

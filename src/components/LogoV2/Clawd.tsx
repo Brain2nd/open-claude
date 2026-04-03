@@ -70,7 +70,7 @@ const APPLE_EYES: Record<ClawdPose, string> = {
   'look-right': ' ▝   ▝ ',
   'arms-up': ' ▗   ▖ '
 };
-export function Clawd(t0) {
+export function Clawd(t0: any) {
   const $ = _c(26);
   let t1;
   if ($[0] !== t0) {
@@ -180,7 +180,7 @@ export function Clawd(t0) {
   }
   return t12;
 }
-function AppleTerminalClawd(t0) {
+function AppleTerminalClawd(t0: any) {
   const $ = _c(10);
   const {
     pose

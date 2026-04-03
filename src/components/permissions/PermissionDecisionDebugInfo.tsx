@@ -46,7 +46,7 @@ function decisionReasonDisplayString(decisionReason: PermissionDecisionReason & 
       return '';
   }
 }
-function PermissionDecisionInfoItem(t0) {
+function PermissionDecisionInfoItem(t0: any) {
   const $ = _c(10);
   const {
     title,
@@ -59,7 +59,7 @@ function PermissionDecisionInfoItem(t0) {
       switch (decisionReason.type) {
         case "subcommandResults":
           {
-            return <Box flexDirection="column">{Array.from(decisionReason.reasons.entries()).map(t2 => {
+            return <Box flexDirection="column">{Array.from((decisionReason.reasons as any).entries()).map((t2: any) => {
                 const [subcommand, result] = t2;
                 const icon = result.behavior === "allow" ? color("success", theme)(figures.tick) : color("error", theme)(figures.cross);
                 return <Box flexDirection="column" key={subcommand}><Text>{icon} {subcommand}</Text>{result.decisionReason !== undefined && result.decisionReason.type !== "subcommandResults" && <Text><Text dimColor={true}>{"  "}⎿{"  "}</Text><Ansi>{decisionReasonDisplayString(result.decisionReason)}</Ansi></Text>}{result.behavior === "ask" && <SuggestedRules suggestions={result.suggestions} />}</Box>;
@@ -105,7 +105,7 @@ function PermissionDecisionInfoItem(t0) {
   }
   return t4;
 }
-function SuggestedRules(t0) {
+function SuggestedRules(t0: any) {
   const $ = _c(18);
   const {
     suggestions
@@ -207,7 +207,7 @@ function extractMode(updates: PermissionUpdate[] | undefined): PermissionMode | 
   const update = updates.findLast(u => u.type === 'setMode');
   return update?.type === 'setMode' ? update.mode : undefined;
 }
-function SuggestionDisplay(t0) {
+function SuggestionDisplay(t0: any) {
   const $ = _c(22);
   const {
     suggestions,
@@ -339,7 +339,7 @@ function _temp3(dir, index_0) {
 function _temp2(rule, index) {
   return <Text key={index}>{figures.bullet} {permissionRuleValueToString(rule)}</Text>;
 }
-export function PermissionDecisionDebugInfo(t0) {
+export function PermissionDecisionDebugInfo(t0: any) {
   const $ = _c(25);
   const {
     permissionResult,

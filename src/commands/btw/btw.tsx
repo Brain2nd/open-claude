@@ -33,7 +33,7 @@ type BtwComponentProps = {
 const CHROME_ROWS = 5;
 const OUTER_CHROME_ROWS = 6;
 const SCROLL_LINES = 3;
-function BtwSideQuestion(t0) {
+function BtwSideQuestion(t0: any) {
   const $ = _c(25);
   const {
     question,

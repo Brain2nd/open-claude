@@ -102,7 +102,7 @@ function groupBySource<T extends {
 interface Props {
   data: ContextData;
 }
-export function ContextVisualization(t0) {
+export function ContextVisualization(t0: any) {
   const $ = _c(87);
   const {
     data
@@ -397,7 +397,7 @@ function _temp27(attachment, i_10) {
 function _temp26(tool_5, i_9) {
   return <Box key={i_9} marginLeft={1}><Text>└ {tool_5.name}: </Text><Text dimColor={true}>calls {formatTokens(tool_5.callTokens)}, results{" "}{formatTokens(tool_5.resultTokens)}</Text></Box>;
 }
-function _temp25(t0) {
+function _temp25(t0: any) {
   const [sourceDisplay_0, sourceSkills] = t0;
   return <Box key={sourceDisplay_0} flexDirection="column" marginTop={1}><Text dimColor={true}>{sourceDisplay_0}</Text>{sourceSkills.map(_temp24)}</Box>;
 }
@@ -407,7 +407,7 @@ function _temp24(skill, i_8) {
 function _temp23(file, i_7) {
   return <Box key={i_7}><Text>└ {getDisplayPath(file.path)}: </Text><Text dimColor={true}>{formatTokens(file.tokens)} tokens</Text></Box>;
 }
-function _temp22(t0) {
+function _temp22(t0: any) {
   const [sourceDisplay, sourceAgents] = t0;
   return <Box key={sourceDisplay} flexDirection="column" marginTop={1}><Text dimColor={true}>{sourceDisplay}</Text>{sourceAgents.map(_temp21)}</Box>;
 }

@@ -22,7 +22,7 @@ type Props<A> = {
   yesInputMode: boolean;
   noInputMode: boolean;
 };
-export function ShowInIDEPrompt(t0) {
+export function ShowInIDEPrompt(t0: any) {
   const $ = _c(36);
   const {
     onChange,

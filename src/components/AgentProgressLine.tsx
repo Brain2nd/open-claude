@@ -20,7 +20,7 @@ type Props = {
   lastToolInfo?: string | null;
   hideType?: boolean;
 };
-export function AgentProgressLine(t0) {
+export function AgentProgressLine(t0: any) {
   const $ = _c(32);
   const {
     agentType,

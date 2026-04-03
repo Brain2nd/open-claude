@@ -23,7 +23,7 @@ type Props = {
   onDone: (message?: string) => void;
 };
 type LoadingState = 'loading' | 'updating' | null;
-export function RemoteEnvironmentDialog(t0) {
+export function RemoteEnvironmentDialog(t0: any) {
   const $ = _c(27);
   const {
     onDone
@@ -190,7 +190,7 @@ export function RemoteEnvironmentDialog(t0) {
   }
   return t5;
 }
-function EnvironmentLabel(t0) {
+function EnvironmentLabel(t0: any) {
   const $ = _c(7);
   const {
     environment
@@ -222,7 +222,7 @@ function EnvironmentLabel(t0) {
   }
   return t3;
 }
-function SingleEnvironmentContent(t0) {
+function SingleEnvironmentContent(t0: any) {
   const $ = _c(6);
   const {
     environment,
@@ -257,7 +257,7 @@ function SingleEnvironmentContent(t0) {
   }
   return t3;
 }
-function MultipleEnvironmentsContent(t0) {
+function MultipleEnvironmentsContent(t0: any) {
   const $ = _c(18);
   const {
     environments,

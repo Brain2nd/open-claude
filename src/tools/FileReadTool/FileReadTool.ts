@@ -1158,12 +1158,12 @@ export async function readImageWithTokenBudget(
         const sharpModule = await import('sharp')
         const sharp =
           (
-            sharpModule as {
+            sharpModule as unknown as {
               default?: typeof sharpModule
             } & typeof sharpModule
           ).default || sharpModule
 
-        const fallbackBuffer = await sharp(imageBuffer)
+        const fallbackBuffer = await (sharp as any)(imageBuffer)
           .resize(400, 400, {
             fit: 'inside',
             withoutEnlargement: true,

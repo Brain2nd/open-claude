@@ -63,7 +63,7 @@ const TabsContext = createContext<TabsContextValue>({
   blurHeader: () => {},
   registerOptIn: () => () => {}
 });
-export function Tabs(t0) {
+export function Tabs(t0: any) {
   const $ = _c(25);
   const {
     title,
@@ -258,7 +258,7 @@ type TabProps = {
   id?: string;
   children: React.ReactNode;
 };
-export function Tab(t0) {
+export function Tab(t0: any) {
   const $ = _c(4);
   const {
     title,

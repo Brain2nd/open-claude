@@ -9,7 +9,7 @@ type Props = {
 /**
  * Renders a task assignment with a cyan border (team-related color).
  */
-export function TaskAssignmentDisplay(t0) {
+export function TaskAssignmentDisplay(t0: any) {
   const $ = _c(11);
   const {
     assignment

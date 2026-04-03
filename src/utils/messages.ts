@@ -12,7 +12,8 @@ import type {
   ToolUseBlock,
   ToolUseBlockParam,
 } from '@anthropic-ai/sdk/resources/index.mjs'
-import { randomUUID, type UUID } from 'crypto'
+import { randomUUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import isObject from 'lodash-es/isObject.js'
 import last from 'lodash-es/last.js'
 import {
@@ -524,10 +525,10 @@ export function createUserMessage({
 
 export function prepareUserContent({
   inputString,
-  precedingInputBlocks,
+  precedingInputBlocks = [],
 }: {
   inputString: string
-  precedingInputBlocks: ContentBlockParam[]
+  precedingInputBlocks?: ContentBlockParam[]
 }): string | ContentBlockParam[] {
   if (precedingInputBlocks.length === 0) {
     return inputString
@@ -2559,7 +2560,7 @@ function smooshIntoToolResult(
   // results) and matches the legacy smoosh output shape.
   if (allText && (existing === undefined || typeof existing === 'string')) {
     const joined = [
-      (existing ?? '').trim(),
+      (String(existing ?? '')).trim(),
       ...blocks.map(b => (b as TextBlockParam).text.trim()),
     ]
       .filter(Boolean)

@@ -24,7 +24,7 @@ const APP_ENUM_TIMEOUT_MS = 1000
  */
 async function tryGetInstalledAppNames(): Promise<string[] | undefined> {
   const adapter = getComputerUseHostAdapter()
-  const enumP = adapter.executor.listInstalledApps()
+  const enumP = (adapter.executor as any).listInstalledApps()
   let timer: ReturnType<typeof setTimeout> | undefined
   const timeoutP = new Promise<undefined>(resolve => {
     timer = setTimeout(resolve, APP_ENUM_TIMEOUT_MS, undefined)
@@ -62,16 +62,16 @@ export async function createComputerUseMcpServerForCli(): Promise<
 > {
   const adapter = getComputerUseHostAdapter()
   const coordinateMode = getChicagoCoordinateMode()
-  const server = createComputerUseMcpServer(adapter, coordinateMode)
+  const server = (createComputerUseMcpServer as any)(adapter, coordinateMode)
 
   const installedAppNames = await tryGetInstalledAppNames()
   const tools = buildComputerUseTools(
-    adapter.executor.capabilities,
+    (adapter.executor as any).capabilities,
     coordinateMode,
     installedAppNames,
   )
-  server.setRequestHandler(ListToolsRequestSchema, async () =>
-    adapter.isDisabled() ? { tools: [] } : { tools },
+  ;(server as any).setRequestHandler(ListToolsRequestSchema, async () =>
+    (adapter as any).isDisabled() ? { tools: [] } : { tools },
   )
 
   return server

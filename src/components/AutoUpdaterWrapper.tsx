@@ -16,7 +16,7 @@ type Props = {
   showSuccessMessage: boolean;
   verbose: boolean;
 };
-export function AutoUpdaterWrapper(t0) {
+export function AutoUpdaterWrapper(t0: any) {
   const $ = _c(17);
   const {
     isUpdating,

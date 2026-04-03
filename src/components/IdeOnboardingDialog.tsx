@@ -11,7 +11,7 @@ interface Props {
   onDone: () => void;
   installationStatus: IDEExtensionInstallationStatus | null;
 }
-export function IdeOnboardingDialog(t0) {
+export function IdeOnboardingDialog(t0: any) {
   const $ = _c(23);
   const {
     onDone,

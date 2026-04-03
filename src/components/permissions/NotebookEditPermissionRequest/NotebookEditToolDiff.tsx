@@ -61,7 +61,7 @@ function _temp2() {
 function _temp(content) {
   return safeParseJSON(content) as NotebookContent | null;
 }
-function NotebookEditToolDiffInner(t0) {
+function NotebookEditToolDiffInner(t0: any) {
   const $ = _c(34);
   const {
     notebook_path,
@@ -74,7 +74,7 @@ function NotebookEditToolDiffInner(t0) {
     promise
   } = t0;
   const edit_mode = t1 === undefined ? "replace" : t1;
-  const notebookData = use(promise);
+  const notebookData = use(promise) as any;
   let t2;
   if ($[0] !== cell_id || $[1] !== notebookData) {
     bb0: {

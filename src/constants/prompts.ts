@@ -4,6 +4,7 @@ import { env } from '../utils/env.js'
 import { getIsGit } from '../utils/git.js'
 import { getCwd } from '../utils/cwd.js'
 import { getIsNonInteractiveSession } from '../bootstrap/state.js'
+import { getAntModelOverrideConfig } from '../utils/model/antModels.js'
 import { getCurrentWorktreeSession } from '../utils/worktree.js'
 import { getSessionStartDate } from './common.js'
 import { getInitialSettings } from '../utils/settings/settings.js'
@@ -822,7 +823,7 @@ function getFunctionResultClearingSection(model: string): string | null {
   if (!feature('CACHED_MICROCOMPACT') || !getCachedMCConfigForFRC) {
     return null
   }
-  const config = getCachedMCConfigForFRC()
+  const config = getCachedMCConfigForFRC() as any
   const isModelSupported = config.supportedModels?.some(pattern =>
     model.includes(pattern),
   )

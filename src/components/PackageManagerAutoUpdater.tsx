@@ -17,7 +17,7 @@ type Props = {
   showSuccessMessage: boolean;
   verbose: boolean;
 };
-export function PackageManagerAutoUpdater(t0) {
+export function PackageManagerAutoUpdater(t0: any) {
   const $ = _c(10);
   const {
     verbose

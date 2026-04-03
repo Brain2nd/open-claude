@@ -19,7 +19,7 @@ type Props = {
   reducedMotion?: boolean;
   time?: number;
 };
-export function SpinnerGlyph(t0) {
+export function SpinnerGlyph(t0: any) {
   const $ = _c(9);
   const {
     frame,

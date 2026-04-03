@@ -10,7 +10,7 @@ type Props = {
   progress: ShellProgress | null;
   verbose: boolean;
 };
-export function BashModeProgress(t0) {
+export function BashModeProgress(t0: any) {
   const $ = _c(8);
   const {
     input,

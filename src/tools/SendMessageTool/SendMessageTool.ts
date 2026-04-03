@@ -761,7 +761,7 @@ export const SendMessageTool: Tool<InputSchema, SendMessageToolOutput> =
           const result = await postInterClaudeMessage(
             addr.target,
             input.message,
-          )
+          ) as any
           const preview = input.summary || truncate(input.message, 50)
           return {
             data: {

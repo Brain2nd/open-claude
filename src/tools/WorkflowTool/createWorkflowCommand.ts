@@ -1,1 +1,1 @@
-export function getWorkflowCommands(): unknown[] { return [] }
+export function getWorkflowCommands(..._args: any[]): any[] { return [] }

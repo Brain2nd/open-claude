@@ -84,7 +84,7 @@ const MAX_FILE_SIZE_BYTES = 500 * 1024 * 1024 // 500MB
 /**
  * Result type for retry operations - signals whether to continue retrying
  */
-type RetryResult<T> = { done: true; value: T } | { done: false; error?: string }
+type RetryResult<T> = { done: true; value: T; [key: string]: any } | { done: false; error?: string; [key: string]: any }
 
 /**
  * Executes an operation with exponential backoff retry logic
@@ -357,11 +357,13 @@ export type UploadResult =
       fileId: string
       size: number
       success: true
+      [key: string]: any
     }
   | {
       path: string
       error: string
       success: false
+      [key: string]: any
     }
 
 /**

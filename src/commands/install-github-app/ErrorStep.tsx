@@ -7,7 +7,7 @@ interface ErrorStepProps {
   errorReason?: string;
   errorInstructions?: string[];
 }
-export function ErrorStep(t0) {
+export function ErrorStep(t0: any) {
   const $ = _c(15);
   const {
     error,

@@ -67,6 +67,7 @@ const enabledFeatures = [
   'TREE_SITTER_BASH',
   'TREE_SITTER_BASH_SHADOW',
   'BUDDY',
+  'SSH_PROXY',
 ]
 
 // Additional dev features

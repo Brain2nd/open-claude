@@ -10,7 +10,7 @@ type Props = {
   totalInputTokens: number;
   onDone: (action: IdleReturnAction) => void;
 };
-export function IdleReturnDialog(t0) {
+export function IdleReturnDialog(t0: any) {
   const $ = _c(16);
   const {
     idleMinutes,

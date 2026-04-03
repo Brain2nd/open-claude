@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle';
-import type { UUID } from 'crypto';
+import type { UUID } from 'src/types/message.js';
 import figures from 'figures';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useNotifications } from 'src/context/notifications.js';

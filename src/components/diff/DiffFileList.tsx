@@ -11,7 +11,7 @@ type Props = {
   files: DiffFile[];
   selectedIndex: number;
 };
-export function DiffFileList(t0) {
+export function DiffFileList(t0: any) {
   const $ = _c(36);
   const {
     files,
@@ -149,7 +149,7 @@ export function DiffFileList(t0) {
   }
   return t6;
 }
-function FileItem(t0) {
+function FileItem(t0: any) {
   const $ = _c(14);
   const {
     file,
@@ -206,7 +206,7 @@ function FileItem(t0) {
   }
   return t6;
 }
-function FileStats(t0) {
+function FileStats(t0: any) {
   const $ = _c(20);
   const {
     file,

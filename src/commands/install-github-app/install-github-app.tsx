@@ -47,7 +47,7 @@ function InstallGitHubApp(props: {
   onDone: (message: string) => void;
 }): React.ReactNode {
   const [existingApiKey] = useState(() => getAnthropicApiKey());
-  const [state, setState] = useState({
+  const [state, setState] = useState<State>({
     ...INITIAL_STATE,
     useExistingKey: !!existingApiKey,
     selectedApiKeyOption: (existingApiKey ? 'existing' : isAnthropicAuthEnabled() ? 'oauth' : 'new') as 'existing' | 'new' | 'oauth'
@@ -141,7 +141,7 @@ function InstallGitHubApp(props: {
           ...prev_4,
           currentWorkflowInstallStep: prev_4.currentWorkflowInstallStep + 1
         }));
-      }, state.workflowAction === 'skip', state.selectedWorkflows, state.authType, {
+      }, state.workflowAction === 'skip', state.selectedWorkflows, state.authType as any, {
         useCurrentRepo: state.useCurrentRepo,
         workflowExists: state.workflowExists,
         secretExists: state.secretExists

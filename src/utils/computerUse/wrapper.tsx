@@ -70,10 +70,10 @@ export function buildSessionContext(): ComputerUseSessionContext {
       const d = tuc().getAppState().computerUseMcpState?.lastScreenshotDims;
       return d ? {
         ...d,
-        displayId: d.displayId ?? 0,
+        displayId: (d as any).displayId ?? 0,
         originX: d.originX ?? 0,
         originY: d.originY ?? 0
-      } : undefined;
+      } as any : undefined;
     },
     // ── Write-backs ────────────────────────────────────────────────────────
     // `setToolJSX` is guaranteed present — the gate in `main.tsx` excludes

@@ -10,7 +10,7 @@ interface CreatingStepProps {
   skipWorkflow?: boolean;
   selectedWorkflows: Workflow[];
 }
-export function CreatingStep(t0) {
+export function CreatingStep(t0: any) {
   const $ = _c(10);
   const {
     currentWorkflowInstallStep,

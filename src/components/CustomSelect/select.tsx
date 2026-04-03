@@ -189,7 +189,7 @@ export type SelectProps<T> = {
    */
   readonly onRemoveImage?: (id: number) => void;
 };
-export function Select(t0) {
+export function Select(t0: any) {
   const $ = _c(72);
   const {
     isDisabled: t1,
@@ -507,7 +507,7 @@ export function Select(t0) {
         } else {
           t19 = $[63];
         }
-        const maxLabelWidth = Math.max(...optionData.map(t19));
+        const maxLabelWidth = Math.max(...optionData.map(t19) as number[]);
         let t20;
         if ($[64] !== hideIndexes || $[65] !== maxIndexWidth_1 || $[66] !== maxLabelWidth) {
           t20 = data_0 => {
@@ -657,7 +657,7 @@ function _temp2(c) {
 function _temp(c_0) {
   return c_0.type === "image";
 }
-function TwoColumnRow(t0) {
+function TwoColumnRow(t0: any) {
   const $ = _c(5);
   const {
     isFocused,

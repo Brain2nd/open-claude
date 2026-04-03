@@ -1,5 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
-import type { StructuredPatchHunk } from 'diff';
+import type { Hunk as Hunk } from 'diff';
 import * as React from 'react';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
 import { Box, Text } from '../ink.js';
@@ -8,14 +8,14 @@ import { MessageResponse } from './MessageResponse.js';
 import { StructuredDiffList } from './StructuredDiffList.js';
 type Props = {
   filePath: string;
-  structuredPatch: StructuredPatchHunk[];
+  structuredPatch: Hunk[];
   firstLine: string | null;
   fileContent?: string;
   style?: 'condensed';
   verbose: boolean;
   previewHint?: string;
 };
-export function FileEditToolUpdatedMessage(t0) {
+export function FileEditToolUpdatedMessage(t0: any) {
   const $ = _c(22);
   const {
     filePath,

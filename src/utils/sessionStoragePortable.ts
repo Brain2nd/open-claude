@@ -6,7 +6,7 @@
  * extension (packages/claude-vscode/src/common-host/sessionStorage.ts).
  */
 
-import type { UUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { open as fsOpen, readdir, realpath, stat } from 'fs/promises'
 import { join } from 'path'
 import { getClaudeConfigHomeDir } from './envUtils.js'

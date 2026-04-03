@@ -31,7 +31,7 @@ const DataContext = createContext<PromptOverlayData | null>(null);
 const SetContext = createContext<Setter<PromptOverlayData> | null>(null);
 const DialogContext = createContext<ReactNode>(null);
 const SetDialogContext = createContext<Setter<ReactNode> | null>(null);
-export function PromptOverlayProvider(t0) {
+export function PromptOverlayProvider(t0: any) {
   const $ = _c(6);
   const {
     children

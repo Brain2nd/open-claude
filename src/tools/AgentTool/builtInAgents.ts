@@ -38,7 +38,7 @@ export function getBuiltInAgents(): AgentDefinition[] {
       const { getCoordinatorAgents } =
         require('../../coordinator/workerAgent.js') as typeof import('../../coordinator/workerAgent.js')
       /* eslint-enable @typescript-eslint/no-require-imports */
-      return getCoordinatorAgents()
+      return getCoordinatorAgents() as any
     }
   }
 

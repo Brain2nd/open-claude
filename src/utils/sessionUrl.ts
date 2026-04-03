@@ -1,4 +1,5 @@
-import { randomUUID, type UUID } from 'crypto'
+import { randomUUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { validateUuid } from './uuid.js'
 
 export type ParsedSessionUrl = {

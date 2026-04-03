@@ -7,7 +7,7 @@ type Props = {
   message: NormalizedMessage;
   isTranscriptMode: boolean;
 };
-export function MessageModel(t0) {
+export function MessageModel(t0: any) {
   const $ = _c(5);
   const {
     message,

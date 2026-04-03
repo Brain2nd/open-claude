@@ -23,7 +23,7 @@ type Props = {
   onComplete: (message: string) => void;
   onCancel: () => void;
 };
-export function CreateAgentWizard(t0) {
+export function CreateAgentWizard(t0: any) {
   const $ = _c(17);
   const {
     tools,

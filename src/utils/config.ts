@@ -53,7 +53,7 @@ let insideGetConfig = false
 // Image dimension info for coordinate mapping (only set when image was resized)
 export type PastedContent = {
   id: number // Sequential numeric ID
-  type: 'text' | 'image'
+  type: string
   content: string
   mediaType?: string // e.g., 'image/png', 'image/jpeg'
   filename?: string // Display name for images in attachment slot

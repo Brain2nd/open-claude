@@ -1,5 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
-import type { StructuredPatchHunk } from 'diff';
+import type { Hunk as Hunk } from 'diff';
 import { relative } from 'path';
 import * as React from 'react';
 import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
@@ -13,7 +13,7 @@ type Props = {
   file_path: string;
   operation: 'write' | 'update';
   // For updates - show diff
-  patch?: StructuredPatchHunk[];
+  patch?: Hunk[];
   firstLine: string | null;
   fileContent?: string;
   // For new file creation - show content preview
@@ -21,7 +21,7 @@ type Props = {
   style?: 'condensed';
   verbose: boolean;
 };
-export function FileEditToolUseRejectedMessage(t0) {
+export function FileEditToolUseRejectedMessage(t0: any) {
   const $ = _c(38);
   const {
     file_path,

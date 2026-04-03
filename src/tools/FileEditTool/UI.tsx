@@ -1,6 +1,6 @@
 import { c as _c } from "react/compiler-runtime";
 import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import type { StructuredPatchHunk } from 'diff';
+import type { Hunk as Hunk } from 'diff';
 import * as React from 'react';
 import { Suspense, use, useState } from 'react';
 import { FileEditToolUseRejectedMessage } from 'src/components/FileEditToolUseRejectedMessage.js';
@@ -153,11 +153,11 @@ export function renderToolUseErrorMessage(result: ToolResultBlockParam['content'
   return <FallbackToolUseErrorMessage result={result} verbose={verbose} />;
 }
 type RejectionDiffData = {
-  patch: StructuredPatchHunk[];
+  patch: Hunk[];
   firstLine: string | null;
   fileContent: string | undefined;
 };
-function EditRejectionDiff(t0) {
+function EditRejectionDiff(t0: any) {
   const $ = _c(16);
   const {
     filePath,
@@ -210,7 +210,7 @@ function EditRejectionDiff(t0) {
   }
   return t4;
 }
-function EditRejectionBody(t0) {
+function EditRejectionBody(t0: any) {
   const $ = _c(7);
   const {
     promise,
@@ -222,7 +222,7 @@ function EditRejectionBody(t0) {
     patch,
     firstLine,
     fileContent
-  } = use(promise);
+  } = use(promise) as any;
   let t1;
   if ($[0] !== fileContent || $[1] !== filePath || $[2] !== firstLine || $[3] !== patch || $[4] !== style || $[5] !== verbose) {
     t1 = <FileEditToolUseRejectedMessage file_path={filePath} operation="update" patch={patch} firstLine={firstLine} fileContent={fileContent} style={style} verbose={verbose} />;

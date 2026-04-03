@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
   lock?: 'always' | 'offscreen';
 };
-export function Ratchet(t0) {
+export function Ratchet(t0: any) {
   const $ = _c(10);
   const {
     children,

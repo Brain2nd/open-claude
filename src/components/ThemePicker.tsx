@@ -27,7 +27,7 @@ export type ThemePickerProps = {
   /** Called when the user cancels (presses Escape). If skipExitHandling is true and this is provided, it will be called instead of just saving the preview. */
   onCancel?: () => void;
 };
-export function ThemePicker(t0) {
+export function ThemePicker(t0: any) {
   const $ = _c(59);
   const {
     onThemeSelect,

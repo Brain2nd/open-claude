@@ -1027,7 +1027,7 @@ export async function teleportToRemote(options: {
             break;
           default:
             {
-              const _exhaustive: never = bundle.failReason;
+              const _exhaustive = bundle.failReason as never;
               void _exhaustive;
               msg = `Bundle upload failed: ${bundle.error}`;
             }

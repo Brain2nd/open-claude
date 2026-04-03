@@ -143,7 +143,7 @@ function getNotificationMessage(toolUseConfirm: ToolUseConfirm): string {
 }
 
 // TODO: Move this to Tool.renderPermissionRequest
-export function PermissionRequest(t0) {
+export function PermissionRequest(t0: any) {
   const $ = _c(18);
   const {
     toolUseConfirm,

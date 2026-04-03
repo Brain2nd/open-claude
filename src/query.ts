@@ -1124,8 +1124,8 @@ async function* queryLoop(
           messages: messagesForQuery,
           cacheSafeParams: {
             systemPrompt,
-            userContext,
-            systemContext,
+            userContext: userContext as any,
+            systemContext: systemContext as any,
             toolUseContext,
             forkContextMessages: messagesForQuery,
           },

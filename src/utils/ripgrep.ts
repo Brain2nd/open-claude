@@ -12,6 +12,8 @@ import { execFileNoThrow } from './execFileNoThrow.js'
 import { findExecutable } from './findExecutable.js'
 import { logError } from './log.js'
 import { getPlatform } from './platform.js'
+import { getSSHProxyManager } from '../ssh-proxy/proxyState.js'
+import { ripGrepRemote, ripGrepStreamRemote } from '../ssh-proxy/remoteRipgrep.js'
 import { countCharInString } from './stringUtils.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -298,6 +300,8 @@ export async function ripGrepStream(
   abortSignal: AbortSignal,
   onLines: (lines: string[]) => void,
 ): Promise<void> {
+  const _proxy1 = getSSHProxyManager()
+  if (_proxy1) return ripGrepStreamRemote(args, target, abortSignal, onLines, _proxy1)
   await codesignRipgrepIfNecessary()
   const { rgPath, rgArgs, argv0 } = ripgrepCommand()
 
@@ -347,6 +351,8 @@ export async function ripGrep(
   target: string,
   abortSignal: AbortSignal,
 ): Promise<string[]> {
+  const _proxy2 = getSSHProxyManager()
+  if (_proxy2) return ripGrepRemote(args, target, abortSignal, _proxy2)
   await codesignRipgrepIfNecessary()
 
   // Test ripgrep on first use and cache the result (fire and forget)

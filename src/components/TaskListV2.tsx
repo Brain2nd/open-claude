@@ -239,7 +239,7 @@ function getTaskIcon(status: Task['status']): {
       };
   }
 }
-function TaskItem(t0) {
+function TaskItem(t0: any) {
   const $ = _c(37);
   const {
     task,

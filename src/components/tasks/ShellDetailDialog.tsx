@@ -46,7 +46,7 @@ async function getTaskOutput(shell: DeepImmutable<LocalShellTaskState>): Promise
     };
   }
 }
-export function ShellDetailDialog(t0) {
+export function ShellDetailDialog(t0: any) {
   const $ = _c(57);
   const {
     shell,
@@ -301,7 +301,7 @@ type ShellOutputContentProps = {
   outputPromise: Promise<TaskOutputResult>;
   columns: number;
 };
-function ShellOutputContent(t0) {
+function ShellOutputContent(t0: any) {
   const $ = _c(19);
   const {
     outputPromise,
@@ -310,7 +310,7 @@ function ShellOutputContent(t0) {
   const {
     content,
     bytesTotal
-  } = use(outputPromise);
+  } = use(outputPromise) as any;
   if (!content) {
     let t1;
     if ($[0] === Symbol.for("react.memo_cache_sentinel")) {

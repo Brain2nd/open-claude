@@ -13,7 +13,7 @@ type Props = {
   fileExists: boolean;
   oldContent: string;
 };
-export function FileWriteToolDiff(t0) {
+export function FileWriteToolDiff(t0: any) {
   const $ = _c(15);
   const {
     file_path,

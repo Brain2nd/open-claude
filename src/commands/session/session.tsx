@@ -11,7 +11,7 @@ import { logForDebugging } from '../../utils/debug.js';
 type Props = {
   onDone: () => void;
 };
-function SessionInfo(t0) {
+function SessionInfo(t0: any) {
   const $ = _c(19);
   const {
     onDone

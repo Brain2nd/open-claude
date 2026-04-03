@@ -34,7 +34,7 @@ type TabType = 'recent' | 'allow' | 'ask' | 'deny' | 'workspace';
 type RuleSourceTextProps = {
   rule: PermissionRule;
 };
-function RuleSourceText(t0) {
+function RuleSourceText(t0: any) {
   const $ = _c(4);
   const {
     rule
@@ -72,7 +72,7 @@ function getRuleBehaviorLabel(ruleBehavior: PermissionBehavior): string {
 }
 
 // Component for showing tool details and managing the interactive deletion workflow
-function RuleDetails(t0) {
+function RuleDetails(t0: any) {
   const $ = _c(42);
   const {
     rule,
@@ -361,7 +361,7 @@ function RulesTabContent(props) {
 }
 
 // Composes the subtitle + search + Select for a single allow/ask/deny tab.
-function PermissionRulesTab(t0) {
+function PermissionRulesTab(t0: any) {
   const $ = _c(27);
   let T0;
   let T1;
@@ -470,7 +470,7 @@ type Props = {
   initialTab?: TabType;
   onRetryDenials?: (commands: string[]) => void;
 };
-export function PermissionRuleList(t0) {
+export function PermissionRuleList(t0: any) {
   const $ = _c(113);
   const {
     onExit,
@@ -519,7 +519,7 @@ export function PermissionRuleList(t0) {
     t4 = $[3];
   }
   const handleDenialStateChange = t4;
-  const [selectedRule, setSelectedRule] = useState();
+  const [selectedRule, setSelectedRule] = useState<any>();
   const [lastFocusedRuleKey, setLastFocusedRuleKey] = useState();
   const [addingRuleToTab, setAddingRuleToTab] = useState(null);
   const [validatedRule, setValidatedRule] = useState(null);
@@ -795,7 +795,7 @@ export function PermissionRuleList(t0) {
   if ($[30] !== changes || $[31] !== onExit || $[32] !== onRetryDenials) {
     t18 = () => {
       const s_1 = denialStateRef.current;
-      const denialsFor = set => Array.from(set).map(idx => s_1.denials[idx]).filter(_temp2);
+      const denialsFor = (set: any) => Array.from(set).map((idx: any) => s_1.denials[idx]).filter(_temp2);
       const retryDenials = denialsFor(s_1.retry);
       if (retryDenials.length > 0) {
         const commands = retryDenials.map(_temp3);
@@ -956,7 +956,7 @@ export function PermissionRuleList(t0) {
           type: "addDirectories" as const,
           directories: [path_0],
           destination
-        };
+        } as any;
         const updatedContext = applyPermissionUpdate(toolPermissionContext, permissionUpdate);
         setAppState(prev_4 => ({
           ...prev_4,

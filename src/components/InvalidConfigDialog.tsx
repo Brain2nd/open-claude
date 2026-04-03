@@ -22,7 +22,7 @@ interface InvalidConfigDialogProps {
 /**
  * Dialog shown when the Claude config file contains invalid JSON
  */
-function InvalidConfigDialog(t0) {
+function InvalidConfigDialog(t0: any) {
   const $ = _c(19);
   const {
     filePath,

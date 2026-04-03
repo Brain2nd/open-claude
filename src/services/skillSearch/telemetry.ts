@@ -1,1 +1,2 @@
-export function logSkillSearchEvent(): void {}
+export function logSkillSearchEvent(..._args: any[]): void {}
+export function logRemoteSkillLoaded(..._args: any[]): void {}

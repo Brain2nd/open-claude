@@ -12,7 +12,7 @@ export type WorkerBadgeProps = {
  * Renders a colored badge showing the worker's name for permission prompts.
  * Used to indicate which swarm worker is requesting the permission.
  */
-export function WorkerBadge(t0) {
+export function WorkerBadge(t0: any) {
   const $ = _c(7);
   const {
     name,

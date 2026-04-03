@@ -12,7 +12,7 @@ type Props = {
   currentColor?: AgentColorName | 'automatic';
   onConfirm: (color: AgentColorName | undefined) => void;
 };
-export function ColorPicker(t0) {
+export function ColorPicker(t0: any) {
   const $ = _c(17);
   const {
     agentName,

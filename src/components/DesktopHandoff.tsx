@@ -24,7 +24,7 @@ type Props = {
     display?: CommandResultDisplay;
   }) => void;
 };
-export function DesktopHandoff(t0) {
+export function DesktopHandoff(t0: any) {
   const $ = _c(20);
   const {
     onDone

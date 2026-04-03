@@ -17,7 +17,7 @@ const inputToResponse: Record<ResponseInput, TranscriptShareResponse> = {
   '3': 'dont_ask_again'
 } as const;
 const isValidResponseInput = (input: string): input is ResponseInput => (RESPONSE_INPUTS as readonly string[]).includes(input);
-export function TranscriptSharePrompt(t0) {
+export function TranscriptSharePrompt(t0: any) {
   const $ = _c(11);
   const {
     onSelect,

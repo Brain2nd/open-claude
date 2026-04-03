@@ -280,20 +280,22 @@ export function parsePluginId(
  * handle analytics/error-catching around this.
  */
 export type InstallCoreResult =
-  | { ok: true; closure: string[]; depNote: string }
-  | { ok: false; reason: 'local-source-no-location'; pluginName: string }
-  | { ok: false; reason: 'settings-write-failed'; message: string }
+  | { ok: true; closure: string[]; depNote: string; [key: string]: any }
+  | { ok: false; reason: 'local-source-no-location'; pluginName: string; [key: string]: any }
+  | { ok: false; reason: 'settings-write-failed'; message: string; [key: string]: any }
   | {
       ok: false
       reason: 'resolution-failed'
       resolution: ResolutionResult & { ok: false }
+      [key: string]: any
     }
-  | { ok: false; reason: 'blocked-by-policy'; pluginName: string }
+  | { ok: false; reason: 'blocked-by-policy'; pluginName: string; [key: string]: any }
   | {
       ok: false
       reason: 'dependency-blocked-by-policy'
       pluginName: string
       blockedDependency: string
+      [key: string]: any
     }
 
 /**
@@ -408,7 +410,7 @@ export async function installResolvedPlugin({
     allowedCrossMarketplaces,
   )
   if (!resolution.ok) {
-    return { ok: false, reason: 'resolution-failed', resolution }
+    return { ok: false, reason: 'resolution-failed', resolution } as any
   }
 
   // ── Policy guard for transitive dependencies ──
@@ -484,8 +486,8 @@ export async function installResolvedPlugin({
  * Result of a plugin installation operation
  */
 export type InstallPluginResult =
-  | { success: true; message: string }
-  | { success: false; error: string }
+  | { success: true; message: string; [key: string]: any }
+  | { success: false; error: string; [key: string]: any }
 
 /**
  * Parameters for installing a plugin from marketplace

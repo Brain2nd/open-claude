@@ -78,7 +78,7 @@ const AGENT_VERB = {
   needs_input: 'waiting',
   plan_ready: 'done'
 } as const;
-function UltraplanSessionDetail(t0) {
+function UltraplanSessionDetail(t0: any) {
   const $ = _c(70);
   const {
     session,
@@ -421,7 +421,7 @@ const STAGE_LABELS: Record<(typeof STAGES)[number], string> = {
 // "Setup" label shows before the orchestrator writes its first progress
 // snapshot (container boot + repo clone), so the 0-found display doesn't
 // look like a hung finder.
-function StagePipeline(t0) {
+function StagePipeline(t0: any) {
   const $ = _c(15);
   const {
     stage,
@@ -505,7 +505,7 @@ function reviewCountsLine(session: DeepImmutable<RemoteAgentTaskState>): string 
   return formatReviewStageCounts(p.stage, p.bugsFound, verified, refuted);
 }
 type MenuAction = 'open' | 'stop' | 'back' | 'dismiss';
-function ReviewSessionDetail(t0) {
+function ReviewSessionDetail(t0: any) {
   const $ = _c(56);
   const {
     session,

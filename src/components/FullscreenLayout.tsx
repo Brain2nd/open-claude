@@ -267,7 +267,7 @@ export function computeUnseenDivider(messages: readonly Message[], dividerIndex:
  * (alt buffer + mouse tracking + height constraint) lives at REPL's root
  * so nothing can accidentally render outside it.
  */
-export function FullscreenLayout(t0) {
+export function FullscreenLayout(t0: any) {
   const $ = _c(47);
   const {
     scrollable,
@@ -488,7 +488,7 @@ function _temp2(url) {
   }
 }
 function _temp() {}
-function NewMessagesPill(t0) {
+function NewMessagesPill(t0: any) {
   const $ = _c(10);
   const {
     count,
@@ -548,7 +548,7 @@ function NewMessagesPill(t0) {
 // even with scrollTop unchanged (the DECSTBM region top shifts with the
 // ScrollBox, and the diff engine sees "everything moved"). Fixed height
 // keeps the ScrollBox anchored; only the header TEXT changes, not its box.
-function StickyPromptHeader(t0) {
+function StickyPromptHeader(t0: any) {
   const $ = _c(8);
   const {
     text,

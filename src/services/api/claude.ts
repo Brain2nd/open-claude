@@ -334,6 +334,10 @@ export function getPromptCachingEnabled(model: string): boolean {
   // Global disable takes precedence
   if (isEnvTruthy(process.env.DISABLE_PROMPT_CACHING)) return false
 
+  // OpenRouter supports Anthropic's cache_control passthrough for Claude
+  // models, so prompt caching works for both first-party and OpenRouter.
+  // Only truly unsupported providers should be disabled here.
+
   // Check if we should disable for small/fast model
   if (isEnvTruthy(process.env.DISABLE_PROMPT_CACHING_HAIKU)) {
     const smallFastModel = getSmallFastModel()
@@ -964,7 +968,7 @@ export function stripExcessMediaItems(
       if (isMedia(block)) toRemove++
       if (isToolResult(block) && Array.isArray(block.content)) {
         for (const nested of block.content) {
-          if (isMedia(nested)) toRemove++
+          if (isMedia(nested as any)) toRemove++
         }
       }
     }
@@ -986,7 +990,7 @@ export function stripExcessMediaItems(
           !Array.isArray(block.content)
         )
           return block
-        const filtered = block.content.filter(n => {
+        const filtered = block.content.filter((n: any) => {
           if (toRemove > 0 && isMedia(n)) {
             toRemove--
             return false
@@ -1703,8 +1707,8 @@ async function* queryModel(
         enablePromptCaching,
         options.querySource,
         useCachedMC,
-        consumedCacheEdits,
-        consumedPinnedEdits,
+        consumedCacheEdits as any,
+        consumedPinnedEdits as any,
         options.skipCacheWrite,
       ),
       system,
@@ -2248,10 +2252,10 @@ async function* queryModel(
             }
 
             // Update cost
-            const costUSDForPart = calculateUSDCost(resolvedModel, usage)
+            const costUSDForPart = calculateUSDCost(resolvedModel, usage as any)
             costUSD += addToTotalSessionCost(
               costUSDForPart,
-              usage,
+              usage as any,
               options.model,
             )
 
@@ -2820,7 +2824,7 @@ async function* queryModel(
     if (fallbackMessage) {
       const fallbackUsage = fallbackMessage.message.usage
       usage = updateUsage(EMPTY_USAGE, fallbackUsage)
-      stopReason = fallbackMessage.message.stop_reason
+      stopReason = fallbackMessage.message.stop_reason as any
       const fallbackCost = calculateUSDCost(resolvedModel, fallbackUsage)
       costUSD += addToTotalSessionCost(
         fallbackCost,
@@ -3150,7 +3154,7 @@ export function addCacheBreakpoints(
           }
           insertBlockAfterToolResults(msg.content, dedupedNewEdits)
           // Pin so this block is re-sent at the same position in future calls
-          pinCacheEdits(i, newCacheEdits)
+          pinCacheEdits(i, newCacheEdits as any)
 
           logForDebugging(
             `Added cache_edits block with ${dedupedNewEdits.edits.length} deletion(s) to message[${i}]: ${dedupedNewEdits.edits.map(e => e.cache_reference).join(', ')}`,

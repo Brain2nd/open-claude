@@ -230,12 +230,11 @@ const reconciler = createReconciler<
   DOMElement,
   unknown,
   unknown,
-  DOMElement,
   HostContext,
   null, // UpdatePayload - not used in React 19
+  null, // ChildSet
   NodeJS.Timeout,
-  -1,
-  null
+  -1
 >({
   getRootHostContext: () => ({ isInsideText: false }),
   prepareForCommit: () => {
@@ -423,6 +422,7 @@ const reconciler = createReconciler<
     getFocusManager(node).handleNodeRemoved(removeNode, node)
   },
   // React 19 commitUpdate receives old and new props directly instead of an updatePayload
+  // @ts-ignore React 19 signature differs from @types/react-reconciler
   commitUpdate(
     node: DOMElement,
     _type: ElementNames,

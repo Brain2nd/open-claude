@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle'
-import type { UUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import uniqBy from 'lodash-es/uniqBy.js'
 
 /* eslint-disable @typescript-eslint/no-require-imports */
@@ -1332,7 +1332,8 @@ async function streamCompactSummary({
       const allContentBlocks: any[] = []
 
       while (!next.done) {
-        const event = next.value
+        const event = next.value as any
+        if (!event) { next = await streamIter.next(); continue }
 
         if (
           !hasStartedStreaming &&

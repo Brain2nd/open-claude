@@ -34,14 +34,15 @@ export type BundleUploadResult =
       bundleSizeBytes: number
       scope: BundleScope
       hasWip: boolean
+      [key: string]: any
     }
-  | { success: false; error: string; failReason?: BundleFailReason }
+  | { success: false; error: string; failReason?: BundleFailReason; [key: string]: any }
 
 type BundleFailReason = 'git_error' | 'too_large' | 'empty_repo'
 
 type BundleCreateResult =
-  | { ok: true; size: number; scope: BundleScope }
-  | { ok: false; error: string; failReason: BundleFailReason }
+  | { ok: true; size: number; scope: BundleScope; [key: string]: any }
+  | { ok: false; error: string; failReason: BundleFailReason; [key: string]: any }
 
 // Bundle --all → HEAD → squashed-root. HEAD drops side branches/tags but
 // keeps full current-branch history. Squashed-root is a single parentless

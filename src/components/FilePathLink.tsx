@@ -14,7 +14,7 @@ type Props = {
  * This helps terminals like iTerm correctly identify file paths
  * even when they appear inside parentheses or other text.
  */
-export function FilePathLink(t0) {
+export function FilePathLink(t0: any) {
   const $ = _c(5);
   const {
     filePath,

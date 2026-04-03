@@ -763,7 +763,7 @@ type ManageMarketplacesKeyHintsProps = {
   exitState: Props['exitState'];
   hasPendingActions: boolean;
 };
-function ManageMarketplacesKeyHints(t0) {
+function ManageMarketplacesKeyHints(t0: any) {
   const $ = _c(18);
   const {
     exitState,

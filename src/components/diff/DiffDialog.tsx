@@ -1,5 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
-import type { StructuredPatchHunk } from 'diff';
+import type { Hunk as Hunk } from 'diff';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { CommandResultDisplay } from '../../commands.js';
 import { useRegisterOverlay } from '../../context/overlayContext.js';
@@ -37,7 +37,7 @@ function turnDiffToDiffData(turn: TurnDiff): DiffData {
     isTruncated: false,
     isNewFile: f.isNewFile
   })).sort((a, b) => a.path.localeCompare(b.path));
-  const hunks = new Map<string, StructuredPatchHunk[]>();
+  const hunks = new Map<string, Hunk[]>();
   for (const f of turn.files.values()) {
     hunks.set(f.filePath, f.hunks);
   }
@@ -52,7 +52,7 @@ function turnDiffToDiffData(turn: TurnDiff): DiffData {
     loading: false
   };
 }
-export function DiffDialog(t0) {
+export function DiffDialog(t0: any) {
   const $ = _c(73);
   const {
     messages,

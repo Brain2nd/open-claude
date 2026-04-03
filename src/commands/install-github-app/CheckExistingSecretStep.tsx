@@ -11,7 +11,7 @@ interface CheckExistingSecretStepProps {
   onSecretNameChange: (value: string) => void;
   onSubmit: () => void;
 }
-export function CheckExistingSecretStep(t0) {
+export function CheckExistingSecretStep(t0: any) {
   const $ = _c(42);
   const {
     useExistingSecret,

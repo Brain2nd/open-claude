@@ -24,6 +24,11 @@ export const ModelUsageSchema = lazySchema(() =>
     costUSD: z.number(),
     contextWindow: z.number(),
     maxOutputTokens: z.number(),
+    // snake_case aliases used by Anthropic API response format
+    input_tokens: z.number().optional(),
+    output_tokens: z.number().optional(),
+    cache_read_input_tokens: z.number().optional(),
+    cache_creation_input_tokens: z.number().optional(),
   }),
 )
 
@@ -282,7 +287,7 @@ export const PermissionUpdateSchema = lazySchema(() =>
     }),
     z.object({
       type: z.literal('setMode'),
-      mode: z.lazy(() => PermissionModeSchema()),
+      mode: z.lazy(() => PermissionModeSchema()).optional(),
       destination: PermissionUpdateDestinationSchema(),
     }),
     z.object({
@@ -1235,19 +1240,19 @@ export const RewindFilesResultSchema = lazySchema(() =>
 // This allows us to define SDK message types in Zod while maintaining proper typing.
 
 /** Placeholder for APIUserMessage from @anthropic-ai/sdk */
-export const APIUserMessagePlaceholder = lazySchema(() => z.unknown())
+export const APIUserMessagePlaceholder = lazySchema(() => z.any())
 
 /** Placeholder for APIAssistantMessage from @anthropic-ai/sdk */
-export const APIAssistantMessagePlaceholder = lazySchema(() => z.unknown())
+export const APIAssistantMessagePlaceholder = lazySchema(() => z.any())
 
 /** Placeholder for RawMessageStreamEvent from @anthropic-ai/sdk */
-export const RawMessageStreamEventPlaceholder = lazySchema(() => z.unknown())
+export const RawMessageStreamEventPlaceholder = lazySchema(() => z.any())
 
 /** Placeholder for UUID from crypto */
 export const UUIDPlaceholder = lazySchema(() => z.string())
 
 /** Placeholder for NonNullableUsage (mapped type over Usage) */
-export const NonNullableUsagePlaceholder = lazySchema(() => z.unknown())
+export const NonNullableUsagePlaceholder = lazySchema(() => z.any())
 
 // ============================================================================
 // SDK Message Types

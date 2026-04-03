@@ -344,7 +344,7 @@ type OAuthStatusMessageProps = {
   setOAuthStatus: (status: OAuthStatus) => void;
   setLoginWithClaudeAi: (value: boolean) => void;
 };
-function OAuthStatusMessage(t0) {
+function OAuthStatusMessage(t0: any) {
   const $ = _c(51);
   const {
     oauthStatus,

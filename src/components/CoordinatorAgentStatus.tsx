@@ -89,7 +89,7 @@ export function useCoordinatorTaskCount() {
 function _temp(s) {
   return s.tasks;
 }
-function MainLine(t0) {
+function MainLine(t0: any) {
   const $ = _c(10);
   const {
     isSelected,
@@ -140,7 +140,7 @@ type AgentLineProps = {
   isViewed?: boolean;
   onClick?: () => void;
 };
-function AgentLine(t0) {
+function AgentLine(t0: any) {
   const $ = _c(32);
   const {
     task,

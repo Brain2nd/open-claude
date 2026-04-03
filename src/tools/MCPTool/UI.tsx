@@ -156,7 +156,7 @@ export function renderToolResultMessage(output: string | MCPToolResult, _progres
  * 2. If JSON is a small flat-ish object, render as aligned key: value.
  * 3. Otherwise fall through to OutputLine (pretty-print + truncate).
  */
-function MCPTextOutput(t0) {
+function MCPTextOutput(t0: any) {
   const $ = _c(18);
   const {
     content,
@@ -255,11 +255,11 @@ function MCPTextOutput(t0) {
  * Parse content as a JSON object and return its entries. Null if content
  * doesn't parse, isn't an object, is too large, or has 0/too-many keys.
  */
-function _temp2(t0) {
+function _temp2(t0: any) {
   const [k_0] = t0;
   return stringWidth(k_0);
 }
-function _temp(t0) {
+function _temp(t0: any) {
   const [k, v] = t0;
   return `${k}: ${v}`;
 }

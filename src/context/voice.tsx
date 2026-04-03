@@ -20,7 +20,7 @@ const VoiceContext = createContext<VoiceStore | null>(null);
 type Props = {
   children: React.ReactNode;
 };
-export function VoiceProvider(t0) {
+export function VoiceProvider(t0: any) {
   const $ = _c(3);
   const {
     children

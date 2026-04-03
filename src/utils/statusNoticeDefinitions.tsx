@@ -18,7 +18,7 @@ export type StatusNoticeType = 'warning' | 'info';
 export type StatusNoticeContext = {
   config: ReturnType<typeof getGlobalConfig>;
   agentDefinitions?: AgentDefinitionsResult;
-  memoryFiles: MemoryFileInfo[];
+  memoryFiles: any;
 };
 export type StatusNoticeDefinition = {
   id: string;

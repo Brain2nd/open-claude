@@ -40,7 +40,7 @@ function wrap(text: string, width: number): string[] {
   if (cur) lines.push(cur);
   return lines;
 }
-function SpeechBubble(t0) {
+function SpeechBubble(t0: any) {
   const $ = _c(31);
   const {
     text,

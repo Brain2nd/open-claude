@@ -1,4 +1,5 @@
-import { createHash, randomUUID, type UUID } from 'crypto'
+import { createHash, randomUUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { stat } from 'fs/promises'
 import { isAbsolute, join, relative, sep } from 'path'
 import { getOriginalCwd, getSessionId } from '../bootstrap/state.js'

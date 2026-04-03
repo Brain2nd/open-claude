@@ -153,12 +153,12 @@ export function usePermissionExplainerUI(props) {
 function _temp(v) {
   return !v;
 }
-function ExplanationResult(t0) {
+function ExplanationResult(t0: { promise: Promise<PermissionExplanationType | null> }) {
   const $ = _c(21);
   const {
     promise
   } = t0;
-  const explanation = use(promise);
+  const explanation = use(promise) as any;
   if (!explanation) {
     let t1;
     if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
@@ -243,7 +243,7 @@ function ExplanationResult(t0) {
 /**
  * Content component - shows loading (via Suspense) or explanation when visible
  */
-export function PermissionExplainerContent(t0) {
+export function PermissionExplainerContent(t0: any) {
   const $ = _c(3);
   const {
     visible,

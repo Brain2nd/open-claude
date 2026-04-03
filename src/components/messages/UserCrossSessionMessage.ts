@@ -1,1 +1,1 @@
-export function UserCrossSessionMessage() { return null }
+export function UserCrossSessionMessage(_props: any) { return null }

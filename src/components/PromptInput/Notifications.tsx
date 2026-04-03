@@ -52,7 +52,7 @@ type Props = {
   isInputWrapped?: boolean;
   isNarrow?: boolean;
 };
-export function Notifications(t0) {
+export function Notifications(t0: any) {
   const $ = _c(34);
   const {
     apiKeyStatus,

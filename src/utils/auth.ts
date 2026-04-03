@@ -1911,8 +1911,8 @@ export function getAccountInformation() {
  * Result of org validation — either success or a descriptive error.
  */
 export type OrgValidationResult =
-  | { valid: true }
-  | { valid: false; message: string }
+  | { valid: true; [key: string]: any }
+  | { valid: false; message: string; [key: string]: any }
 
 /**
  * Validate that the active OAuth token belongs to the organization required

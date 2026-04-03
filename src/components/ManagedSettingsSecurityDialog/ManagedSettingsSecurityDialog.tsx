@@ -12,7 +12,7 @@ type Props = {
   onAccept: () => void;
   onReject: () => void;
 };
-export function ManagedSettingsSecurityDialog(t0) {
+export function ManagedSettingsSecurityDialog(t0: any) {
   const $ = _c(26);
   const {
     settings,

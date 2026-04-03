@@ -10,7 +10,7 @@ type Props = {
     display?: CommandResultDisplay;
   }) => void;
 };
-function ThemePickerCommand(t0) {
+function ThemePickerCommand(t0: any) {
   const $ = _c(8);
   const {
     onDone

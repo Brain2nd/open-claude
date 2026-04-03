@@ -387,7 +387,7 @@ async function initializeBetaTracing(
 
   // Initialize log exporter
   const logExporter = new OTLPLogExporter(logHttpConfig)
-  const loggerProvider = new LoggerProvider({
+  const loggerProvider = new (LoggerProvider as any)({
     resource,
     processors: [
       new BatchLogRecordProcessor(logExporter, {
@@ -580,7 +580,7 @@ export async function initializeTelemetry() {
     )
 
     if (logExporters.length > 0) {
-      const loggerProvider = new LoggerProvider({
+      const loggerProvider = new (LoggerProvider as any)({
         resource,
         // Add batch processors for each exporter
         processors: logExporters.map(

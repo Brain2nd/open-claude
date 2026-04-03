@@ -45,7 +45,7 @@ type LoadingStateProps = {
  *   subtitle="Fetching your Claude Code sessions..."
  * />
  */
-export function LoadingState(t0) {
+export function LoadingState(t0: any) {
   const $ = _c(10);
   const {
     message,

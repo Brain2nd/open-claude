@@ -1,1 +1,1 @@
-export function SnipBoundaryMessage() { return null }
+export function SnipBoundaryMessage(_props: any) { return null }

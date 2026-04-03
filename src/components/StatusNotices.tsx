@@ -15,7 +15,7 @@ type Props = {
  * moved neutral or positive status to src/components/Status.tsx instead, which
  * users can access through /status.
  */
-export function StatusNotices(t0) {
+export function StatusNotices(t0: any) {
   const $ = _c(4);
   const {
     agentDefinitions
@@ -33,14 +33,14 @@ export function StatusNotices(t0) {
     agentDefinitions,
     memoryFiles: use(t2)
   };
-  const activeNotices = getActiveNotices(context);
+  const activeNotices = getActiveNotices(context as any);
   if (activeNotices.length === 0) {
     return null;
   }
   const T0 = Box;
   const t3 = "column";
   const t4 = 1;
-  const t5 = activeNotices.map(notice => <React.Fragment key={notice.id}>{notice.render(context)}</React.Fragment>);
+  const t5 = activeNotices.map(notice => <React.Fragment key={notice.id}>{notice.render(context as any)}</React.Fragment>);
   let t6;
   if ($[1] !== T0 || $[2] !== t5) {
     t6 = <T0 flexDirection={t3} paddingLeft={t4}>{t5}</T0>;

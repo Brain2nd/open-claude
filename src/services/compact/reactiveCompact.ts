@@ -40,8 +40,8 @@ export async function tryReactiveCompact(config: {
   messages: Message[]
   cacheSafeParams: {
     systemPrompt: unknown
-    userContext: string
-    systemContext: string
+    userContext: any
+    systemContext: any
     toolUseContext: unknown
     forkContextMessages: Message[]
   }
@@ -67,8 +67,8 @@ export async function tryReactiveCompact(config: {
 }
 
 type ReactiveOutcome =
-  | { ok: true; result: CompactionResult }
-  | { ok: false; reason: 'too_few_groups' | 'aborted' | 'exhausted' | 'error' | 'media_unstrippable' }
+  | { ok: true; result: CompactionResult; [key: string]: any }
+  | { ok: false; reason: 'too_few_groups' | 'aborted' | 'exhausted' | 'error' | 'media_unstrippable'; [key: string]: any }
 
 /**
  * Reactive compaction triggered by a prompt-too-long error.

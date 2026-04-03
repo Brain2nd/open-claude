@@ -116,7 +116,7 @@ export function executeEffort(args: string): EffortCommandResult {
   }
   return setEffortValue(normalized);
 }
-function ShowCurrentEffort(t0) {
+function ShowCurrentEffort(t0: any) {
   const {
     onDone
   } = t0;
@@ -131,7 +131,7 @@ function ShowCurrentEffort(t0) {
 function _temp(s) {
   return s.effortValue;
 }
-function ApplyEffortAndClose(t0) {
+function ApplyEffortAndClose(t0: any) {
   const $ = _c(6);
   const {
     result,

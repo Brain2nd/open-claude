@@ -82,10 +82,10 @@ export async function processBashCommand(inputString: string, precedingInputBloc
     const response = PowerShellTool ? await PowerShellTool.call({
       command: inputString,
       dangerouslyDisableSandbox: true
-    }, bashModeContext, undefined, undefined, onProgress) : await BashTool.call({
+    }, bashModeContext, undefined, undefined, onProgress as any) : await BashTool.call({
       command: inputString,
       dangerouslyDisableSandbox: true
-    }, bashModeContext, undefined, undefined, onProgress);
+    }, bashModeContext, undefined, undefined, onProgress as any);
     const data = response.data;
     if (!data) {
       throw new Error('No result received from shell command');

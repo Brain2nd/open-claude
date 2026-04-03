@@ -29,6 +29,8 @@ import { which } from './which.js'
 export type { ExecResult } from './ShellCommand.js'
 
 import { accessSync } from 'fs'
+import { getSSHProxyManager } from '../ssh-proxy/proxyState.js'
+import { execRemote as execRemoteShell } from '../ssh-proxy/remoteShell.js'
 import { onCwdChangedForHooks } from './hooks/fileChangedWatcher.js'
 import { getClaudeTempDirName } from './permissions/filesystem.js'
 import { getPlatform } from './platform.js'
@@ -184,6 +186,11 @@ export async function exec(
   shellType: ShellType,
   options?: ExecOptions,
 ): Promise<ShellCommand> {
+  // SSH proxy: redirect to remote host
+  const proxyManager = getSSHProxyManager()
+  if (proxyManager) {
+    return execRemoteShell(command, abortSignal, shellType, options, proxyManager)
+  }
   const {
     timeout,
     onProgress,

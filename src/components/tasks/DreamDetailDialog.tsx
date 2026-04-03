@@ -19,7 +19,7 @@ type Props = {
 
 // How many recent turns to render. Earlier turns collapse to a count.
 const VISIBLE_TURNS = 6;
-export function DreamDetailDialog(t0) {
+export function DreamDetailDialog(t0: any) {
   const $ = _c(70);
   const {
     task,

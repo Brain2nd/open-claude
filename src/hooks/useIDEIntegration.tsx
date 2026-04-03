@@ -12,7 +12,7 @@ type UseIDEIntegrationProps = {
   setShowIdeOnboarding: React.Dispatch<React.SetStateAction<boolean>>;
   setIDEInstallationState: React.Dispatch<React.SetStateAction<IDEExtensionInstallationStatus | null>>;
 };
-export function useIDEIntegration(t0) {
+export function useIDEIntegration(t0: any) {
   const $ = _c(7);
   const {
     autoConnectIdeFlag,

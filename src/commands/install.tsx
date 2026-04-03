@@ -50,7 +50,7 @@ function getInstallationPath(): string {
   }
   return '~/.local/bin/claude';
 }
-function SetupNotes(t0) {
+function SetupNotes(t0: any) {
   const $ = _c(5);
   const {
     messages

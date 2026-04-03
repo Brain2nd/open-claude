@@ -18,7 +18,7 @@ export function getRelativeMemoryPath(path: string): string {
   }
   return relativeToHome || relativeToCwd || path;
 }
-export function MemoryUpdateNotification(t0) {
+export function MemoryUpdateNotification(t0: any) {
   const $ = _c(4);
   const {
     memoryPath

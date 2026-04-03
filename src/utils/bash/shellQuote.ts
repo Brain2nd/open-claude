@@ -14,12 +14,12 @@ import { jsonStringify } from '../slowOperations.js'
 export type { ParseEntry } from 'shell-quote'
 
 export type ShellParseResult =
-  | { success: true; tokens: ParseEntry[] }
-  | { success: false; error: string }
+  | { success: true; tokens: ParseEntry[]; [key: string]: any }
+  | { success: false; error: string; [key: string]: any }
 
 export type ShellQuoteResult =
-  | { success: true; quoted: string }
-  | { success: false; error: string }
+  | { success: true; quoted: string; [key: string]: any }
+  | { success: false; error: string; [key: string]: any }
 
 export function tryParseShellCommand(
   cmd: string,

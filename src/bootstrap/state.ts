@@ -545,6 +545,14 @@ export function setDirectConnectServerUrl(url: string): void {
   STATE.directConnectServerUrl = url
 }
 
+export function getSSHProxyInfo(): { host: string; port?: number; remoteCwd: string } | undefined {
+  return (STATE as any).sshProxyInfo
+}
+
+export function setSSHProxyInfo(info: { host: string; port?: number; remoteCwd: string; identityFile?: string }): void {
+  (STATE as any).sshProxyInfo = info
+}
+
 export function addToTotalDurationState(
   duration: number,
   durationWithoutRetries: number,

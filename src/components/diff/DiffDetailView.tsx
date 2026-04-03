@@ -1,5 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
-import type { StructuredPatchHunk } from 'diff';
+import type { Hunk as Hunk } from 'diff';
 import { resolve } from 'path';
 import React, { useMemo } from 'react';
 import { useTerminalSize } from '../../hooks/useTerminalSize.js';
@@ -10,7 +10,7 @@ import { Divider } from '../design-system/Divider.js';
 import { StructuredDiff } from '../StructuredDiff.js';
 type Props = {
   filePath: string;
-  hunks: StructuredPatchHunk[];
+  hunks: Hunk[];
   isLargeFile?: boolean;
   isBinary?: boolean;
   isTruncated?: boolean;
@@ -22,7 +22,7 @@ type Props = {
  * Uses StructuredDiff for word-level diffing and syntax highlighting.
  * No scrolling - renders all lines (max 400 due to parsing limits).
  */
-export function DiffDetailView(t0) {
+export function DiffDetailView(t0: any) {
   const $ = _c(53);
   const {
     filePath,

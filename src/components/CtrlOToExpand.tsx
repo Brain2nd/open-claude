@@ -11,7 +11,7 @@ import { InVirtualListContext } from './messageActions.js';
 // Similar to MessageResponseContext, this helps us avoid showing
 // too many "(ctrl+o to expand)" hints in sub agent output
 const SubAgentContext = React.createContext(false);
-export function SubAgentProvider(t0) {
+export function SubAgentProvider(t0: any) {
   const $ = _c(2);
   const {
     children

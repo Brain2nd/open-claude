@@ -8,7 +8,7 @@ const OrderedListContext = createContext({
 type OrderedListProps = {
   children: ReactNode;
 };
-function OrderedListComponent(t0) {
+function OrderedListComponent(t0: any) {
   const $ = _c(9);
   const {
     children

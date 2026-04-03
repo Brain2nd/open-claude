@@ -17,7 +17,7 @@ type Props = {
   onRequestFeedback?: () => void;
   message?: string;
 };
-export function FeedbackSurvey(t0) {
+export function FeedbackSurvey(t0: any) {
   const $ = _c(16);
   const {
     state,
@@ -108,7 +108,7 @@ type ThanksProps = {
   onRequestFeedback?: () => void;
 };
 const isFollowUpDigit = (char: string): char is '1' => char === '1';
-function FeedbackSurveyThanks(t0) {
+function FeedbackSurveyThanks(t0: any) {
   const $ = _c(12);
   const {
     lastResponse,

@@ -12,7 +12,7 @@ type Props = {
   onRespond: (key: string) => void;
   onAbort: () => void;
 };
-export function PromptDialog(t0) {
+export function PromptDialog(t0: any) {
   const $ = _c(15);
   const {
     title,

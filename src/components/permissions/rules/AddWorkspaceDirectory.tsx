@@ -47,7 +47,7 @@ function PermissionDescription() {
   }
   return t0;
 }
-function DirectoryDisplay(t0) {
+function DirectoryDisplay(t0: any) {
   const $ = _c(5);
   const {
     path
@@ -77,7 +77,7 @@ function DirectoryDisplay(t0) {
   }
   return t3;
 }
-function DirectoryInput(t0) {
+function DirectoryInput(t0: any) {
   const $ = _c(14);
   const {
     value,
@@ -134,7 +134,7 @@ function DirectoryInput(t0) {
   return t5;
 }
 function _temp() {}
-export function AddWorkspaceDirectory(t0) {
+export function AddWorkspaceDirectory(t0: any) {
   const $ = _c(34);
   const {
     onAddDirectory,

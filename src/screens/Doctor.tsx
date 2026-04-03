@@ -54,12 +54,12 @@ type VersionLockInfo = {
   locksDir: string;
   staleLocksCleaned: number;
 };
-function DistTagsDisplay(t0) {
+function DistTagsDisplay(t0: any) {
   const $ = _c(8);
   const {
     promise
   } = t0;
-  const distTags = use(promise);
+  const distTags = use(promise) as any;
   if (!distTags.latest) {
     let t1;
     if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
@@ -97,7 +97,7 @@ function DistTagsDisplay(t0) {
   }
   return t3;
 }
-export function Doctor(t0) {
+export function Doctor(t0: any) {
   const $ = _c(84);
   const {
     onDone

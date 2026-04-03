@@ -903,7 +903,7 @@ export const connectToServer = memoize(
         )
         logMCPDebug(name, `claude.ai proxy transport created successfully`)
       } else if (
-        (serverRef.type === 'stdio' || !serverRef.type) &&
+        ((serverRef as any).type === 'stdio' || !(serverRef as any).type) &&
         isClaudeInChromeMCPServer(name)
       ) {
         // Run the Chrome MCP server in-process to avoid spawning a ~325 MB subprocess
@@ -924,7 +924,7 @@ export const connectToServer = memoize(
         logMCPDebug(name, `In-process Chrome MCP server started`)
       } else if (
         feature('CHICAGO_MCP') &&
-        (serverRef.type === 'stdio' || !serverRef.type) &&
+        ((serverRef as any).type === 'stdio' || !(serverRef as any).type) &&
         isComputerUseMCPServer!(name)
       ) {
         // Run the Computer Use MCP server in-process — same rationale as
@@ -941,12 +941,12 @@ export const connectToServer = memoize(
         await inProcessServer.connect(serverTransport)
         transport = clientTransport
         logMCPDebug(name, `In-process Computer Use MCP server started`)
-      } else if (serverRef.type === 'stdio' || !serverRef.type) {
+      } else if ((serverRef as any).type === 'stdio' || !(serverRef as any).type) {
         const finalCommand =
-          process.env.CLAUDE_CODE_SHELL_PREFIX || serverRef.command
+          process.env.CLAUDE_CODE_SHELL_PREFIX || (serverRef as any).command
         const finalArgs = process.env.CLAUDE_CODE_SHELL_PREFIX
-          ? [[serverRef.command, ...serverRef.args].join(' ')]
-          : serverRef.args
+          ? [[(serverRef as any).command, ...(serverRef as any).args].join(' ')]
+          : (serverRef as any).args
         transport = new StdioClientTransport({
           command: finalCommand,
           args: finalArgs,
@@ -957,7 +957,7 @@ export const connectToServer = memoize(
           stderr: 'pipe', // prevents error output from the MCP server from printing to the UI
         })
       } else {
-        throw new Error(`Unsupported server type: ${serverRef.type}`)
+        throw new Error(`Unsupported server type: ${(serverRef as any).type}`)
       }
 
       // Set up stderr logging for stdio transport before connecting in case there are any stderr

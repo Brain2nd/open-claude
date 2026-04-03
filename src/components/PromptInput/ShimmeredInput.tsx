@@ -12,7 +12,7 @@ type LinePart = {
   highlight: TextHighlight | undefined;
   start: number;
 };
-export function HighlightedInput(t0) {
+export function HighlightedInput(t0: any) {
   const $ = _c(23);
   const {
     text,

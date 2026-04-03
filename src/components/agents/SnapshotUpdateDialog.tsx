@@ -15,3 +15,5 @@ export function SnapshotUpdateDialog({ onCancel }: Props) {
 
   return null
 }
+
+export function buildMergePrompt(..._args: any[]): string { return '' }

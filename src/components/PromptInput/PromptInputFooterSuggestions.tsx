@@ -34,7 +34,7 @@ function getIcon(itemId: string): string {
 function isUnifiedSuggestion(itemId: string): boolean {
   return itemId.startsWith('file-') || itemId.startsWith('mcp-resource-') || itemId.startsWith('agent-');
 }
-const SuggestionItemRow = memo(function SuggestionItemRow(t0) {
+const SuggestionItemRow = memo(function SuggestionItemRow(t0: any) {
   const $ = _c(36);
   const {
     item,
@@ -210,7 +210,7 @@ type Props = {
    */
   overlay?: boolean;
 };
-export function PromptInputFooterSuggestions(t0) {
+export function PromptInputFooterSuggestions(t0: any) {
   const $ = _c(22);
   const {
     suggestions,

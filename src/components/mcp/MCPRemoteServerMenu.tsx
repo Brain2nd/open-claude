@@ -566,7 +566,7 @@ export function MCPRemoteServerMenu({
 
           <Box>
             <Text bold>Config location: </Text>
-            <Text dimColor>{describeMcpConfigFilePath(server.scope)}</Text>
+            <Text dimColor>{describeMcpConfigFilePath(server.scope as any)}</Text>
           </Box>
 
           {server.client.type === 'connected' && <CapabilitiesSection serverToolsCount={serverToolsCount} serverPromptsCount={serverCommandsCount} serverResourcesCount={mcp.resources[server.name]?.length || 0} />}

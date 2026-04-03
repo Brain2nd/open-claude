@@ -75,7 +75,7 @@ type Props<T> = {
    */
   onSelectedImageIndexChange?: (index: number) => void;
 };
-export function SelectInputOption(t0) {
+export function SelectInputOption(t0: any) {
   const $ = _c(100);
   const {
     option,

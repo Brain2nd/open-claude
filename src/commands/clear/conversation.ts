@@ -3,7 +3,8 @@
  * This module has heavier dependencies and should be lazy-loaded when possible.
  */
 import { feature } from 'bun:bundle'
-import { randomUUID, type UUID } from 'crypto'
+import { randomUUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import {
   getLastMainRequestId,
   getOriginalCwd,

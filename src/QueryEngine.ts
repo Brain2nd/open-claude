@@ -1282,7 +1282,7 @@ export async function* ask({
           },
         }
       : {}),
-  })
+  } as any)
 
   try {
     yield* engine.submitMessage(prompt, {

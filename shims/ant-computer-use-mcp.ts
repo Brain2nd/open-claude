@@ -10,9 +10,13 @@
  * needed for basic computer-use functionality.
  */
 
-// Re-export createServer from the open-source package as createComputerUseMcpServer
-// computer-use-mcp exports createServer from dist/index.js
-export { createServer as createComputerUseMcpServer } from 'computer-use-mcp/dist/index.js'
+// Wrapper around createServer from the open-source package.
+// The original ant version accepted (adapter, coordinateMode) but the open-source
+// version takes no arguments.
+import { createServer as _createServer } from 'computer-use-mcp/dist/index.js'
+export function createComputerUseMcpServer(..._args: any[]) {
+  return _createServer()
+}
 
 // Stub for buildComputerUseTools — the open-source version registers tools
 // internally via registerAll(), so this returns an empty array. The actual
@@ -26,8 +30,8 @@ export function buildComputerUseTools(
 }
 
 // Stubs for features that don't exist in the open-source version
-export function bindSessionContext(_ctx: unknown): unknown {
-  return {}
+export function bindSessionContext(..._args: any[]): any {
+  return () => ({})
 }
 
 export const API_RESIZE_PARAMS = { width: 1280, height: 800 }
@@ -35,14 +39,22 @@ export const API_RESIZE_PARAMS = { width: 1280, height: 800 }
 export function targetImageSize(
   _width: number,
   _height: number,
-): { width: number; height: number } {
-  return { width: 1280, height: 800 }
+  ..._rest: any[]
+): [number, number] {
+  return [1280, 800]
 }
 
-export const DEFAULT_GRANT_FLAGS = 0
+export const DEFAULT_GRANT_FLAGS: any = {}
 
 export type ComputerUseSessionContext = Record<string, unknown>
-export type CuCallToolResult = unknown
+export type CuCallToolResult = { telemetry?: any; [key: string]: any }
 export type CuPermissionRequest = unknown
 export type CuPermissionResponse = unknown
-export type ScreenshotDims = { width: number; height: number }
+export type ScreenshotDims = { width: number; height: number; displayId?: string; [key: string]: any }
+export type ComputerExecutor = any
+export type DisplayGeometry = any
+export type FrontmostApp = any
+export type InstalledApp = any
+export type ResolvePrepareCaptureResult = any
+export type RunningApp = any
+export type ScreenshotResult = any

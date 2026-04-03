@@ -8,7 +8,7 @@ import { Dialog } from './design-system/Dialog.js';
 type IdeAutoConnectDialogProps = {
   onComplete: () => void;
 };
-export function IdeAutoConnectDialog(t0) {
+export function IdeAutoConnectDialog(t0: any) {
   const $ = _c(9);
   const {
     onComplete
@@ -77,7 +77,7 @@ export function shouldShowAutoConnectDialog(): boolean {
 type IdeDisableAutoConnectDialogProps = {
   onComplete: (disableAutoConnect: boolean) => void;
 };
-export function IdeDisableAutoConnectDialog(t0) {
+export function IdeDisableAutoConnectDialog(t0: any) {
   const $ = _c(10);
   const {
     onComplete

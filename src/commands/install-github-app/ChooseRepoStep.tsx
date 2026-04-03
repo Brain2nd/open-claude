@@ -12,7 +12,7 @@ interface ChooseRepoStepProps {
   onToggleUseCurrentRepo: (useCurrentRepo: boolean) => void;
   onSubmit: () => void;
 }
-export function ChooseRepoStep(t0) {
+export function ChooseRepoStep(t0: any) {
   const $ = _c(49);
   const {
     currentRepo,

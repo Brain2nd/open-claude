@@ -5,7 +5,7 @@ import type { ConfigScope } from 'src/services/mcp/types.js';
 import { describeMcpConfigFilePath, getScopeLabel } from 'src/services/mcp/utils.js';
 import type { ValidationError } from 'src/utils/settings/validation.js';
 import { Box, Link, Text } from '../../ink.js';
-function McpConfigErrorSection(t0) {
+function McpConfigErrorSection(t0: any) {
   const $ = _c(26);
   const {
     scope,
@@ -188,20 +188,20 @@ export function McpParsingWarnings() {
   }
   return t5;
 }
-function _temp5(t0) {
+function _temp5(t0: any) {
   const {
     scope,
     config: config_1
   } = t0;
   return <McpConfigErrorSection key={scope} scope={scope} parsingErrors={filterErrors(config_1.errors, "fatal")} warnings={filterErrors(config_1.errors, "warning")} />;
 }
-function _temp4(t0) {
+function _temp4(t0: any) {
   const {
     config: config_0
   } = t0;
   return filterErrors(config_0.errors, "warning").length > 0;
 }
-function _temp3(t0) {
+function _temp3(t0: any) {
   const {
     config
   } = t0;

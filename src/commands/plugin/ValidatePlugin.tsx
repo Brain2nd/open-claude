@@ -11,7 +11,7 @@ type Props = {
   onComplete: (result?: string) => void;
   path?: string;
 };
-export function ValidatePlugin(t0) {
+export function ValidatePlugin(t0: any) {
   const $ = _c(5);
   const {
     onComplete,

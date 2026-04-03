@@ -9,7 +9,7 @@ type ShutdownRequestProps = {
 /**
  * Renders a shutdown request with a warning-colored border.
  */
-export function ShutdownRequestDisplay(t0) {
+export function ShutdownRequestDisplay(t0: any) {
   const $ = _c(7);
   const {
     request
@@ -48,7 +48,7 @@ type ShutdownRejectedProps = {
 /**
  * Renders a shutdown rejected message with a subtle (grey) border.
  */
-export function ShutdownRejectedDisplay(t0) {
+export function ShutdownRejectedDisplay(t0: any) {
   const $ = _c(8);
   const {
     response

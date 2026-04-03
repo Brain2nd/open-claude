@@ -21,7 +21,7 @@ const PLATFORMS: Record<Platform, {
     url: 'https://play.google.com/store/apps/details?id=com.anthropic.claude'
   }
 };
-function MobileQRCode(t0) {
+function MobileQRCode(t0: any) {
   const $ = _c(52);
   const {
     onDone

@@ -9,7 +9,7 @@ type IdeStatusIndicatorProps = {
   ideSelection: IDESelection | undefined;
   mcpClients?: MCPServerConnection[];
 };
-export function IdeStatusIndicator(t0) {
+export function IdeStatusIndicator(t0: any) {
   const $ = _c(7);
   const {
     ideSelection,

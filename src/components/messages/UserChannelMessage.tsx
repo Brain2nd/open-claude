@@ -23,7 +23,7 @@ function displayServerName(name: string): string {
   return i === -1 ? name : name.slice(i + 1);
 }
 const TRUNCATE_AT = 60;
-export function UserChannelMessage(t0) {
+export function UserChannelMessage(t0: any) {
   const $ = _c(29);
   const {
     addMargin,

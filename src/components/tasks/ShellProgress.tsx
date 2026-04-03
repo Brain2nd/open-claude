@@ -10,7 +10,7 @@ type TaskStatusTextProps = {
   label?: string;
   suffix?: string;
 };
-export function TaskStatusText(t0) {
+export function TaskStatusText(t0: any) {
   const $ = _c(4);
   const {
     status,
@@ -31,7 +31,7 @@ export function TaskStatusText(t0) {
   }
   return t1;
 }
-export function ShellProgress(t0) {
+export function ShellProgress(t0: any) {
   const $ = _c(4);
   const {
     shell

@@ -1,6 +1,6 @@
 import { execFileSync } from 'child_process'
 import { diffLines } from 'diff'
-import { constants as fsConstants } from 'fs'
+import { type Dirent, constants as fsConstants } from 'fs'
 import {
   copyFile,
   mkdir,
@@ -120,9 +120,9 @@ const collectFromRemoteHost: (
           }
 
           const projectsDir = join(tempDir, 'projects')
-          let projectDirents: Awaited<ReturnType<typeof readdir>>
+          let projectDirents: Dirent[]
           try {
-            projectDirents = await readdir(projectsDir, { withFileTypes: true })
+            projectDirents = await readdir(projectsDir, { withFileTypes: true, encoding: 'utf-8' }) as unknown as Dirent[]
           } catch {
             return result
           }
@@ -146,9 +146,9 @@ const collectFromRemoteHost: (
               }
 
               // Copy session files (skip existing)
-              let files: Awaited<ReturnType<typeof readdir>>
+              let files: Dirent[]
               try {
-                files = await readdir(projectPath, { withFileTypes: true })
+                files = await readdir(projectPath, { withFileTypes: true, encoding: 'utf-8' }) as unknown as Dirent[]
               } catch {
                 return
               }
@@ -2757,14 +2757,14 @@ async function scanAllSessions(): Promise<LiteSessionInfo[]> {
 
   let dirents: Awaited<ReturnType<typeof readdir>>
   try {
-    dirents = await readdir(projectsDir, { withFileTypes: true })
+    dirents = await readdir(projectsDir, { withFileTypes: true }) as any
   } catch {
     return []
   }
 
   const projectDirs = dirents
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => join(projectsDir, dirent.name))
+    .filter((dirent: any) => dirent.isDirectory())
+    .map((dirent: any) => join(projectsDir, dirent.name))
 
   const allSessions: LiteSessionInfo[] = []
 

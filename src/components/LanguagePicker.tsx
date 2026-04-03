@@ -9,7 +9,7 @@ type Props = {
   onComplete: (language: string | undefined) => void;
   onCancel: () => void;
 };
-export function LanguagePicker(t0) {
+export function LanguagePicker(t0: any) {
   const $ = _c(13);
   const {
     initialLanguage,

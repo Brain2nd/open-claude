@@ -1,4 +1,4 @@
-import type { StructuredPatchHunk } from 'diff'
+import type { Hunk as Hunk } from 'diff'
 import { useMemo, useRef } from 'react'
 import type { FileEditOutput } from '../tools/FileEditTool/types.js'
 import type { Output as FileWriteOutput } from '../tools/FileWriteTool/FileWriteTool.js'
@@ -6,7 +6,7 @@ import type { Message } from '../types/message.js'
 
 export type TurnFileDiff = {
   filePath: string
-  hunks: StructuredPatchHunk[]
+  hunks: Hunk[]
   isNewFile: boolean
   linesAdded: number
   linesRemoved: number
@@ -52,7 +52,7 @@ function isFileWriteOutput(result: FileEditResult): result is FileWriteOutput {
   )
 }
 
-function countHunkLines(hunks: StructuredPatchHunk[]): {
+function countHunkLines(hunks: Hunk[]): {
   added: number
   removed: number
 } {
@@ -170,7 +170,7 @@ export function useTurnDiffs(messages: Message[]): TurnDiff[] {
           ) {
             const content = result.content
             const lines = content.split('\n')
-            const syntheticHunk: StructuredPatchHunk = {
+            const syntheticHunk: Hunk = {
               oldStart: 0,
               oldLines: 0,
               newStart: 1,

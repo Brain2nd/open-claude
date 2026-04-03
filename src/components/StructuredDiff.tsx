@@ -1,5 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
-import type { StructuredPatchHunk } from 'diff';
+import type { Hunk as Hunk } from 'diff';
 import * as React from 'react';
 import { memo } from 'react';
 import { useSettings } from '../hooks/useSettings.js';
@@ -9,7 +9,7 @@ import sliceAnsi from '../utils/sliceAnsi.js';
 import { expectColorDiff } from './StructuredDiff/colorDiff.js';
 import { StructuredDiffFallback } from './StructuredDiff/Fallback.js';
 type Props = {
-  patch: StructuredPatchHunk;
+  patch: Hunk;
   dim: boolean;
   filePath: string; // File path for language detection
   firstLine: string | null; // First line of file for shebang detection
@@ -38,16 +38,16 @@ type CachedRender = {
   gutters: string[] | null;
   contents: string[] | null;
 };
-const RENDER_CACHE = new WeakMap<StructuredPatchHunk, Map<string, CachedRender>>();
+const RENDER_CACHE = new WeakMap<Hunk, Map<string, CachedRender>>();
 
 // Gutter width matches the Rust module's layout: marker (1) + space +
 // right-aligned line number (max_digits) + space. Depends only on patch
 // identity (the WeakMap key), so it's cacheable alongside the NAPI output.
-function computeGutterWidth(patch: StructuredPatchHunk): number {
+function computeGutterWidth(patch: Hunk): number {
   const maxLineNumber = Math.max(patch.oldStart + patch.oldLines - 1, patch.newStart + patch.newLines - 1, 1);
   return maxLineNumber.toString().length + 3; // marker + 2 padding spaces
 }
-function renderColorDiff(patch: StructuredPatchHunk, firstLine: string | null, filePath: string, fileContent: string | null, theme: string, width: number, dim: boolean, splitGutter: boolean): CachedRender | null {
+function renderColorDiff(patch: Hunk, firstLine: string | null, filePath: string, fileContent: string | null, theme: string, width: number, dim: boolean, splitGutter: boolean): CachedRender | null {
   const ColorDiff = expectColorDiff();
   if (!ColorDiff) return null;
 
@@ -92,7 +92,7 @@ function renderColorDiff(patch: StructuredPatchHunk, firstLine: string | null, f
   perHunk.set(key, entry);
   return entry;
 }
-export const StructuredDiff = memo(function StructuredDiff(t0) {
+export const StructuredDiff = memo(function StructuredDiff(t0: any) {
   const $ = _c(26);
   const {
     patch,

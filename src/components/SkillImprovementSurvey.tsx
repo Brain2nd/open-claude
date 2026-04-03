@@ -14,7 +14,7 @@ type Props = {
   inputValue: string;
   setInputValue: (value: string) => void;
 };
-export function SkillImprovementSurvey(t0) {
+export function SkillImprovementSurvey(t0: any) {
   const $ = _c(6);
   const {
     isOpen,
@@ -57,7 +57,7 @@ const VALID_INPUTS = ['0', '1'] as const;
 function isValidInput(input: string): boolean {
   return (VALID_INPUTS as readonly string[]).includes(input);
 }
-function SkillImprovementSurveyView(t0) {
+function SkillImprovementSurveyView(t0: any) {
   const $ = _c(17);
   const {
     skillName,

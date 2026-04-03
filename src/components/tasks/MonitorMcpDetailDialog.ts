@@ -1,1 +1,1 @@
-export function MonitorMcpDetailDialog() { return null }
+export function MonitorMcpDetailDialog(_props: any) { return null }

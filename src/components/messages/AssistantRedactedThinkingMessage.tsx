@@ -4,7 +4,7 @@ import { Box, Text } from '../../ink.js';
 type Props = {
   addMargin: boolean;
 };
-export function AssistantRedactedThinkingMessage(t0) {
+export function AssistantRedactedThinkingMessage(t0: any) {
   const $ = _c(3);
   const {
     addMargin: t1

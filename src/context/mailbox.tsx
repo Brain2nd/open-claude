@@ -5,7 +5,7 @@ const MailboxContext = createContext<Mailbox | undefined>(undefined);
 type Props = {
   children: React.ReactNode;
 };
-export function MailboxProvider(t0) {
+export function MailboxProvider(t0: any) {
   const $ = _c(3);
   const {
     children

@@ -6,7 +6,7 @@ import type { PermissionRuleValue } from '../../../utils/permissions/PermissionR
 type RuleSubtitleProps = {
   ruleValue: PermissionRuleValue;
 };
-export function PermissionRuleDescription(t0) {
+export function PermissionRuleDescription(t0: any) {
   const $ = _c(9);
   const {
     ruleValue

@@ -35,7 +35,7 @@ type Props = {
  * Running /remote-control when already connected shows a dialog with the session
  * URL and options to disconnect or continue.
  */
-function BridgeToggle(t0) {
+function BridgeToggle(t0: any) {
   const $ = _c(10);
   const {
     onDone,
@@ -152,7 +152,7 @@ function _temp2(s_0) {
 function _temp(s) {
   return s.replBridgeConnected;
 }
-function BridgeDisconnectDialog(t0) {
+function BridgeDisconnectDialog(t0: any) {
   const $ = _c(61);
   const {
     onDone

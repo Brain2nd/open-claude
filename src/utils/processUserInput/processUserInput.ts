@@ -186,7 +186,7 @@ export async function processUserInput({
     context.requestPrompt,
   )) {
     // We only care about the result
-    if (hookResult.message?.type === 'progress') {
+    if ((hookResult.message as any)?.type === 'progress') {
       continue
     }
 

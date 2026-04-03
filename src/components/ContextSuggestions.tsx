@@ -8,7 +8,7 @@ import { StatusIcon } from './design-system/StatusIcon.js';
 type Props = {
   suggestions: ContextSuggestion[];
 };
-export function ContextSuggestions(t0) {
+export function ContextSuggestions(t0: any) {
   const $ = _c(5);
   const {
     suggestions

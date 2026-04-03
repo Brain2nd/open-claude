@@ -2203,7 +2203,7 @@ const PROC_ENVIRON_RE = /\/proc\/.*\/environ/
  */
 const NEWLINE_HASH_RE = /\n[ \t]*#/
 
-export type SemanticCheckResult = { ok: true } | { ok: false; reason: string }
+export type SemanticCheckResult = { ok: true; [key: string]: any } | { ok: false; reason: string; [key: string]: any }
 
 /**
  * Post-argv semantic checks. Run after parseForSecurity returns 'simple' to

@@ -45,7 +45,7 @@ type Props = {
   initialContext: ToolPermissionContext;
   setToolPermissionContext: (newContext: ToolPermissionContext) => void;
 };
-export function AddPermissionRules(t0) {
+export function AddPermissionRules(t0: any) {
   const $ = _c(26);
   const {
     onAddRules,

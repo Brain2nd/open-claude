@@ -6,7 +6,7 @@ import { Dialog } from './design-system/Dialog.js';
 type Props = {
   onDone: () => void;
 };
-export function CostThresholdDialog(t0) {
+export function CostThresholdDialog(t0: any) {
   const $ = _c(7);
   const {
     onDone

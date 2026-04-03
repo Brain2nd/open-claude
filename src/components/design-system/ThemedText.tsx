@@ -77,7 +77,7 @@ function resolveColor(color: keyof Theme | Color | undefined, theme: Theme): Col
  * Theme-aware Text component that resolves theme color keys to raw colors.
  * This wraps the base Text component with theme resolution.
  */
-export default function ThemedText(t0) {
+export default function ThemedText(t0: any) {
   const $ = _c(10);
   const {
     color,

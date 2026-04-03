@@ -1,5 +1,5 @@
 import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs'
-import type { UUID } from 'crypto'
+import type { UUID } from './message.js'
 import type React from 'react'
 import type { PermissionResult } from '../entrypoints/agentSdkTypes.js'
 import type { Key } from '../ink.js'
@@ -109,7 +109,7 @@ export type BaseTextInputProps = {
   /**
    * Number of columns to wrap text at
    */
-  readonly columns: number
+  readonly columns?: number
 
   /**
    * Maximum visible lines for the input viewport. When the wrapped input
@@ -154,12 +154,12 @@ export type BaseTextInputProps = {
   /**
    * The offset of the cursor within the text
    */
-  readonly cursorOffset: number
+  readonly cursorOffset?: number
 
   /**
    * Callback to set the offset of the cursor
    */
-  onChangeCursorOffset: (offset: number) => void
+  onChangeCursorOffset?: (offset: number) => void
 
   /**
    * Optional hint text to display after command input

@@ -44,7 +44,7 @@ function InvalidApiKeyMessage() {
   }
   return t1;
 }
-export function AssistantTextMessage(t0) {
+export function AssistantTextMessage(t0: any) {
   const $ = _c(34);
   const {
     param: t1,

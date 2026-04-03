@@ -1,5 +1,5 @@
 import axios, { type AxiosError } from 'axios'
-import type { UUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { getOauthConfig } from '../../constants/oauth.js'
 import type { Entry, TranscriptMessage } from '../../types/logs.js'
 import { logForDebugging } from '../../utils/debug.js'

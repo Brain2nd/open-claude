@@ -20,11 +20,12 @@ export function parseDirectMemberMessage(input: string): {
 }
 
 export type DirectMessageResult =
-  | { success: true; recipientName: string }
+  | { success: true; recipientName: string; [key: string]: any }
   | {
       success: false
       error: 'no_team_context' | 'unknown_recipient'
       recipientName?: string
+      [key: string]: any
     }
 
 type WriteToMailboxFn = (

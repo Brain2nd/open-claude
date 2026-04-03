@@ -20,7 +20,7 @@ type Props = {
   width: number | string;
   isTranscriptMode?: boolean;
 };
-export function UserToolResultMessage(t0) {
+export function UserToolResultMessage(t0: any) {
   const $ = _c(28);
   const {
     param,

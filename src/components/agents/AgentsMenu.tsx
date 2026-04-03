@@ -28,7 +28,7 @@ type Props = {
     display?: CommandResultDisplay;
   }) => void;
 };
-export function AgentsMenu(t0) {
+export function AgentsMenu(t0: any) {
   const $ = _c(157);
   const {
     tools,

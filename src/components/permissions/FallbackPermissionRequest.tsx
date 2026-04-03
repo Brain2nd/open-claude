@@ -13,7 +13,7 @@ import { PermissionPrompt, type PermissionPromptOption, type ToolAnalyticsContex
 import type { PermissionRequestProps } from './PermissionRequest.js';
 import { PermissionRuleExplanation } from './PermissionRuleExplanation.js';
 type FallbackOptionValue = 'yes' | 'yes-dont-ask-again' | 'no';
-export function FallbackPermissionRequest(t0) {
+export function FallbackPermissionRequest(t0: any) {
   const $ = _c(58);
   const {
     toolUseConfirm,

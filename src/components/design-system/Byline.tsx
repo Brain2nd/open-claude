@@ -34,7 +34,7 @@ type Props = {
  * </Text>
  *
  */
-export function Byline(t0) {
+export function Byline(t0: any) {
   const $ = _c(5);
   const {
     children

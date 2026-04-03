@@ -43,6 +43,10 @@ import { useAppState } from '../../state/AppState.js';
 import { getEffortSuffix } from '../../utils/effort.js';
 import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
 import { renderModelSetting } from '../../utils/model/model.js';
+// Stubs for feature-gated components eliminated at build time
+const GateOverridesWarning = () => null;
+const ExperimentEnrollmentNotice = () => null;
+
 const LEFT_PANEL_MAX_WIDTH = 50;
 export function LogoV2() {
   const $ = _c(94);

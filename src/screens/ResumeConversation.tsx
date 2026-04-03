@@ -337,7 +337,7 @@ function NoConversationsMessage() {
 function _temp() {
   process.exit(1);
 }
-function CrossProjectMessage(t0) {
+function CrossProjectMessage(t0: any) {
   const $ = _c(8);
   const {
     command

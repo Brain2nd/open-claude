@@ -1,6 +1,8 @@
 export type ConnectorTextBlock = {
   type: 'connector_text'
   connector_text: string
+  signature?: string
+  [key: string]: any
 }
 
 export type ConnectorTextDelta = {

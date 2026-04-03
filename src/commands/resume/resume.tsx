@@ -1,6 +1,6 @@
 import { c as _c } from "react/compiler-runtime";
 import chalk from 'chalk';
-import type { UUID } from 'crypto';
+import type { UUID } from 'src/types/message.js';
 import figures from 'figures';
 import * as React from 'react';
 import { getOriginalCwd, getSessionId } from '../../bootstrap/state.js';
@@ -36,7 +36,7 @@ function resumeHelpMessage(result: ResumeResult): string {
       return `Found ${result.count} sessions matching ${chalk.bold(result.arg)}. Please use /resume to pick a specific session.`;
   }
 }
-function ResumeError(t0) {
+function ResumeError(t0: any) {
   const $ = _c(10);
   const {
     message,

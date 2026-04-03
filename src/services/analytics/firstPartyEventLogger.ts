@@ -369,6 +369,7 @@ export function initialize1PEventLogging(): void {
   })
   firstPartyEventLoggerProvider = new LoggerProvider({
     resource,
+    // @ts-ignore processors property exists at runtime
     processors: [
       new BatchLogRecordProcessor(eventLoggingExporter, {
         scheduledDelayMillis,

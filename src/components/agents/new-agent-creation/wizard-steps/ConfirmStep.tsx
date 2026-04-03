@@ -24,7 +24,7 @@ type Props = {
   onSaveAndEdit: () => void;
   error?: string | null;
 };
-export function ConfirmStep(t0) {
+export function ConfirmStep(t0: any) {
   const $ = _c(88);
   const {
     tools,

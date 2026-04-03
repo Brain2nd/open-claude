@@ -26,7 +26,7 @@ function inputToPermissionRuleContent(input: {
     return `input:${input.toString()}`;
   }
 }
-export function WebFetchPermissionRequest(t0) {
+export function WebFetchPermissionRequest(t0: any) {
   const $ = _c(41);
   const {
     toolUseConfirm,

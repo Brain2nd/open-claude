@@ -1,1 +1,1 @@
-export function UserForkBoilerplateMessage() { return null }
+export function UserForkBoilerplateMessage(_props?: any) { return null }

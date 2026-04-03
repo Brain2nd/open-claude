@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { useEffect, useRef } from 'react'
 import { useAppState } from '../state/AppState.js'
 import type { Message } from '../types/message.js'

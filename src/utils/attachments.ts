@@ -62,7 +62,8 @@ import {
   getImagePasteIds,
   isValidImagePaste,
 } from 'src/types/textInputTypes.js'
-import { randomUUID, type UUID } from 'crypto'
+import { randomUUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { getSettings_DEPRECATED } from './settings/settings.js'
 import { getSnippetForTwoFileDiff } from 'src/tools/FileEditTool/utils.js'
 import type {
@@ -715,6 +716,8 @@ export type Attachment =
       warningCount: number
       sample: string
     }
+  | { type: 'pen_mode_enter' }
+  | { type: 'pen_mode_exit' }
 
 export type TeammateMailboxAttachment = {
   type: 'teammate_mailbox'
@@ -808,7 +811,7 @@ export async function getAttachments(
                   messages ?? [],
                   context,
                 ),
-              ),
+              ) as any,
             ]
           : []),
       ]
@@ -999,7 +1002,7 @@ export async function getAttachments(
     ...userAttachmentResults.flat(),
     ...threadAttachmentResults.flat(),
     ...mainThreadAttachmentResults.flat(),
-  ].filter(a => a !== undefined && a !== null)
+  ].filter(a => a !== undefined && a !== null) as Attachment[]
 }
 
 async function maybe<A>(label: string, f: () => Promise<A[]>): Promise<A[]> {
@@ -2776,7 +2779,7 @@ export function extractAtMentionedFiles(content: string): string[] {
   }
 
   // Extract regular mentions
-  const regularMatchArray = content.match(regularAtMentionRegex) || []
+  const regularMatchArray = content.match(regularAtMentionRegex) ?? ([] as string[])
   regularMatchArray.forEach(match => {
     const filename = match.slice(match.indexOf('@') + 1)
     // Don't include if it starts with a quote (already handled as quoted)

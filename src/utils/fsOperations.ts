@@ -120,6 +120,10 @@ export type FsOperations = {
   /** Reads raw file bytes as Buffer asynchronously.
    *  When maxBytes is set, only reads up to that many bytes. */
   readFileBytes(path: string, maxBytes?: number): Promise<Buffer>
+  /** Writes string data to a file synchronously */
+  writeFileSync(path: string, data: string, options?: { encoding?: BufferEncoding; mode?: number }): void
+  /** Changes file mode/permissions */
+  chmodSync(path: string, mode: number | string): void
 }
 
 /**
@@ -599,6 +603,14 @@ export const NodeFsOperations: FsOperations = {
     } finally {
       await handle.close()
     }
+  },
+
+  writeFileSync(fsPath, data, options) {
+    fs.writeFileSync(fsPath, data, options)
+  },
+
+  chmodSync(fsPath, mode) {
+    fs.chmodSync(fsPath, mode)
   },
 }
 

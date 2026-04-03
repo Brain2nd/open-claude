@@ -32,7 +32,7 @@ type Props = {
   lookups: ReturnType<typeof buildMessageLookups>;
   isTranscriptMode?: boolean;
 };
-export function AssistantToolUseMessage(t0) {
+export function AssistantToolUseMessage(t0: any) {
   const $ = _c(81);
   const {
     param,

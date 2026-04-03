@@ -11,7 +11,7 @@ import { prepareContextForPlanMode } from '../../utils/permissions/permissionSet
 import { getPlan, getPlanFilePath } from '../../utils/plans.js';
 import { editFileInEditor } from '../../utils/promptEditor.js';
 import { renderToString } from '../../utils/staticRender.js';
-function PlanDisplay(t0) {
+function PlanDisplay(t0: any) {
   const $ = _c(11);
   const {
     planContent,

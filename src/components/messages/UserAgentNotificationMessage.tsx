@@ -20,7 +20,7 @@ function getStatusColor(status: string | null): TextProps['color'] {
       return 'text';
   }
 }
-export function UserAgentNotificationMessage(t0) {
+export function UserAgentNotificationMessage(t0: any) {
   const $ = _c(12);
   const {
     addMargin,

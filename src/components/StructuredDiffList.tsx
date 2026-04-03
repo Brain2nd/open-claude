@@ -1,10 +1,10 @@
-import type { StructuredPatchHunk } from 'diff';
+import type { Hunk as Hunk } from 'diff';
 import * as React from 'react';
 import { Box, NoSelect, Text } from '../ink.js';
 import { intersperse } from '../utils/array.js';
 import { StructuredDiff } from './StructuredDiff.js';
 type Props = {
-  hunks: StructuredPatchHunk[];
+  hunks: Hunk[];
   dim: boolean;
   width: number;
   filePath: string;

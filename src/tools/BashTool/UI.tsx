@@ -28,7 +28,7 @@ const MAX_COMMAND_DISPLAY_CHARS = 160;
 
 // Simple component to show background hint and handle ctrl+b
 // When ctrl+b is pressed, backgrounds ALL running foreground commands
-export function BackgroundHint(t0) {
+export function BackgroundHint(t0: any) {
   const $ = _c(9);
   let t1;
   if ($[0] !== t0) {

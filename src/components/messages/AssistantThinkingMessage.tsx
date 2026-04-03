@@ -16,7 +16,7 @@ type Props = {
   /** When true, hide this thinking block entirely (used for past thinking in transcript mode) */
   hideInTranscript?: boolean;
 };
-export function AssistantThinkingMessage(t0) {
+export function AssistantThinkingMessage(t0: any) {
   const $ = _c(9);
   const {
     param: t1,

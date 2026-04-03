@@ -18,7 +18,7 @@ type TeleportErrorProps = {
 // a new object in checkErrors' deps and caused the mount effect to
 // re-fire on every render.
 const EMPTY_ERRORS_TO_IGNORE: ReadonlySet<TeleportLocalErrorType> = new Set();
-export function TeleportError(t0) {
+export function TeleportError(t0: any) {
   const $ = _c(18);
   const {
     onComplete,

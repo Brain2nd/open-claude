@@ -1,4 +1,4 @@
-import { type StructuredPatchHunk, structuredPatch } from 'diff'
+import { type Hunk as Hunk, structuredPatch } from 'diff'
 import { logError } from 'src/utils/log.js'
 import { expandPath } from 'src/utils/path.js'
 import { countCharInString } from 'src/utils/stringUtils.js'
@@ -243,7 +243,7 @@ export function getPatchForEdit({
   oldString: string
   newString: string
   replaceAll?: boolean
-}): { patch: StructuredPatchHunk[]; updatedFile: string } {
+}): { patch: Hunk[]; updatedFile: string } {
   return getPatchForEdits({
     filePath,
     fileContents,
@@ -267,7 +267,7 @@ export function getPatchForEdits({
   filePath: string
   fileContents: string
   edits: FileEdit[]
-}): { patch: StructuredPatchHunk[]; updatedFile: string } {
+}): { patch: Hunk[]; updatedFile: string } {
   let updatedFile = fileContents
   const appliedNewStrings: string[] = []
 
@@ -373,14 +373,14 @@ export function getSnippetForTwoFileDiff(
     {
       context: 8,
       timeout: DIFF_TIMEOUT_MS,
-    },
+    } as any,
   )
 
   if (!patch) {
     return ''
   }
 
-  const full = patch.hunks
+  const full = (patch as any).hunks
     .map(_ => ({
       startLine: _.oldStart,
       content: _.lines
@@ -415,7 +415,7 @@ const CONTEXT_LINES = 4
  * @returns The snippet text with line numbers and the starting line number
  */
 export function getSnippetForPatch(
-  patch: StructuredPatchHunk[],
+  patch: Hunk[],
   newFile: string,
 ): { formattedSnippet: string; startLine: number } {
   if (patch.length === 0) {
@@ -492,7 +492,7 @@ export function getSnippet(
   return { snippet, startLine: startLine + 1 }
 }
 
-export function getEditsForPatch(patch: StructuredPatchHunk[]): FileEdit[] {
+export function getEditsForPatch(patch: Hunk[]): FileEdit[] {
   return patch.map(hunk => {
     // Extract the changes from this hunk
     const contextLines: string[] = []
@@ -683,10 +683,10 @@ export function areFileEditsEquivalent(
   }
 
   // Try applying both sets of edits
-  let result1: { patch: StructuredPatchHunk[]; updatedFile: string } | null =
+  let result1: { patch: Hunk[]; updatedFile: string } | null =
     null
   let error1: string | null = null
-  let result2: { patch: StructuredPatchHunk[]; updatedFile: string } | null =
+  let result2: { patch: Hunk[]; updatedFile: string } | null =
     null
   let error2: string | null = null
 

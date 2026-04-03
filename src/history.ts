@@ -24,7 +24,7 @@ const MAX_PASTED_CONTENT_LENGTH = 1024
  */
 type StoredPastedContent = {
   id: number
-  type: 'text' | 'image'
+  type: string
   content?: string // Inline content for small pastes
   contentHash?: string // Hash reference for large pastes stored externally
   mediaType?: string

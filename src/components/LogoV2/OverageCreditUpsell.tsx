@@ -82,7 +82,7 @@ type Props = {
   maxWidth?: number;
   twoLine?: boolean;
 };
-export function OverageCreditUpsell(t0) {
+export function OverageCreditUpsell(t0: any) {
   const $ = _c(8);
   const {
     maxWidth,

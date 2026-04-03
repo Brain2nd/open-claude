@@ -12,7 +12,7 @@ type Props = {
   onSelectPath: (path: string) => void;
   onCancel: () => void;
 };
-export function TeleportRepoMismatchDialog(t0) {
+export function TeleportRepoMismatchDialog(t0: any) {
   const $ = _c(18);
   const {
     targetRepo,

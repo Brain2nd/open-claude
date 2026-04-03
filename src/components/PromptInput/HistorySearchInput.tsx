@@ -8,7 +8,7 @@ type Props = {
   onChange: (value: string) => void;
   historyFailedMatch: boolean;
 };
-function HistorySearchInput(t0) {
+function HistorySearchInput(t0: any) {
   const $ = _c(9);
   const {
     value,

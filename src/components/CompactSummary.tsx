@@ -11,7 +11,7 @@ type Props = {
   message: NormalizedUserMessage;
   screen: Screen;
 };
-export function CompactSummary(t0) {
+export function CompactSummary(t0: any) {
   const $ = _c(24);
   const {
     message,

@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle'
-import type { UUID } from 'crypto'
+import type { UUID } from 'src/types/message.js'
 import { dirname } from 'path'
 import {
   getMainLoopModelOverride,

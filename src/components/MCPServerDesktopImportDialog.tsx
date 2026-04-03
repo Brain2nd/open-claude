@@ -16,7 +16,7 @@ type Props = {
   scope: ConfigScope;
   onDone(): void;
 };
-export function MCPServerDesktopImportDialog(t0) {
+export function MCPServerDesktopImportDialog(t0: any) {
   const $ = _c(36);
   const {
     servers,

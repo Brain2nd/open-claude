@@ -240,7 +240,7 @@ type TeamDetailViewProps = {
   selectedIndex: number;
   onCancel: () => void;
 };
-function TeamDetailView(t0) {
+function TeamDetailView(t0: any) {
   const $ = _c(13);
   const {
     teamName,
@@ -295,7 +295,7 @@ type TeammateListItemProps = {
   teammate: TeammateStatus;
   isSelected: boolean;
 };
-function TeammateListItem(t0) {
+function TeammateListItem(t0: any) {
   const $ = _c(21);
   const {
     teammate,
@@ -374,7 +374,7 @@ type TeammateDetailViewProps = {
   teamName: string;
   onCancel: () => void;
 };
-function TeammateDetailView(t0) {
+function TeammateDetailView(t0: any) {
   const $ = _c(39);
   const {
     teammate,

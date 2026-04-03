@@ -35,7 +35,7 @@ interface MCPConnectionManagerProps {
 }
 
 // TODO (ollie): We may be able to get rid of this context by putting these function on app state
-export function MCPConnectionManager(t0) {
+export function MCPConnectionManager(t0: any) {
   const $ = _c(6);
   const {
     children,

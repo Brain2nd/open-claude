@@ -1,6 +1,6 @@
 import { c as _c } from "react/compiler-runtime";
 import chalk from 'chalk';
-import type { UUID } from 'crypto';
+import type { UUID } from 'src/types/message.js';
 import * as React from 'react';
 import { getSessionId } from '../../bootstrap/state.js';
 import type { CommandResultDisplay } from '../../commands.js';
@@ -12,7 +12,7 @@ import { logEvent } from '../../services/analytics/index.js';
 import type { LocalJSXCommandOnDone } from '../../types/command.js';
 import { recursivelySanitizeUnicode } from '../../utils/sanitization.js';
 import { getCurrentSessionTag, getTranscriptPath, saveTag } from '../../utils/sessionStorage.js';
-function ConfirmRemoveTag(t0) {
+function ConfirmRemoveTag(t0: any) {
   const $ = _c(11);
   const {
     tagName,
@@ -69,7 +69,7 @@ function ConfirmRemoveTag(t0) {
   }
   return t6;
 }
-function ToggleTagAndClose(t0) {
+function ToggleTagAndClose(t0: any) {
   const $ = _c(17);
   const {
     tagName,
@@ -178,7 +178,7 @@ function ToggleTagAndClose(t0) {
   }
   return null;
 }
-function ShowHelp(t0) {
+function ShowHelp(t0: any) {
   const $ = _c(3);
   const {
     onDone

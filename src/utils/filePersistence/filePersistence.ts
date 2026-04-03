@@ -218,14 +218,16 @@ async function executeBYOCPersistence(
   for (const result of results) {
     if (result.success) {
       persistedFiles.push({
+        path: result.path,
         filename: result.path,
         file_id: result.fileId,
-      })
+      } as any)
     } else {
       failedFiles.push({
+        path: result.path,
         filename: result.path,
         error: result.error,
-      })
+      } as any)
     }
   }
 

@@ -10,7 +10,7 @@ type Props = {
   mcpClients?: MCPServerConnection[];
 };
 const EMPTY_MCP_CLIENTS: MCPServerConnection[] = [];
-export function useMcpConnectivityStatus(t0) {
+export function useMcpConnectivityStatus(t0: any) {
   const $ = _c(4);
   const {
     mcpClients: t1

@@ -1,6 +1,7 @@
 import { c as _c } from "react/compiler-runtime";
 import type { ContentBlockParam, TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { randomUUID, type UUID } from 'crypto';
+import { randomUUID } from 'crypto';
+import type { UUID } from 'src/types/message.js';
 import figures from 'figures';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -118,7 +119,7 @@ export function MessageSelector({
       ...summarizeInputProps,
       onChange: setSummarizeFromFeedback
     });
-    if ("external" === 'ant') {
+    if (("external" as string) === 'ant') {
       baseOptions.push({
         value: 'summarize_up_to',
         label: 'Summarize up to here',
@@ -413,7 +414,7 @@ function getRestoreOptionConversationText(option: RestoreOption): string {
       return 'The conversation will be unchanged.';
   }
 }
-function RestoreOptionDescription(t0) {
+function RestoreOptionDescription(t0: any) {
   const $ = _c(11);
   const {
     selectedRestoreOption,
@@ -458,7 +459,7 @@ function RestoreOptionDescription(t0) {
   }
   return t4;
 }
-function RestoreCodeConfirmation(t0) {
+function RestoreCodeConfirmation(t0: any) {
   const $ = _c(14);
   const {
     diffStatsForRestore
@@ -541,7 +542,7 @@ function RestoreCodeConfirmation(t0) {
   }
   return t2;
 }
-function DiffStatsText(t0) {
+function DiffStatsText(t0: any) {
   const $ = _c(7);
   const {
     diffStats
@@ -576,7 +577,7 @@ function DiffStatsText(t0) {
   }
   return t3;
 }
-function UserMessageOption(t0) {
+function UserMessageOption(t0: any) {
   const $ = _c(31);
   const {
     userMessage,

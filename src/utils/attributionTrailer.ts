@@ -1,1 +1,1 @@
-export async function buildPRTrailers(): Promise<string[]> { return [] }
+export async function buildPRTrailers(..._args: any[]): Promise<string[]> { return [] }

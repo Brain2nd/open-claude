@@ -140,7 +140,7 @@ function buildLogMetadata(log: LogOption, options?: {
   const projectSuffix = showProjectPath && log.projectPath ? ` · ${log.projectPath}` : '';
   return childPadding + baseMetadata + projectSuffix;
 }
-export function LogSelector(t0) {
+export function LogSelector(t0: any) {
   const $ = _c(247);
   const {
     logs,

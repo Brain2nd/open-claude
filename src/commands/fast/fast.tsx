@@ -38,7 +38,7 @@ function applyFastMode(enable: boolean, setAppState: (f: (prev: AppState) => App
     }));
   }
 }
-export function FastModePicker(t0) {
+export function FastModePicker(t0: any) {
   const $ = _c(30);
   const {
     onDone,

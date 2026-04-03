@@ -18,7 +18,7 @@ type Props = {
   verbose: boolean;
   isTranscriptMode?: boolean;
 };
-export function UserToolRejectMessage(t0) {
+export function UserToolRejectMessage(t0: any) {
   const $ = _c(13);
   const {
     input,

@@ -1,1 +1,1 @@
-export function WorkflowDetailDialog() { return null }
+export function WorkflowDetailDialog(_props: any) { return null }

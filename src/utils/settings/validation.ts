@@ -179,11 +179,13 @@ export function formatZodError(
 export function validateSettingsFileContent(content: string):
   | {
       isValid: true
+      [key: string]: any
     }
   | {
       isValid: false
       error: string
       fullSchema: string
+      [key: string]: any
     } {
   try {
     // Parse the JSON first

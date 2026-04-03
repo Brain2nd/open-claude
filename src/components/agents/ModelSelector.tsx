@@ -8,7 +8,7 @@ interface ModelSelectorProps {
   onComplete: (model?: string) => void;
   onCancel?: () => void;
 }
-export function ModelSelector(t0) {
+export function ModelSelector(t0: any) {
   const $ = _c(11);
   const {
     initialModel,

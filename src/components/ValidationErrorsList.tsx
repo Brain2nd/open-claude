@@ -59,7 +59,7 @@ function buildNestedTree(errors: ValidationError[]): TreeNode {
 /**
  * Groups and displays validation errors using treeify with deduplication
  */
-export function ValidationErrorsList(t0) {
+export function ValidationErrorsList(t0: any) {
   const $ = _c(9);
   const {
     errors

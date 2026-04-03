@@ -6,7 +6,7 @@ import type { WizardContextValue, WizardProviderProps } from './types.js';
 // Use any here for the context since it will be cast properly when used
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const WizardContext = createContext<WizardContextValue<any> | null>(null);
-export function WizardProvider(t0) {
+export function WizardProvider(t0: any) {
   const $ = _c(38);
   const {
     steps,
@@ -19,7 +19,7 @@ export function WizardProvider(t0) {
   } = t0;
   let t3;
   if ($[0] !== t1) {
-    t3 = t1 === undefined ? {} as T : t1;
+    t3 = t1 === undefined ? {} as any : t1;
     $[0] = t1;
     $[1] = t3;
   } else {

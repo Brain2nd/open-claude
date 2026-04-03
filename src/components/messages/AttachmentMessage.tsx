@@ -113,7 +113,7 @@ export function AttachmentMessage({
       // names — shortId is undefined outside ant builds anyway.
       const names = attachment.skills.map(s => s.shortId ? `${s.name} [${s.shortId}]` : s.name).join(', ');
       const firstId = attachment.skills[0]?.shortId;
-      const hint = "external" === 'ant' && !isDemoEnv && firstId ? ` · /skill-feedback ${firstId} 1=wrong 2=noisy 3=good [comment]` : '';
+      const hint = ("external" as string) === 'ant' && !isDemoEnv && firstId ? ` · /skill-feedback ${firstId} 1=wrong 2=noisy 3=good [comment]` : '';
       return <Line>
           <Text bold>{attachment.skills.length}</Text> relevant{' '}
           {plural(attachment.skills.length, 'skill')}: {names}
@@ -351,14 +351,14 @@ export function AttachmentMessage({
       // skill_discovery and teammate_mailbox are handled BEFORE the switch in
       // runtime-gated blocks (feature() / isAgentSwarmsEnabled()) that TS can't
       // narrow through — excluded here via type union (compile-time only, no emit).
-      attachment.type satisfies NullRenderingAttachmentType | 'skill_discovery' | 'teammate_mailbox';
+      (attachment.type as any) satisfies NullRenderingAttachmentType | 'skill_discovery' | 'teammate_mailbox';
       return null;
   }
 }
 type TaskStatusAttachment = Extract<Attachment, {
   type: 'task_status';
 }>;
-function TaskStatusMessage(t0) {
+function TaskStatusMessage(t0: any) {
   const $ = _c(4);
   const {
     attachment
@@ -387,7 +387,7 @@ function TaskStatusMessage(t0) {
   }
   return t1;
 }
-function GenericTaskStatus(t0) {
+function GenericTaskStatus(t0: any) {
   const $ = _c(9);
   const {
     attachment
@@ -429,7 +429,7 @@ function GenericTaskStatus(t0) {
   }
   return t4;
 }
-function TeammateTaskStatus(t0) {
+function TeammateTaskStatus(t0: any) {
   const $ = _c(16);
   const {
     attachment
@@ -443,7 +443,7 @@ function TeammateTaskStatus(t0) {
   } else {
     t1 = $[1];
   }
-  const task = useAppState(t1);
+  const task = useAppState(t1) as any;
   if (task?.type !== "in_process_teammate") {
     let t2;
     if ($[2] !== attachment) {
@@ -503,7 +503,7 @@ function TeammateTaskStatus(t0) {
 }
 // We allow setting dimColor to false here to help work around the dim-bold bug.
 // https://github.com/chalk/chalk/issues/290
-function Line(t0) {
+function Line(t0: any) {
   const $ = _c(7);
   const {
     dimColor: t1,

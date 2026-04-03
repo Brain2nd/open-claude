@@ -14,7 +14,7 @@ type PlanApprovalRequestProps = {
  * Renders a plan approval request with a planMode-colored border,
  * showing the plan content and instructions for approving/rejecting.
  */
-export function PlanApprovalRequestDisplay(t0) {
+export function PlanApprovalRequestDisplay(t0: any) {
   const $ = _c(10);
   const {
     request
@@ -63,7 +63,7 @@ type PlanApprovalResponseProps = {
 /**
  * Renders a plan approval response with a success (green) or error (red) border.
  */
-export function PlanApprovalResponseDisplay(t0) {
+export function PlanApprovalResponseDisplay(t0: any) {
   const $ = _c(13);
   const {
     response,
