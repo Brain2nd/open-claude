@@ -43,6 +43,9 @@ let hasPendingChanges = false
 let currentPushPromise: Promise<void> | null = null
 let watcherStarted = false
 
+let remoteTeamMemPollTimer: ReturnType<typeof setInterval> | null = null
+let lastRemoteTeamMemSnapshot: string | null = null
+
 // Set after a push fails for a reason that can't self-heal on retry.
 // Prevents watch events from other sessions' writes to the shared team
 // dir driving an infinite retry loop (BQ Mar 14-16: one no_oauth device
@@ -229,6 +232,51 @@ async function startFileWatcher(teamDir: string): Promise<void> {
   registerCleanup(async () => stopTeamMemoryWatcher())
 }
 
+const REMOTE_TEAM_MEM_POLL_MS = 10_000 // 10 seconds
+
+/**
+ * Poll remote team memory directory via SSH proxy to detect changes.
+ * Compares a snapshot of file listings to detect additions/modifications/deletions.
+ */
+function startRemoteTeamMemoryPoll(): void {
+  const proxyManager = getSSHProxyManager()
+  if (!proxyManager) return
+
+  const teamDir = getTeamMemPath()
+
+  // Capture initial snapshot of remote team memory files
+  try {
+    lastRemoteTeamMemSnapshot = proxyManager
+      .execSync(`find '${teamDir}' -type f -exec stat -c '%n %Y' {} \\; 2>/dev/null || find '${teamDir}' -type f -exec stat -f '%N %m' {} \\; 2>/dev/null`)
+      .trim()
+  } catch {
+    lastRemoteTeamMemSnapshot = null
+  }
+
+  remoteTeamMemPollTimer = setInterval(() => {
+    const pm = getSSHProxyManager()
+    if (!pm) return
+
+    try {
+      const currentSnapshot = pm
+        .execSync(`find '${teamDir}' -type f -exec stat -c '%n %Y' {} \\; 2>/dev/null || find '${teamDir}' -type f -exec stat -f '%N %m' {} \\; 2>/dev/null`)
+        .trim()
+      if (currentSnapshot !== lastRemoteTeamMemSnapshot) {
+        lastRemoteTeamMemSnapshot = currentSnapshot
+        logForDebugging('team-memory-watcher: remote change detected via SSH poll', {
+          level: 'debug',
+        })
+        schedulePush()
+      }
+    } catch {
+      // SSH command failed — skip this cycle
+    }
+  }, REMOTE_TEAM_MEM_POLL_MS)
+  remoteTeamMemPollTimer.unref()
+
+  registerCleanup(async () => stopTeamMemoryWatcher())
+}
+
 /**
  * Start the team memory sync system.
  *
@@ -254,9 +302,37 @@ export async function startTeamMemoryWatcher(): Promise<void> {
   if (!feature('TEAMMEM')) {
     return
   }
-  // When SSH proxy is active, team memory lives on the remote host and
-  // fs.watch cannot observe remote filesystem changes.
+  // When SSH proxy is active, team memory lives on the remote host.
+  // Use polling via SSH instead of local fs.watch.
   if (getSSHProxyManager()) {
+    if (!isTeamMemoryEnabled() || !isTeamMemorySyncAvailable()) {
+      return
+    }
+    const repoSlug = await getGithubRepo()
+    if (!repoSlug) {
+      logForDebugging(
+        'team-memory-watcher: no github.com remote, skipping sync',
+        { level: 'debug' },
+      )
+      return
+    }
+    syncState = createSyncState()
+    // Initial pull from server
+    try {
+      const pullResult = await pullTeamMemory(syncState)
+      if (pullResult.success && pullResult.filesWritten > 0) {
+        logForDebugging(
+          `team-memory-watcher: initial pull got ${pullResult.filesWritten} files (remote)`,
+          { level: 'info' },
+        )
+      }
+    } catch (e) {
+      logForDebugging(
+        `team-memory-watcher: initial pull failed (remote): ${errorMessage(e)}`,
+        { level: 'warn' },
+      )
+    }
+    startRemoteTeamMemoryPoll()
     return
   }
   if (!isTeamMemoryEnabled() || !isTeamMemorySyncAvailable()) {
@@ -339,6 +415,11 @@ export async function stopTeamMemoryWatcher(): Promise<void> {
     watcher.close()
     watcher = null
   }
+  if (remoteTeamMemPollTimer) {
+    clearInterval(remoteTeamMemPollTimer)
+    remoteTeamMemPollTimer = null
+  }
+  lastRemoteTeamMemSnapshot = null
   // Await any in-flight push
   if (currentPushPromise) {
     try {
@@ -381,6 +462,11 @@ export function _resetWatcherStateForTesting(opts?: {
   watcherStarted = opts?.skipWatcher ?? false
   pushSuppressedReason = opts?.pushSuppressedReason ?? null
   syncState = opts?.syncState ?? null
+  if (remoteTeamMemPollTimer) {
+    clearInterval(remoteTeamMemPollTimer)
+    remoteTeamMemPollTimer = null
+  }
+  lastRemoteTeamMemSnapshot = null
 }
 
 /**

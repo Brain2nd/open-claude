@@ -4,6 +4,7 @@ import * as platformPath from 'path'
 import { getIsRemoteMode } from '../../bootstrap/state.js'
 import { getSSHProxyManager } from '../../ssh-proxy/proxyState.js'
 import { registerCleanup } from '../cleanupRegistry.js'
+import { getFsImplementation } from '../fsOperations.js'
 import { logForDebugging } from '../debug.js'
 import { errorMessage } from '../errors.js'
 import {
@@ -65,6 +66,8 @@ const DELETION_GRACE_MS =
 
 let watcher: FSWatcher | null = null
 let mdmPollTimer: ReturnType<typeof setInterval> | null = null
+let remoteSettingsPollTimer: ReturnType<typeof setInterval> | null = null
+let lastRemoteSettingsMtimes: Map<string, string> = new Map()
 let lastMdmSnapshot: string | null = null
 let initialized = false
 let disposed = false
@@ -85,8 +88,15 @@ let testOverrides: {
 export async function initialize(): Promise<void> {
   if (getIsRemoteMode()) return
   // When SSH proxy is active, project-level settings live on the remote
-  // host and cannot be watched with local chokidar.
-  if (getSSHProxyManager()) return
+  // host — use polling via SSH instead of local chokidar.
+  if (getSSHProxyManager()) {
+    if (initialized || disposed) return
+    initialized = true
+    startMdmPoll()
+    registerCleanup(dispose)
+    startRemoteSettingsPoll()
+    return
+  }
   if (initialized || disposed) return
   initialized = true
 
@@ -149,6 +159,67 @@ export async function initialize(): Promise<void> {
   watcher.on('add', handleAdd)
 }
 
+const REMOTE_SETTINGS_POLL_MS = 10_000 // 10 seconds
+
+/**
+ * Poll remote settings files via SSH proxy to detect changes.
+ * Uses getFsImplementation().statSync() which is already proxied to the
+ * remote host — no need for custom SSH exec logic.
+ */
+function startRemoteSettingsPoll(): void {
+  if (!getSSHProxyManager()) return
+
+  // Gather the settings file paths to watch
+  const pathsToWatch: { path: string; source: SettingSource }[] = []
+  for (const source of SETTING_SOURCES) {
+    if (source === 'flagSettings') continue
+    const path = getSettingsFilePathForSource(source)
+    if (path) {
+      pathsToWatch.push({ path, source })
+    }
+  }
+
+  if (pathsToWatch.length === 0) return
+
+  const fsImpl = getFsImplementation()
+
+  // Capture initial mtimes
+  for (const { path } of pathsToWatch) {
+    try {
+      const stats = fsImpl.statSync(path)
+      lastRemoteSettingsMtimes.set(path, String(stats.mtimeMs))
+    } catch {
+      // File may not exist yet
+    }
+  }
+
+  remoteSettingsPollTimer = setInterval(() => {
+    if (disposed) return
+    if (!getSSHProxyManager()) return
+
+    const fs = getFsImplementation()
+    for (const { path, source } of pathsToWatch) {
+      try {
+        const stats = fs.statSync(path)
+        const currentMtime = String(stats.mtimeMs)
+        const lastMtime = lastRemoteSettingsMtimes.get(path) ?? ''
+
+        if (currentMtime !== lastMtime) {
+          lastRemoteSettingsMtimes.set(path, currentMtime)
+          // Only trigger change if we had a previous value (skip initial detection)
+          if (lastMtime !== '') {
+            logForDebugging(`Remote settings change detected: ${path}`)
+            fanOut(source)
+          }
+        }
+      } catch {
+        // stat failed (file doesn't exist or SSH error) — skip this cycle
+      }
+    }
+  }, REMOTE_SETTINGS_POLL_MS)
+  remoteSettingsPollTimer.unref()
+}
+
 /**
  * Clean up file watcher. Returns a promise that resolves when chokidar's
  * close() settles — callers that need the watcher fully stopped before
@@ -161,6 +232,11 @@ export function dispose(): Promise<void> {
     clearInterval(mdmPollTimer)
     mdmPollTimer = null
   }
+  if (remoteSettingsPollTimer) {
+    clearInterval(remoteSettingsPollTimer)
+    remoteSettingsPollTimer = null
+  }
+  lastRemoteSettingsMtimes.clear()
   for (const timer of pendingDeletions.values()) clearTimeout(timer)
   pendingDeletions.clear()
   lastMdmSnapshot = null
@@ -472,6 +548,11 @@ export function resetForTesting(overrides?: {
     clearInterval(mdmPollTimer)
     mdmPollTimer = null
   }
+  if (remoteSettingsPollTimer) {
+    clearInterval(remoteSettingsPollTimer)
+    remoteSettingsPollTimer = null
+  }
+  lastRemoteSettingsMtimes.clear()
   for (const timer of pendingDeletions.values()) clearTimeout(timer)
   pendingDeletions.clear()
   lastMdmSnapshot = null

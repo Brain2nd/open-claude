@@ -55,11 +55,8 @@ class TerminalPanel {
   // ── public API ────────────────────────────────────────────────────
 
   toggle(): void {
-    // Terminal panel uses local tmux/shell which doesn't apply in SSH proxy mode.
-    if (getSSHProxyManager()) {
-      logForDebugging('Terminal panel: disabled in SSH proxy mode')
-      return
-    }
+    // In SSH proxy mode, open a remote shell via SSH instead of local shell.
+    // tmux still runs locally for persistence, but the shell command is SSH.
     this.showShell()
   }
 
@@ -86,8 +83,27 @@ class TerminalPanel {
     return result.status === 0
   }
 
-  private createSession(): boolean {
+  private getShellCommand(): { cmd: string; args: string[] } {
+    const proxyManager = getSSHProxyManager()
+    if (proxyManager) {
+      // In SSH proxy mode, open a remote shell via SSH
+      const sshArgs: string[] = [proxyManager.host, '-t']
+      if (proxyManager.port) {
+        sshArgs.push('-p', String(proxyManager.port))
+      }
+      if (proxyManager.identityFile) {
+        sshArgs.push('-i', proxyManager.identityFile)
+      }
+      // Start an interactive login shell on the remote
+      sshArgs.push('bash', '-l')
+      return { cmd: 'ssh', args: sshArgs }
+    }
     const shell = process.env.SHELL || '/bin/bash'
+    return { cmd: shell, args: ['-l'] }
+  }
+
+  private createSession(): boolean {
+    const { cmd, args } = this.getShellCommand()
     const cwd = pwd()
     const socket = getTerminalPanelSocket()
 
@@ -102,8 +118,8 @@ class TerminalPanel {
         TMUX_SESSION,
         '-c',
         cwd,
-        shell,
-        '-l',
+        cmd,
+        ...args,
       ],
       { encoding: 'utf-8' },
     )
@@ -186,6 +202,22 @@ class TerminalPanel {
 
   /** Fallback when tmux is not available — runs a non-persistent shell. */
   private runShellDirect(): void {
+    const proxyManager = getSSHProxyManager()
+    if (proxyManager) {
+      // In SSH proxy mode, open an interactive remote shell directly
+      const sshArgs: string[] = [proxyManager.host, '-t']
+      if (proxyManager.port) {
+        sshArgs.push('-p', String(proxyManager.port))
+      }
+      if (proxyManager.identityFile) {
+        sshArgs.push('-i', proxyManager.identityFile)
+      }
+      spawnSync('ssh', sshArgs, {
+        stdio: 'inherit',
+        env: process.env,
+      })
+      return
+    }
     const shell = process.env.SHELL || '/bin/bash'
     const cwd = pwd()
     spawnSync(shell, ['-i', '-l'], {

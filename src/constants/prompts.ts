@@ -734,9 +734,15 @@ function getKnowledgeCutoff(modelId: string): string | null {
 }
 
 function getShellInfoLine(): string {
-  // When SSH proxy is active, report remote shell instead of local
-  if (getSSHProxyManager()) {
-    return 'Shell: bash (remote)'
+  // When SSH proxy is active, detect the actual remote shell
+  const proxyManager = getSSHProxyManager()
+  if (proxyManager) {
+    try {
+      const remoteShell = proxyManager.execSync('basename "$SHELL"').trim() || 'bash'
+      return `Shell: ${remoteShell} (remote)`
+    } catch {
+      return 'Shell: bash (remote)'
+    }
   }
   const shell = process.env.SHELL || 'unknown'
   const shellName = shell.includes('zsh')

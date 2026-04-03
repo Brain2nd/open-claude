@@ -339,6 +339,8 @@ class GitFileWatcher {
   private watchedPaths: string[] = []
   private branchRefPath: string | null = null
   private cache = new Map<string, CacheEntry<unknown>>()
+  private remotePollTimer: ReturnType<typeof setInterval> | null = null
+  private lastRemoteHead: string | null = null
 
   async ensureStarted(): Promise<void> {
     if (this.initialized) {
@@ -359,8 +361,9 @@ class GitFileWatcher {
     }
 
     // When SSH proxy is active, .git lives on the remote host and cannot
-    // be watched with local fs.watchFile. Skip all watchers.
+    // be watched with local fs.watchFile. Use polling instead.
     if (getSSHProxyManager()) {
+      this.startRemotePolling()
       return
     }
 
@@ -380,6 +383,43 @@ class GitFileWatcher {
 
     // Watch the current branch's ref file for commit changes
     await this.watchCurrentBranchRef()
+
+    registerCleanup(async () => {
+      this.stopWatching()
+    })
+  }
+
+  /**
+   * Poll the remote git HEAD periodically via SSH proxy to detect changes.
+   * Used when SSH proxy is active and local fs.watchFile cannot observe
+   * the remote .git directory.
+   */
+  private startRemotePolling(): void {
+    const proxyManager = getSSHProxyManager()
+    if (!proxyManager) return
+
+    // Capture initial HEAD
+    try {
+      this.lastRemoteHead = proxyManager.execSync('git rev-parse HEAD 2>/dev/null').trim()
+    } catch {
+      this.lastRemoteHead = null
+    }
+
+    const REMOTE_POLL_MS = 5000 // 5 seconds
+    this.remotePollTimer = setInterval(() => {
+      const pm = getSSHProxyManager()
+      if (!pm) return
+      try {
+        const currentHead = pm.execSync('git rev-parse HEAD 2>/dev/null').trim()
+        if (currentHead && currentHead !== this.lastRemoteHead) {
+          this.lastRemoteHead = currentHead
+          this.invalidate()
+        }
+      } catch {
+        // Remote command failed — skip this cycle
+      }
+    }, REMOTE_POLL_MS)
+    this.remotePollTimer.unref()
 
     registerCleanup(async () => {
       this.stopWatching()
@@ -456,6 +496,10 @@ class GitFileWatcher {
     }
     this.watchedPaths = []
     this.branchRefPath = null
+    if (this.remotePollTimer) {
+      clearInterval(this.remotePollTimer)
+      this.remotePollTimer = null
+    }
   }
 
   /**
@@ -499,6 +543,7 @@ class GitFileWatcher {
     this.initPromise = null
     this.gitDir = null
     this.commonDir = null
+    this.lastRemoteHead = null
   }
 }
 

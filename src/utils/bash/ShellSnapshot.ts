@@ -1,6 +1,6 @@
 import { execFile } from 'child_process'
 import { execa } from 'execa'
-import { mkdir, stat } from 'fs/promises'
+import { mkdir, stat, unlink, writeFile } from 'fs/promises'
 import * as os from 'os'
 import { join } from 'path'
 import { logEvent } from 'src/services/analytics/index.js'
@@ -414,11 +414,53 @@ async function getSnapshotScript(
 export const createAndSaveSnapshot = async (
   binShell: string,
 ): Promise<string | undefined> => {
-  // When SSH proxy is active, the local shell config (~/.bashrc, ~/.zshrc)
-  // does not reflect the remote environment. Skip snapshot loading entirely.
-  if (getSSHProxyManager()) {
-    logForDebugging('SSH proxy active — skipping local shell snapshot')
-    return undefined
+  // When SSH proxy is active, capture the remote shell environment instead
+  // of the local one. We run a minimal env dump on the remote and write a
+  // local snapshot file that exports the remote PATH and aliases.
+  const proxyManager = getSSHProxyManager()
+  if (proxyManager) {
+    logForDebugging('SSH proxy active — capturing remote shell snapshot')
+    try {
+      // Detect remote shell
+      const remoteShell = proxyManager.execSync('echo $SHELL').trim() || '/bin/bash'
+      const shellType = remoteShell.includes('zsh') ? 'zsh' : remoteShell.includes('bash') ? 'bash' : 'sh'
+
+      // Create local snapshot file for the remote environment
+      const timestamp = Date.now()
+      const randomId = Math.random().toString(36).substring(2, 8)
+      const snapshotsDir = join(getClaudeConfigHomeDir(), 'shell-snapshots')
+      await mkdir(snapshotsDir, { recursive: true })
+      const shellSnapshotPath = join(
+        snapshotsDir,
+        `snapshot-remote-${shellType}-${timestamp}-${randomId}.sh`,
+      )
+
+      // Capture remote environment: PATH, aliases, and exported variables
+      // We source the remote rc file in a login shell and dump the resulting env
+      const remoteEnvScript = `${remoteShell} -l -i -c 'echo "# Remote snapshot"; echo "# PATH"; echo "export PATH=\\"$PATH\\""; echo "# Aliases"; alias 2>/dev/null | sed "s/^alias //g" | sed "s/^/alias -- /" ; echo "shopt -s expand_aliases 2>/dev/null || true"' 2>/dev/null`
+      const remoteEnv = proxyManager.execSync(remoteEnvScript)
+
+      // Write the snapshot locally
+      await writeFile(shellSnapshotPath, remoteEnv, 'utf8')
+
+      logForDebugging(`Remote shell snapshot created at: ${shellSnapshotPath} (${remoteEnv.length} bytes)`)
+
+      // Register cleanup (path is under ~/.openclaude/, always local)
+      registerCleanup(async () => {
+        try {
+          await unlink(shellSnapshotPath)
+          logForDebugging(`Cleaned up remote session snapshot: ${shellSnapshotPath}`)
+        } catch (error) {
+          logForDebugging(`Error cleaning up remote session snapshot: ${error}`)
+        }
+      })
+
+      return shellSnapshotPath
+    } catch (error) {
+      logForDebugging(`Failed to capture remote shell snapshot: ${error}`)
+      logError(error)
+      return undefined
+    }
   }
 
   const shellType = binShell.includes('zsh')

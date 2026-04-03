@@ -70,6 +70,8 @@ let disposed = false
 let dynamicSkillsCallbackRegistered = false
 let unregisterCleanup: (() => void) | null = null
 const skillsChanged = createSignal()
+let remoteSkillsPollTimer: ReturnType<typeof setInterval> | null = null
+let lastRemoteSkillsSnapshot: string | null = null
 
 // Test overrides for timing constants
 let testOverrides: {
@@ -85,8 +87,13 @@ let testOverrides: {
  */
 export async function initialize(): Promise<void> {
   // When SSH proxy is active, project skill directories live on the remote
-  // host and cannot be watched locally.
-  if (getSSHProxyManager()) return
+  // host — poll via SSH instead of local chokidar.
+  if (getSSHProxyManager()) {
+    if (initialized || disposed) return
+    initialized = true
+    startRemoteSkillsPoll()
+    return
+  }
   if (initialized || disposed) return
   initialized = true
 
@@ -144,6 +151,65 @@ export async function initialize(): Promise<void> {
   })
 }
 
+const REMOTE_SKILLS_POLL_MS = 10_000 // 10 seconds
+
+/**
+ * Poll remote skill directories via SSH proxy to detect changes.
+ * Uses `find` to list skill files and compare a snapshot of their mtimes.
+ */
+function startRemoteSkillsPoll(): void {
+  const proxyManager = getSSHProxyManager()
+  if (!proxyManager) return
+
+  // Gather skill directory paths to watch
+  const paths: string[] = []
+  const userSkillsPath = getSkillsPath('userSettings', 'skills')
+  if (userSkillsPath) paths.push(userSkillsPath)
+  const userCommandsPath = getSkillsPath('userSettings', 'commands')
+  if (userCommandsPath) paths.push(userCommandsPath)
+  const projectSkillsPath = getSkillsPath('projectSettings', 'skills')
+  if (projectSkillsPath) paths.push(platformPath.resolve(projectSkillsPath))
+  const projectCommandsPath = getSkillsPath('projectSettings', 'commands')
+  if (projectCommandsPath) paths.push(platformPath.resolve(projectCommandsPath))
+
+  if (paths.length === 0) return
+
+  // Build a command to list files with mtimes in all skill directories
+  const findCmd = paths.map(p => `find '${p}' -type f -exec stat -c '%n %Y' {} \\; 2>/dev/null || find '${p}' -type f -exec stat -f '%N %m' {} \\; 2>/dev/null`).join('; ')
+
+  // Capture initial snapshot
+  try {
+    lastRemoteSkillsSnapshot = proxyManager.execSync(findCmd).trim()
+  } catch {
+    lastRemoteSkillsSnapshot = null
+  }
+
+  remoteSkillsPollTimer = setInterval(() => {
+    if (disposed) return
+    const pm = getSSHProxyManager()
+    if (!pm) return
+
+    try {
+      const currentSnapshot = pm.execSync(findCmd).trim()
+      if (currentSnapshot !== lastRemoteSkillsSnapshot) {
+        lastRemoteSkillsSnapshot = currentSnapshot
+        logForDebugging('Remote skill change detected via SSH poll')
+        clearSkillCaches()
+        clearCommandsCache()
+        resetSentSkillNames()
+        skillsChanged.emit()
+      }
+    } catch {
+      // SSH command failed — skip this cycle
+    }
+  }, REMOTE_SKILLS_POLL_MS)
+  remoteSkillsPollTimer.unref()
+
+  unregisterCleanup = registerCleanup(async () => {
+    await dispose()
+  })
+}
+
 /**
  * Clean up file watcher
  */
@@ -162,6 +228,11 @@ export function dispose(): Promise<void> {
     clearTimeout(reloadTimer)
     reloadTimer = null
   }
+  if (remoteSkillsPollTimer) {
+    clearInterval(remoteSkillsPollTimer)
+    remoteSkillsPollTimer = null
+  }
+  lastRemoteSkillsSnapshot = null
   pendingChangedPaths.clear()
   skillsChanged.clear()
   return closePromise
@@ -300,6 +371,11 @@ export async function resetForTesting(overrides?: {
     clearTimeout(reloadTimer)
     reloadTimer = null
   }
+  if (remoteSkillsPollTimer) {
+    clearInterval(remoteSkillsPollTimer)
+    remoteSkillsPollTimer = null
+  }
+  lastRemoteSkillsSnapshot = null
   pendingChangedPaths.clear()
   skillsChanged.clear()
   initialized = false

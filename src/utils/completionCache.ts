@@ -23,7 +23,10 @@ type ShellInfo = {
 }
 
 function detectShell(): ShellInfo | null {
-  // When SSH proxy is active, local shell rc files are irrelevant.
+  // When SSH proxy is active, shell completions are irrelevant — the CLI runs
+  // locally and commands are proxied to the remote. The remote shell's rc files
+  // can't be read/written via local fs, and installing completions there would
+  // not help the user who types in the local terminal.
   if (getSSHProxyManager()) {
     return null
   }
