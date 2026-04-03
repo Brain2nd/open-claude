@@ -1,29 +1,37 @@
 /**
  * Global singleton managing the SSH proxy activation state.
  *
- * When active, tools query getSSHProxyManager() to decide whether to
- * redirect filesystem/shell/git operations to the remote host.
- * When null, everything runs locally as usual.
+ * Uses globalThis to ensure the same instance is shared across all
+ * module copies (dynamic import vs static import can create separate
+ * module instances in Bun's bundler).
  *
  * Feature gate: SSH_PROXY
  */
 
 import type { SSHConnectionManager } from './SSHConnectionManager.js'
 
-let activeProxy: SSHConnectionManager | null = null
+const GLOBAL_KEY = '__openclaude_ssh_proxy__' as const
+
+// Store on globalThis so dynamic and static imports share the same state
+function getGlobal(): { proxy: SSHConnectionManager | null } {
+  if (!(globalThis as any)[GLOBAL_KEY]) {
+    (globalThis as any)[GLOBAL_KEY] = { proxy: null }
+  }
+  return (globalThis as any)[GLOBAL_KEY]
+}
 
 export function activateSSHProxy(conn: SSHConnectionManager): void {
-  activeProxy = conn
+  getGlobal().proxy = conn
 }
 
 export function deactivateSSHProxy(): void {
-  activeProxy = null
+  getGlobal().proxy = null
 }
 
 export function getSSHProxyManager(): SSHConnectionManager | null {
-  return activeProxy
+  return getGlobal().proxy
 }
 
 export function isSSHProxyActive(): boolean {
-  return activeProxy !== null
+  return getGlobal().proxy !== null
 }

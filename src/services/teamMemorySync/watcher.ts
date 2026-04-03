@@ -15,6 +15,7 @@ import {
   getTeamMemPath,
   isTeamMemoryEnabled,
 } from '../../memdir/teamMemPaths.js'
+import { getSSHProxyManager } from '../../ssh-proxy/proxyState.js'
 import { registerCleanup } from '../../utils/cleanupRegistry.js'
 import { logForDebugging } from '../../utils/debug.js'
 import { errorMessage } from '../../utils/errors.js'
@@ -251,6 +252,11 @@ async function startFileWatcher(teamDir: string): Promise<void> {
  */
 export async function startTeamMemoryWatcher(): Promise<void> {
   if (!feature('TEAMMEM')) {
+    return
+  }
+  // When SSH proxy is active, team memory lives on the remote host and
+  // fs.watch cannot observe remote filesystem changes.
+  if (getSSHProxyManager()) {
     return
   }
   if (!isTeamMemoryEnabled() || !isTeamMemorySyncAvailable()) {

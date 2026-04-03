@@ -2,6 +2,7 @@ import chokidar, { type FSWatcher } from 'chokidar'
 import { stat } from 'fs/promises'
 import * as platformPath from 'path'
 import { getIsRemoteMode } from '../../bootstrap/state.js'
+import { getSSHProxyManager } from '../../ssh-proxy/proxyState.js'
 import { registerCleanup } from '../cleanupRegistry.js'
 import { logForDebugging } from '../debug.js'
 import { errorMessage } from '../errors.js'
@@ -83,6 +84,9 @@ let testOverrides: {
  */
 export async function initialize(): Promise<void> {
   if (getIsRemoteMode()) return
+  // When SSH proxy is active, project-level settings live on the remote
+  // host and cannot be watched with local chokidar.
+  if (getSSHProxyManager()) return
   if (initialized || disposed) return
   initialized = true
 

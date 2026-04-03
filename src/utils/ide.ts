@@ -1390,6 +1390,11 @@ const detectHostIP = memoize(
 )
 
 async function installFromArtifactory(command: string): Promise<string> {
+  // When SSH proxy is active, local ~/.npmrc is irrelevant for the remote host.
+  const { getSSHProxyManager } = require('../ssh-proxy/proxyState.js')
+  if (getSSHProxyManager()) {
+    throw new Error('Artifactory install not supported in SSH proxy mode')
+  }
   // Read auth token from ~/.npmrc
   const npmrcPath = join(os.homedir(), '.npmrc')
   let authToken: string | null = null

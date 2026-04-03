@@ -614,8 +614,13 @@ export const NodeFsOperations: FsOperations = {
   },
 }
 
-// The currently active filesystem implementation
-let activeFs: FsOperations = NodeFsOperations
+// The currently active filesystem implementation.
+// Stored on globalThis to survive module duplication in Bun's bundler
+// (dynamic import vs static import can create separate module copies).
+const FS_GLOBAL_KEY = '__openclaude_active_fs__' as const
+if (!(globalThis as any)[FS_GLOBAL_KEY]) {
+  (globalThis as any)[FS_GLOBAL_KEY] = { impl: NodeFsOperations }
+}
 
 /**
  * Overrides the filesystem implementation. Note: This function does not
@@ -623,7 +628,7 @@ let activeFs: FsOperations = NodeFsOperations
  * @param implementation The filesystem implementation to use
  */
 export function setFsImplementation(implementation: FsOperations): void {
-  activeFs = implementation
+  (globalThis as any)[FS_GLOBAL_KEY].impl = implementation
 }
 
 /**
@@ -631,7 +636,7 @@ export function setFsImplementation(implementation: FsOperations): void {
  * @returns The currently active filesystem implementation
  */
 export function getFsImplementation(): FsOperations {
-  return activeFs
+  return (globalThis as any)[FS_GLOBAL_KEY].impl
 }
 
 /**
@@ -639,7 +644,7 @@ export function getFsImplementation(): FsOperations {
  * Note: This function does not automatically update cwd.
  */
 export function setOriginalFsImplementation(): void {
-  activeFs = NodeFsOperations
+  (globalThis as any)[FS_GLOBAL_KEY].impl = NodeFsOperations
 }
 
 export type ReadFileRangeResult = {

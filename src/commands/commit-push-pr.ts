@@ -1,4 +1,5 @@
 import type { Command } from '../commands.js'
+import { getSSHProxyManager } from '../ssh-proxy/proxyState.js'
 import {
   getAttributionTexts,
   getEnhancedPRAttribution,
@@ -32,7 +33,10 @@ function getPromptContent(
   // Use provided PR attribution or fall back to default
   const effectivePrAttribution = prAttribution ?? defaultPrAttribution
   const safeUser = process.env.SAFEUSER || ''
-  const username = process.env.USER || ''
+  const proxy = getSSHProxyManager()
+  const username = proxy
+    ? (() => { try { return proxy.execSync('whoami').trim() } catch { return process.env.USER || '' } })()
+    : (process.env.USER || '')
 
   let prefix = ''
   let reviewerArg = ' and `--reviewer anthropics/claude-code`'

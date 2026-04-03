@@ -15,6 +15,7 @@
 import { unwatchFile, watchFile } from 'fs'
 import { readdir, readFile, stat } from 'fs/promises'
 import { join, resolve } from 'path'
+import { getSSHProxyManager } from '../../ssh-proxy/proxyState.js'
 import { waitForScrollIdle } from '../../bootstrap/state.js'
 import { registerCleanup } from '../cleanupRegistry.js'
 import { getCwd } from '../cwd.js'
@@ -354,6 +355,12 @@ class GitFileWatcher {
     this.gitDir = await resolveGitDir()
     this.initialized = true
     if (!this.gitDir) {
+      return
+    }
+
+    // When SSH proxy is active, .git lives on the remote host and cannot
+    // be watched with local fs.watchFile. Skip all watchers.
+    if (getSSHProxyManager()) {
       return
     }
 

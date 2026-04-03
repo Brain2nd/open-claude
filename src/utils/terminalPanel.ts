@@ -18,6 +18,7 @@
 import { spawn, spawnSync } from 'child_process'
 import { getSessionId } from '../bootstrap/state.js'
 import instances from '../ink/instances.js'
+import { getSSHProxyManager } from '../ssh-proxy/proxyState.js'
 import { registerCleanup } from './cleanupRegistry.js'
 import { pwd } from './cwd.js'
 import { logForDebugging } from './debug.js'
@@ -54,6 +55,11 @@ class TerminalPanel {
   // ── public API ────────────────────────────────────────────────────
 
   toggle(): void {
+    // Terminal panel uses local tmux/shell which doesn't apply in SSH proxy mode.
+    if (getSSHProxyManager()) {
+      logForDebugging('Terminal panel: disabled in SSH proxy mode')
+      return
+    }
     this.showShell()
   }
 

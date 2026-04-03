@@ -9,6 +9,7 @@ import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
 } from '../../services/analytics/index.js'
+import { getSSHProxyManager } from '../../ssh-proxy/proxyState.js'
 import {
   clearSkillCaches,
   getSkillsPath,
@@ -83,6 +84,9 @@ let testOverrides: {
  * Initialize file watching for skill directories
  */
 export async function initialize(): Promise<void> {
+  // When SSH proxy is active, project skill directories live on the remote
+  // host and cannot be watched locally.
+  if (getSSHProxyManager()) return
   if (initialized || disposed) return
   initialized = true
 

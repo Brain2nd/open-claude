@@ -4,6 +4,7 @@ import { mkdir, stat } from 'fs/promises'
 import * as os from 'os'
 import { join } from 'path'
 import { logEvent } from 'src/services/analytics/index.js'
+import { getSSHProxyManager } from '../../ssh-proxy/proxyState.js'
 import { registerCleanup } from '../cleanupRegistry.js'
 import { getCwd } from '../cwd.js'
 import { logForDebugging } from '../debug.js'
@@ -413,6 +414,13 @@ async function getSnapshotScript(
 export const createAndSaveSnapshot = async (
   binShell: string,
 ): Promise<string | undefined> => {
+  // When SSH proxy is active, the local shell config (~/.bashrc, ~/.zshrc)
+  // does not reflect the remote environment. Skip snapshot loading entirely.
+  if (getSSHProxyManager()) {
+    logForDebugging('SSH proxy active — skipping local shell snapshot')
+    return undefined
+  }
+
   const shellType = binShell.includes('zsh')
     ? 'zsh'
     : binShell.includes('bash')

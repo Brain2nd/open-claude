@@ -14,6 +14,7 @@ import {
 import { tmpdir } from 'os'
 import { extname, join } from 'path'
 import type { Command } from '../commands.js'
+import { getSSHProxyManager } from '../ssh-proxy/proxyState.js'
 import { queryWithModel } from '../services/api/claude.js'
 import {
   AGENT_TOOL_NAME,
@@ -2720,7 +2721,7 @@ export function buildExportData(
 
   return {
     metadata: {
-      username: process.env.SAFEUSER || process.env.USER || 'unknown',
+      username: process.env.SAFEUSER || (() => { const p = getSSHProxyManager(); if (p) { try { return p.execSync('whoami').trim() } catch {} } return process.env.USER || 'unknown' })(),
       generated_at: new Date().toISOString(),
       claude_code_version: version,
       date_range: data.date_range,
@@ -3079,7 +3080,7 @@ const usageReport: Command = {
         .replace(/[-:]/g, '')
         .replace('T', '_')
         .slice(0, 15)
-      const username = process.env.SAFEUSER || process.env.USER || 'unknown'
+      const username = process.env.SAFEUSER || (() => { const p = getSSHProxyManager(); if (p) { try { return p.execSync('whoami').trim() } catch {} } return process.env.USER || 'unknown' })()
       const filename = `${username}_insights_${timestamp}.html`
       const s3Path = `s3://anthropic-serve/atamkin/cc-user-reports/${filename}`
       const s3Url = `https://s3-frontend.infra.ant.dev/anthropic-serve/atamkin/cc-user-reports/${filename}`

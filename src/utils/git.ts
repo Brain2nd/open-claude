@@ -1,5 +1,5 @@
 import { createHash } from 'crypto'
-import { readFileSync, realpathSync, statSync } from 'fs'
+import { readFileSync as nodeReadFileSync, realpathSync as nodeRealpathSync, statSync as nodeStatSync } from 'fs'
 import { open, readFile, realpath, stat } from 'fs/promises'
 import memoize from 'lodash-es/memoize.js'
 import { basename, dirname, join, resolve, sep } from 'path'
@@ -9,6 +9,12 @@ import { logForDebugging } from './debug.js'
 import { logForDiagnosticsNoPII } from './diagLogs.js'
 import { execFileNoThrow } from './execFileNoThrow.js'
 import { getFsImplementation } from './fsOperations.js'
+
+// Use getFsImplementation() so these work over SSH proxy
+const statSync = ((path: any) => getFsImplementation().statSync(path as string)) as any
+const readFileSync = ((path: any, opts: any) =>
+  opts ? getFsImplementation().readFileSync(path as string, opts) : getFsImplementation().readFileBytesSync(path as string)) as any
+const realpathSync = ((path: any) => getFsImplementation().realpathSync(path as string)) as any
 import {
   getCachedBranch,
   getCachedDefaultBranch,
@@ -215,7 +221,9 @@ export const gitExe = memoize((): string => {
   return whichSync('git') || 'git'
 })
 
-export const getIsGit = memoize(async (): Promise<boolean> => {
+// Not memoized — SSH proxy can change the CWD to a remote path mid-session,
+// so isGit must be re-evaluated each time it's queried.
+export const getIsGit = async (): Promise<boolean> => {
   const startTime = Date.now()
   logForDiagnosticsNoPII('info', 'is_git_check_started')
 
@@ -226,7 +234,7 @@ export const getIsGit = memoize(async (): Promise<boolean> => {
     is_git: isGit,
   })
   return isGit
-})
+}
 
 export function getGitDir(cwd: string): Promise<string | null> {
   return resolveGitDir(cwd)

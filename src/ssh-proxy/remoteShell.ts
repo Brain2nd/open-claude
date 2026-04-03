@@ -5,6 +5,9 @@
  * Commands are sent to the remote host via SSHConnectionManager.spawn(),
  * and CWD is tracked by parsing `pwd -P` output appended to each command.
  *
+ * Key difference from local exec: SSH spawn always uses pipe mode
+ * (stdout comes back through the SSH pipe, not a local file fd).
+ *
  * Feature gate: SSH_PROXY
  */
 
@@ -43,7 +46,6 @@ export async function execRemote(
     timeout,
     onProgress,
     shouldAutoBackground,
-    onStdout,
   } = options ?? {}
 
   const commandTimeout = timeout || 30 * 60 * 1000 // 30 minutes
@@ -57,18 +59,12 @@ export async function execRemote(
   // Construct remote command with CWD tracking.
   // After the user command, we echo a marker followed by `pwd -P` so we can
   // extract the new working directory from stdout.
-  const remoteCmd = [
-    `cd ${shellQuote(cwd)}`,
-    command,
-    `__exit_code=$?`,
-    `echo "${CWD_MARKER}"`,
-    `pwd -P`,
-    `exit $__exit_code`,
-  ].join(' && ')
+  const remoteCmd = `cd ${shellQuote(cwd)} && (${command}); __oc_ec=$?; echo "${CWD_MARKER}"; pwd -P; exit $__oc_ec`
 
-  const usePipeMode = !!onStdout
   const taskId = generateTaskId('local_bash')
-  const taskOutput = new TaskOutput(taskId, onProgress ?? null, !usePipeMode)
+  // SSH spawn ALWAYS returns output via pipe (not file fd),
+  // so use pipe mode (useFile=false) for TaskOutput.
+  const taskOutput = new TaskOutput(taskId, onProgress ?? null, false)
   await mkdir(getTaskOutputDir(), { recursive: true })
 
   const childProcess = conn.spawn(remoteCmd)
@@ -81,31 +77,7 @@ export async function execRemote(
     shouldAutoBackground,
   )
 
-  // If in pipe mode, intercept stdout to strip CWD marker and forward to onStdout
-  if (usePipeMode && onStdout) {
-    let cwdBuffer = ''
-    const origStdout = childProcess.stdout
-    if (origStdout) {
-      origStdout.on('data', (data: Buffer) => {
-        const str = data.toString()
-        cwdBuffer += str
-
-        // Check if we have the CWD marker in accumulated output
-        const markerIdx = cwdBuffer.indexOf(CWD_MARKER)
-        if (markerIdx === -1) {
-          // No marker yet — forward everything except a trailing partial marker
-          const safeEnd = cwdBuffer.length - CWD_MARKER.length
-          if (safeEnd > 0) {
-            onStdout(cwdBuffer.slice(0, safeEnd))
-            cwdBuffer = cwdBuffer.slice(safeEnd)
-          }
-        }
-        // If marker found, we'll handle it in the 'exit' handler below
-      })
-    }
-  }
-
-  // After command completes, extract new CWD from output
+  // After command completes, extract new CWD from the TaskOutput content
   shellCommand.result.then((result) => {
     const output = result.stdout ?? ''
     const markerIdx = output.lastIndexOf(CWD_MARKER)
@@ -116,6 +88,10 @@ export async function execRemote(
         logForDebugging(`[SSH Proxy] CWD changed: ${cwd} → ${newCwdLine}`)
         setCwdState(newCwdLine)
       }
+
+      // Strip the CWD marker and pwd from the result so the user doesn't see it
+      // (mutate result in place — it's already resolved)
+      result.stdout = output.slice(0, markerIdx).trimEnd()
     }
   }).catch(() => {
     // Ignore — command may have been interrupted

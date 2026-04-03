@@ -5,6 +5,7 @@ import { dirname, join } from 'path'
 import { pathToFileURL } from 'url'
 import { color } from '../components/design-system/color.js'
 import { supportsHyperlinks } from '../ink/supports-hyperlinks.js'
+import { getSSHProxyManager } from '../ssh-proxy/proxyState.js'
 import { logForDebugging } from './debug.js'
 import { isENOENT } from './errors.js'
 import { execFileNoThrow } from './execFileNoThrow.js'
@@ -22,6 +23,11 @@ type ShellInfo = {
 }
 
 function detectShell(): ShellInfo | null {
+  // When SSH proxy is active, local shell rc files are irrelevant.
+  if (getSSHProxyManager()) {
+    return null
+  }
+
   const shell = process.env.SHELL || ''
   const home = homedir()
   const claudeDir = join(home, '.claude')

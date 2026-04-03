@@ -156,7 +156,7 @@ import { countConcurrentSessions, registerSession, updateSessionName } from 'src
 import { getCwd } from 'src/utils/cwd.js';
 import { logForDebugging, setHasFormattedOutput } from 'src/utils/debug.js';
 import { errorMessage, getErrnoCode, isENOENT, TeleportOperationError, toError } from 'src/utils/errors.js';
-import { getFsImplementation, safeResolvePath } from 'src/utils/fsOperations.js';
+import { getFsImplementation, NodeFsOperations, safeResolvePath, setFsImplementation } from 'src/utils/fsOperations.js';
 import { gracefulShutdown, gracefulShutdownSync } from 'src/utils/gracefulShutdown.js';
 import { setAllHookEventsEnabled } from 'src/utils/hooks/hookEvents.js';
 import { refreshModelCapabilities } from 'src/utils/model/modelCapabilities.js';
@@ -165,7 +165,7 @@ import { setCwd } from 'src/utils/Shell.js';
 import { type ProcessedResume, processResumedConversation } from 'src/utils/sessionRestore.js';
 import { parseSettingSourcesFlag } from 'src/utils/settings/constants.js';
 import { plural } from 'src/utils/stringUtils.js';
-import { type ChannelEntry, getInitialMainLoopModel, getIsNonInteractiveSession, getSdkBetas, getSessionId, getUserMsgOptIn, setAllowedChannels, setAllowedSettingSources, setChromeFlagOverride, setClientType, setCwdState, setDirectConnectServerUrl, setFlagSettingsPath, setInitialMainLoopModel, setInlinePlugins, setIsInteractive, setKairosActive, setOriginalCwd, setQuestionPreviewFormat, setSdkBetas, setSessionBypassPermissionsMode, setSessionPersistenceDisabled, setSessionSource, setUserMsgOptIn, switchSession } from './bootstrap/state.js';
+import { type ChannelEntry, getInitialMainLoopModel, getIsNonInteractiveSession, getSdkBetas, getSessionId, getUserMsgOptIn, setAllowedChannels, setAllowedSettingSources, setChromeFlagOverride, setClientType, setCwdState, setDirectConnectServerUrl, setFlagSettingsPath, setInitialMainLoopModel, setInlinePlugins, setIsInteractive, setKairosActive, setOriginalCwd, setQuestionPreviewFormat, setSdkBetas, setSessionBypassPermissionsMode, setSessionPersistenceDisabled, setSessionSource, setSSHProxyInfo, setUserMsgOptIn, switchSession } from './bootstrap/state.js';
 
 /* eslint-disable @typescript-eslint/no-require-imports */
 const autoModeStateModule = feature('TRANSCRIPT_CLASSIFIER') ? require('./utils/permissions/autoModeState.js') as typeof import('./utils/permissions/autoModeState.js') : null;
@@ -3232,13 +3232,15 @@ async function run(): Promise<CommanderCommand> {
       }, renderAndRun);
       return;
     } else if (feature('SSH_PROXY') && _pendingSSHProxy?.host) {
-      // SSH Proxy — transparent remote I/O
+      // SSH Proxy — transparent remote I/O.
+      // IMPORTANT: Use dynamic import ONLY for ssh-proxy modules (not loaded elsewhere).
+      // For fsOperations and bootstrap/state, use the already-loaded static imports
+      // to avoid Bun bundler module duplication (dynamic vs static = different instances).
       const { SSHConnectionManager } = await import('./ssh-proxy/SSHConnectionManager.js');
       const { SSHFsOperations } = await import('./ssh-proxy/SSHFsOperations.js');
       const { activateSSHProxy } = await import('./ssh-proxy/proxyState.js');
-      const { NodeFsOperations, setFsImplementation } = await import('./utils/fsOperations.js');
       const { launchSSHDirectoryBrowser } = await import('./dialogLaunchers.js');
-      const { setSSHProxyInfo } = await import('./bootstrap/state.js');
+      // setFsImplementation, setCwdState, setOriginalCwd are used from static imports at top of file
 
       const conn = new SSHConnectionManager({
         host: _pendingSSHProxy.host,
@@ -3267,7 +3269,9 @@ async function run(): Promise<CommanderCommand> {
       const sshFs = new SSHFsOperations(conn, remoteCwd, NodeFsOperations);
       setFsImplementation(sshFs);
       activateSSHProxy(conn);
-      setOriginalCwd(remoteCwd);
+      // Keep originalCwd as LOCAL path so sessions are stored under the local project dir
+      // (makes them visible in `openclaude --resume`). Only setCwdState to remote path
+      // so tools operate on the remote filesystem.
       setCwdState(remoteCwd);
       setSSHProxyInfo({ host: _pendingSSHProxy.host, port: _pendingSSHProxy.port, remoteCwd });
       conn.startHeartbeat(30_000);

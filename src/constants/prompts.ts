@@ -1,6 +1,7 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
 import { type as osType, version as osVersion, release as osRelease } from 'os'
 import { env } from '../utils/env.js'
+import { getSSHProxyManager } from '../ssh-proxy/proxyState.js'
 import { getIsGit } from '../utils/git.js'
 import { getCwd } from '../utils/cwd.js'
 import { getIsNonInteractiveSession } from '../bootstrap/state.js'
@@ -687,7 +688,9 @@ export async function computeSimpleEnvInfo(
     additionalWorkingDirectories && additionalWorkingDirectories.length > 0
       ? additionalWorkingDirectories
       : null,
-    `Platform: ${env.platform}`,
+    getSSHProxyManager()
+      ? `Platform: linux (SSH proxy to remote host)`
+      : `Platform: ${env.platform}`,
     getShellInfoLine(),
     `OS Version: ${unameSR}`,
     modelDescription,
@@ -731,6 +734,10 @@ function getKnowledgeCutoff(modelId: string): string | null {
 }
 
 function getShellInfoLine(): string {
+  // When SSH proxy is active, report remote shell instead of local
+  if (getSSHProxyManager()) {
+    return 'Shell: bash (remote)'
+  }
   const shell = process.env.SHELL || 'unknown'
   const shellName = shell.includes('zsh')
     ? 'zsh'
@@ -744,6 +751,15 @@ function getShellInfoLine(): string {
 }
 
 export function getUnameSR(): string {
+  // When SSH proxy is active, query the remote OS instead of local
+  const proxyManager = getSSHProxyManager()
+  if (proxyManager) {
+    try {
+      return proxyManager.execSync('uname -sr').trim()
+    } catch {
+      // Fall through to local
+    }
+  }
   // os.type() and os.release() both wrap uname(3) on POSIX, producing output
   // byte-identical to `uname -sr`: "Darwin 25.3.0", "Linux 6.6.4", etc.
   // Windows has no uname(3); os.type() returns "Windows_NT" there, but

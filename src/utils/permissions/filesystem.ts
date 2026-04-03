@@ -306,12 +306,12 @@ export function isScratchpadEnabled(): boolean {
  */
 export function getClaudeTempDirName(): string {
   if (getPlatform() === 'windows') {
-    return 'claude'
+    return 'openclaude'
   }
   // Use UID to create per-user directories, preventing permission conflicts
   // when multiple users share the same /tmp directory
   const uid = process.getuid?.() ?? 0
-  return `claude-${uid}`
+  return `openclaude-${uid}`
 }
 
 /**

@@ -4,9 +4,6 @@
  * Rendered as a setup dialog before the REPL launches.
  * Lets the user navigate the remote filesystem and select a working directory.
  *
- * Uses TreeSelect for hierarchical navigation and supports
- * direct path input via Tab toggle.
- *
  * Feature gate: SSH_PROXY
  */
 
@@ -36,57 +33,61 @@ function shellQuote(s: string): string {
 async function loadDirectory(
   conn: SSHConnectionManager,
   path: string,
-): Promise<DirEntry[]> {
-  const resolvedPath = (await conn.exec(`realpath ${shellQuote(path)}`)).stdout.trim() || path
-  const result = await conn.exec(`ls -la ${shellQuote(resolvedPath)}`)
+): Promise<{ entries: DirEntry[]; resolvedPath: string }> {
+  // Expand ~ to $HOME before quoting (single quotes prevent tilde expansion)
+  const expandedPath = path === '~' ? '$HOME' : path.startsWith('~/') ? `$HOME/${path.slice(2)}` : shellQuote(path)
+  const rpResult = await conn.exec(`realpath ${expandedPath} 2>/dev/null || echo ${expandedPath}`)
+  const resolvedPath = rpResult.stdout.trim() || path
 
-  if (result.code !== 0) return []
+  // Use find with -printf for reliable parsing: type prefix + filename, one per line
+  const dirResult = await conn.exec(
+    `find ${shellQuote(resolvedPath)} -maxdepth 1 -mindepth 1 -type d -printf 'D %f\\n' 2>/dev/null | sort -f; ` +
+    `find ${shellQuote(resolvedPath)} -maxdepth 1 -mindepth 1 -type f -printf 'F %f\\n' 2>/dev/null | sort -f; ` +
+    `find ${shellQuote(resolvedPath)} -maxdepth 1 -mindepth 1 -type l -printf 'L %f\\n' 2>/dev/null | sort -f`
+  )
 
   const entries: DirEntry[] = []
 
-  // Always add parent directory entry
+  // Parent directory
   if (resolvedPath !== '/') {
-    entries.push({
-      name: '..',
-      isDir: true,
-      fullPath: resolvedPath.split('/').slice(0, -1).join('/') || '/',
-    })
+    const parent = resolvedPath.split('/').slice(0, -1).join('/') || '/'
+    entries.push({ name: '..', isDir: true, fullPath: parent })
   }
 
-  for (const line of result.stdout.split('\n')) {
-    if (!line || line.startsWith('total ')) continue
+  if (dirResult.code === 0 && dirResult.stdout.trim()) {
+    for (const line of dirResult.stdout.trim().split('\n')) {
+      if (!line || line.length < 3) continue
+      const type = line[0]
+      const name = line.slice(2)
+      if (!name) continue
 
-    const typeChar = line[0]
-    const isDir = typeChar === 'd'
-    const isSymlink = typeChar === 'l'
-
-    // Parse name from ls -la output (fields after 8th space-delimited column)
-    const parts = line.split(/\s+/)
-    if (parts.length < 9) continue
-
-    let name = parts.slice(8).join(' ')
-    if (isSymlink && name.includes(' -> ')) {
-      name = name.split(' -> ')[0]!
+      const isDir = type === 'D' || type === 'L'
+      const fullPath = resolvedPath === '/' ? `/${name}` : `${resolvedPath}/${name}`
+      entries.push({
+        name: isDir ? `${name}/` : name,
+        isDir,
+        fullPath,
+      })
     }
-
-    if (name === '.' || name === '..') continue
-
-    entries.push({
-      name: isDir ? name + '/' : name,
-      isDir: isDir || isSymlink,
-      fullPath: resolvedPath === '/' ? `/${name}` : `${resolvedPath}/${name}`,
-    })
+  } else {
+    // Fallback: try simple ls if find doesn't work (e.g., BusyBox)
+    const lsResult = await conn.exec(`ls -1a ${shellQuote(resolvedPath)} 2>/dev/null`)
+    if (lsResult.code === 0) {
+      for (const name of lsResult.stdout.trim().split('\n')) {
+        if (!name || name === '.' || name === '..') continue
+        // Check if directory with test -d
+        const isDir = (await conn.exec(`test -d ${shellQuote(resolvedPath + '/' + name)}`)).code === 0
+        const fullPath = resolvedPath === '/' ? `/${name}` : `${resolvedPath}/${name}`
+        entries.push({
+          name: isDir ? `${name}/` : name,
+          isDir,
+          fullPath,
+        })
+      }
+    }
   }
 
-  // Sort: directories first, then files, alphabetically within each group
-  entries.sort((a, b) => {
-    if (a.name === '..') return -1
-    if (b.name === '..') return 1
-    if (a.isDir !== b.isDir) return a.isDir ? -1 : 1
-    return a.name.localeCompare(b.name)
-  })
-
-  return entries
+  return { entries, resolvedPath }
 }
 
 export function RemoteDirectoryBrowser({
@@ -96,74 +97,72 @@ export function RemoteDirectoryBrowser({
   onCancel,
 }: Props): React.ReactNode {
   const [currentPath, setCurrentPath] = useState(initialPath)
+  const [displayPath, setDisplayPath] = useState(initialPath)
   const [entries, setEntries] = useState<DirEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Load directory contents
   useEffect(() => {
     setLoading(true)
     setError(null)
     loadDirectory(conn, currentPath)
-      .then((result) => {
+      .then(({ entries: result, resolvedPath }) => {
         setEntries(result)
+        setDisplayPath(resolvedPath)
         setLoading(false)
       })
-      .catch((err) => {
-        setError(err.message)
+      .catch((err: any) => {
+        setError(err.message ?? String(err))
         setLoading(false)
       })
   }, [conn, currentPath])
 
-  const handleSelect = useCallback(
-    (option: OptionWithDescription) => {
-      const entry = entries.find((e) => e.name === option.value)
-      if (!entry) return
-
-      if (entry.isDir) {
-        // Navigate into directory
-        setCurrentPath(entry.fullPath)
-      }
-      // Files are not selectable — only directories
-    },
-    [entries],
-  )
-
-  // Esc to cancel
   useKeybinding('confirm:no', onCancel, { context: 'Confirmation' })
 
-  // Build options for Select
-  const options: OptionWithDescription[] = entries.map((entry) => ({
-    value: entry.name,
-    label: entry.isDir
-      ? `📁 ${entry.name}`
-      : `   ${entry.name}`,
-    description: entry.isDir ? 'directory' : 'file',
-  }))
+  const dirEntries = entries.filter(e => e.isDir)
+  const fileEntries = entries.filter(e => !e.isDir)
 
-  // Add "[ Select this directory ]" as first option
-  const selectCurrentOption: OptionWithDescription = {
-    value: '__SELECT_CURRENT__',
-    label: `✓ [ Use ${currentPath} ]`,
-    description: 'Select this as working directory',
+  const options: OptionWithDescription[] = [
+    {
+      value: '__SELECT_CURRENT__',
+      label: `  [Use this directory]`,
+      description: displayPath,
+    },
+    ...dirEntries.map((entry) => ({
+      value: entry.name,
+      label: `  ${entry.name}`,
+      description: '',
+    })),
+    ...fileEntries.slice(0, 10).map((entry) => ({
+      value: entry.name,
+      label: `  ${entry.name}`,
+      description: '',
+    })),
+  ]
+
+  if (fileEntries.length > 10) {
+    options.push({
+      value: '__MORE__',
+      label: `  ... and ${fileEntries.length - 10} more files`,
+      description: '',
+    })
   }
 
-  const allOptions = [selectCurrentOption, ...options]
-
-  const handleOptionSelect = useCallback(
-    (option: OptionWithDescription) => {
-      if (option.value === '__SELECT_CURRENT__') {
-        // Resolve the path before returning
+  const handleOptionChange = useCallback(
+    (value: string) => {
+      if (value === '__SELECT_CURRENT__') {
         conn.exec(`realpath ${shellQuote(currentPath)}`).then((result) => {
-          onSelect(result.stdout.trim() || currentPath)
+          onSelect(result.stdout.trim() || displayPath)
         }).catch(() => {
-          onSelect(currentPath)
+          onSelect(displayPath)
         })
         return
       }
-      handleSelect(option)
+      if (value === '__MORE__') return
+      const entry = entries.find((e) => e.name === value)
+      if (entry?.isDir) setCurrentPath(entry.fullPath)
     },
-    [handleSelect, currentPath, conn, onSelect],
+    [entries, currentPath, displayPath, conn, onSelect],
   )
 
   if (loading) {
@@ -188,18 +187,16 @@ export function RemoteDirectoryBrowser({
   return (
     <Box flexDirection="column" paddingX={1} paddingY={1}>
       <Text bold>Remote Directory Browser</Text>
-      <Text dimColor>Host: {conn.host}</Text>
-      <Text dimColor>Path: {currentPath}</Text>
+      <Text dimColor>Host: {conn.host}  Path: {displayPath}</Text>
+      <Text dimColor>{dirEntries.length} dirs, {fileEntries.length} files</Text>
       <Text> </Text>
       <Select
-        options={allOptions}
-        onSelect={handleOptionSelect}
-        visibleOptionCount={15}
+        options={options}
+        onChange={handleOptionChange}
+        visibleOptionCount={20}
       />
       <Text> </Text>
-      <Text dimColor>
-        Enter: navigate/select | Esc: cancel
-      </Text>
+      <Text dimColor>Enter: navigate/select | Esc: cancel</Text>
     </Box>
   )
 }
