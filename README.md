@@ -77,13 +77,15 @@ openclaude ssh user@host /path/to/project --port 22
 | Remote disk usage | **0 MB** | ~200MB binary + npm deploy | ~200MB server | Full tool stack |
 | Setup time | **Instant** | Minutes (binary deploy) | Minutes | Minutes to hours |
 | Offline remote | **Yes** (no outbound network needed on remote) | No (auth proxy needs API access) | No | No (needs API access) |
+| Remote server safety | **Zero footprint** (nothing installed, nothing left behind) | Binary deployed + npm artifacts | Server installed + extensions | Full tool stack installed |
 
 **Key differentiator:** Claude Code's built-in SSH (currently internal beta, `SSH_REMOTE` feature flag) deploys the full Claude binary to the remote server and runs AI inference requests from there via an auth proxy tunnel. OpenClaude's SSH Proxy takes the opposite approach — **nothing is installed or executed on the remote except standard Unix commands** (`cat`, `stat`, `ls`, `git`, `rg`). The AI stays local, only I/O is proxied. This means:
 
-1. **Containers, embedded devices, and locked-down servers** that can't install software work out of the box
-2. **No API key exposure** — credentials never leave your local machine
-3. **No outbound network needed on remote** — the remote only needs to accept inbound SSH
-4. **Zero cleanup** — disconnect and nothing is left behind on the remote
+1. **Zero footprint on remote** — no binary deployed, no packages installed, no config files written, no background processes. The remote server is untouched before, during, and after the session. Ideal for production servers, shared machines, and compliance-sensitive environments where you can't or shouldn't install third-party software
+2. **Containers, embedded devices, and locked-down servers** that can't install software work out of the box
+3. **No API key exposure** — credentials never leave your local machine
+4. **No outbound network needed on remote** — the remote only needs to accept inbound SSH
+5. **Zero cleanup** — disconnect and there is literally nothing to clean up
 
 ## Requirements
 
@@ -262,13 +264,15 @@ openclaude ssh user@host /path/to/project --port 22
 | 远程磁盘占用 | **0 MB** | ~200MB 二进制 + npm 部署 | ~200MB server | 完整工具链 |
 | 配置时间 | **即时** | 几分钟（部署二进制）| 几分钟 | 几分钟到几小时 |
 | 离线远程主机 | **支持**（远程无需出站网络）| 不支持（auth proxy 需要 API 访问）| 不支持 | 不支持 |
+| 远程服务器安全 | **零痕迹**（不安装、不残留）| 部署二进制 + npm 产物 | 安装 Server + 扩展 | 安装完整工具链 |
 
 **核心差异：** Claude Code 的内置 SSH（目前为内部测试版，`SSH_REMOTE` feature flag）会将完整的 Claude 二进制部署到远程服务器，并通过 auth proxy 隧道在远程发起 AI 推理请求。OpenClaude 的 SSH 代理采用相反的架构——**远程服务器上不安装任何东西，只执行标准 Unix 命令**（`cat`、`stat`、`ls`、`git`、`rg`）。AI 留在本地，只有 I/O 被代理。这意味着：
 
-1. **容器、嵌入式设备、锁定的服务器**无法安装软件的环境也能直接使用
-2. **API Key 零暴露** — 凭证永远不离开你的本地机器
-3. **远程无需出站网络** — 远程主机只需要接受入站 SSH 连接
-4. **零残留** — 断开连接后远程主机上不会留下任何东西
+1. **远程零痕迹** — 不部署二进制、不安装包、不写配置文件、不留后台进程。会话前、中、后远程服务器状态完全不变。适用于生产服务器、共享机器、合规敏感环境等不能或不应安装第三方软件的场景
+2. **容器、嵌入式设备、锁定的服务器**无法安装软件的环境也能直接使用
+3. **API Key 零暴露** — 凭证永远不离开你的本地机器
+4. **远程无需出站网络** — 远程主机只需要接受入站 SSH 连接
+5. **零清理** — 断开连接后远程主机上没有任何东西需要清理
 
 ## 环境要求
 
