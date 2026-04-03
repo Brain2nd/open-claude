@@ -1,4 +1,6 @@
 node_modules/
+# Keep @ant shim packages — these replace Anthropic-internal packages
+!node_modules/@ant/
 dist/
 bun.lock
 package-lock.json
