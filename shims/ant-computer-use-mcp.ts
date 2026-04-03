@@ -58,3 +58,11 @@ export type InstalledApp = any
 export type ResolvePrepareCaptureResult = any
 export type RunningApp = any
 export type ScreenshotResult = any
+export type ComputerUseAPI = any
+export type GrantFlags = any
+export type SentinelApp = { name: string; category?: string; [key: string]: any }
+export type CoordinateMode = string
+export type CuSubGates = Record<string, any>
+export type ComputerUseHostAdapter = any
+export type Logger = any
+export function getSentinelCategory(..._args: any[]): string | undefined { return undefined }

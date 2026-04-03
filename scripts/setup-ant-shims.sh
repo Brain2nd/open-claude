@@ -24,37 +24,26 @@ cat > "$NM/computer-use-mcp/package.json" << 'EOF'
 EOF
 cat > "$NM/computer-use-mcp/index.ts" << 'EOF'
 export {
-  createComputerUseMcpServer,
-  buildComputerUseTools,
-  bindSessionContext,
-  API_RESIZE_PARAMS,
-  targetImageSize,
-  DEFAULT_GRANT_FLAGS,
+  createComputerUseMcpServer, buildComputerUseTools, bindSessionContext,
+  API_RESIZE_PARAMS, targetImageSize, DEFAULT_GRANT_FLAGS, getSentinelCategory,
 } from '../../../shims/ant-computer-use-mcp.js'
 export type {
-  ComputerUseSessionContext,
-  CuCallToolResult,
-  CuPermissionRequest,
-  CuPermissionResponse,
-  ComputerUseAPI,
-  GrantFlags,
-  SentinelApp,
-  ScreenshotDims,
+  ComputerUseSessionContext, CuCallToolResult, CuPermissionRequest, CuPermissionResponse,
+  ComputerUseAPI, GrantFlags, SentinelApp, ScreenshotDims, ComputerExecutor, DisplayGeometry,
+  FrontmostApp, InstalledApp, ResolvePrepareCaptureResult, RunningApp, ScreenshotResult,
+  CoordinateMode, CuSubGates, ComputerUseHostAdapter, Logger,
 } from '../../../shims/ant-computer-use-mcp.js'
 EOF
 cat > "$NM/computer-use-mcp/types/index.ts" << 'EOF'
+export { DEFAULT_GRANT_FLAGS } from '../../../../shims/ant-computer-use-mcp.js'
 export type {
-  ComputerUseSessionContext,
-  CuCallToolResult,
-  CuPermissionRequest,
-  CuPermissionResponse,
-  ComputerUseAPI,
-  GrantFlags,
-  SentinelApp,
-  ScreenshotDims,
+  ComputerUseSessionContext, CuCallToolResult, CuPermissionRequest, CuPermissionResponse,
+  ComputerUseAPI, GrantFlags, SentinelApp, ScreenshotDims, CoordinateMode, CuSubGates,
+  ComputerUseHostAdapter, Logger,
 } from '../../../../shims/ant-computer-use-mcp.js'
 EOF
 cat > "$NM/computer-use-mcp/sentinelApps/index.ts" << 'EOF'
+export { getSentinelCategory } from '../../../../shims/ant-computer-use-mcp.js'
 export type { SentinelApp } from '../../../../shims/ant-computer-use-mcp.js'
 EOF
 
@@ -74,7 +63,7 @@ cat > "$NM/computer-use-swift/package.json" << 'EOF'
 {"name":"@ant/computer-use-swift","version":"0.0.1","main":"./index.ts"}
 EOF
 cat > "$NM/computer-use-swift/index.ts" << 'EOF'
-export {} from '../../../shims/ant-computer-use-mcp.js'
+export type { ComputerUseAPI } from '../../../shims/ant-computer-use-mcp.js'
 EOF
 
 echo "@ant/* shim packages created successfully."
